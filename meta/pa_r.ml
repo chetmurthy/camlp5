@@ -8,63 +8,36 @@
 #load "pa_macro_gram.cmo";
 
 open Pcaml;
+open Mlsyntax;
 
 Pcaml.syntax_name.val := "Revised";
 Pcaml.no_constructors_arity.val := False;
 
-value user_defined_operator = fun s -> do {
-  assert(String.length s > 1) ;
-  let firstc = String.get s 0 in
-  match firstc with [
-(*
-  | "!" symbolchar + as op
-            { PREFIXOP op }
-  | ['~' '?'] symbolchar + as op
-            { PREFIXOP op }
-*)
-    '!' | '~' | '?' -> Some("PREFIXOP", s)
-(*
-  | ['=' '<' '>' '|' '&' '$'] symbolchar * as op
-            { INFIXOP0 op }
-*)
-  | '=' | '<' | '>' | '|' | '&' | '$' -> Some("INFIXOP0",s)
-(*
-  | ['@' '^'] symbolchar * as op
-            { INFIXOP1 op }
-*)
-  | '@' | '^' -> Some("INFIXOP1", s)
-(*
-  | ['+' '-'] symbolchar * as op
-            { INFIXOP2 op }
-*)
-  | '+' | '-' -> Some("INFIXOP2", s)
-(*
-  | "**" symbolchar * as op
-            { INFIXOP4 op }
-*)
-  | '*' when String.length s > 2 && '*' = String.get  s 1 -> Some("INFIXOP4",s)
-(*
-  | ['*' '/' '%'] symbolchar * as op
-            { INFIXOP3 op }
-*)
-  | '*' | '/' | '%' -> Some("INFIXOP3", s)
-(*
-  | '#' (symbolchar | '#') + as op
-            { HASHOP op }
-*)
-  | '#' -> Some("HASHOP", s)
-(*
-  | "let" kwdopchar dotsymbolchar * as op
-            { LETOP op }
-  | "and" kwdopchar dotsymbolchar * as op
-            { ANDOP op }
-*)
-  | _ -> None
-  ] }
-
+value builtin_operators_list =
+  ["^"; "~-."; "~-"; "~"; "<="; "<>"; "<-"; "<"; "=="; "=";
+   ">="; ">"; "||"; "|"; "->"; "-."; "-"; "!="; "!"; "?="; "?!";
+   "??"; "?"; "/"; "@"; "*"; "**"; "&"; "&&"; "#"; "%"; "+"]
+;
+value builtin_operators_hs =
+  let hs = Hashtbl.create 23 in do {
+    List.iter (fun op -> Hashtbl.add hs op ()) builtin_operators_list ;
+    hs }
 ;
 
-Plexer.error_on_unknown_keywords.val := Some user_defined_operator ;
+value operator_parser = parser [
+  [: `((
+       "PREFIXOP"|
+       "INFIXOP0"|
+       "INFIXOP1"|
+       "INFIXOP2"|
+       "INFIXOP3"|
+       "INFIXOP4"|
+       "HASHOP"),op) :] -> op
+| [: `(_,op) when Hashtbl.mem builtin_operators_hs op :] -> op
+]
+;
+
+Plexer.error_on_unknown_keywords.val := Some Mlsyntax.user_defined_operator ;
 
 do {
   let odfa = Plexer.dollar_for_antiquotation.val in
@@ -98,7 +71,6 @@ do {
   Grammar.Unsafe.clear_entry poly_variant;
   Grammar.Unsafe.clear_entry class_type;
   Grammar.Unsafe.clear_entry class_expr;
-  Grammar.Unsafe.clear_entry operator;
   Grammar.Unsafe.clear_entry class_sig_item;
   Grammar.Unsafe.clear_entry class_str_item
 };
@@ -186,54 +158,20 @@ value warning_deprecated_since_6_00 loc =
 
 (* -- begin copy from pa_r to q_MLast -- *)
 
+(*
+value operator = Grammar.Entry.create gram "operator";
+*)
+value operator = Grammar.Entry.of_parser Pcaml.gram "operator"
+  operator_parser
+;
+
+
+
 EXTEND
   GLOBAL: sig_item str_item ctyp patt expr module_type module_expr signature
     structure class_type class_expr class_sig_item class_str_item let_binding
     type_decl constructor_declaration label_declaration match_case ipatt
     with_constr poly_variant operator;
-  operator:
-  [ [ op = PREFIXOP -> op
-    | op = INFIXOP0 -> op
-    | op = INFIXOP1 -> op
-    | op = INFIXOP2 -> op
-    | op = INFIXOP3 -> op
-    | op = INFIXOP4 -> op
-    | op = HASHOP -> op
-    | "^" -> "^"
-    | "~-." -> "~-."
-    | "~-" -> "~-"
-    | "~" -> "~"
-    | "<=" -> "<="
-    | "<>" -> "<>"
-    | "<-" -> "<-"
-    | "<" -> "<"
-    | "==" -> "=="
-    | "=" -> "="
-    | ">=" -> ">="
-    | ">" -> ">"
-    | "||" -> "||"
-    | "|" -> "|"
-    | "->" -> "->"
-    | "-." -> "-."
-    | "-" -> "-"
-    | "!=" -> "!="
-    | "!" -> "!"
-    | "?=" -> "?="
-    | "?!" -> "?!"
-    | "??" -> "??"
-    | "?" -> "?"
-    | "/" -> "/"
-    | "@" -> "@"
-    | "*" -> "*"
-    | "**" -> "**"
-    | "&" -> "&"
-    | "&&" -> "&&"
-    | "#" -> "#"
-    | "%" -> "%"
-    | "+" -> "+"
-    ]
-  ]
-  ;
   functor_parameter:
     [ [ "("; i = V uidopt "uidopt"; ":"; t = module_type; ")" -> Some(i, t)
       | IFDEF OCAML_VERSION < OCAML_4_10_0 THEN ELSE

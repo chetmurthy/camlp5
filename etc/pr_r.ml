@@ -1371,13 +1371,15 @@ EXTEND_PRINTER
           match op with
           [ "!=" | "<" | "<=" | "<>" | "=" | "==" | ">" | ">=" ->
               operator pc next next 0 op x y
+          | op when Mlsyntax.is_infix0_operator op ->
+              operator pc next next 0 op x y
           | _ -> next pc z ] ]
     | "concat"
       [ z ->
           let unfold =
             fun
             [ <:expr< $lid:op$ $x$ $y$ >> ->
-                if List.mem op ["^"; "@"] then Some (x, " " ^ op, y) else None
+                if List.mem op ["^"; "@"] || Mlsyntax.is_infix1_operator op then Some (x, " " ^ op, y) else None
             | _ -> None ]
           in
           right_operator pc 0 unfold next z ]
@@ -1387,7 +1389,7 @@ EXTEND_PRINTER
           let unfold =
             fun
             [ <:expr< $lid:op$ $x$ $y$ >> ->
-                if List.mem op ops then Some (x, " " ^ op, y) else None
+                if List.mem op ops || Mlsyntax.is_infix2_operator op then Some (x, " " ^ op, y) else None
             | _ -> None ]
           in
           left_operator pc 0 unfold next z ]
@@ -1397,7 +1399,7 @@ EXTEND_PRINTER
           let unfold =
             fun
             [ <:expr< $lid:op$ $x$ $y$ >> ->
-                if List.mem op ops then Some (x, " " ^ op, y) else None
+                if List.mem op ops || Mlsyntax.is_infix3_operator op then Some (x, " " ^ op, y) else None
             | _ -> None ]
           in
           left_operator pc 0 unfold next z ]
@@ -1407,7 +1409,7 @@ EXTEND_PRINTER
           let unfold =
             fun
             [ <:expr< $lid:op$ $x$ $y$ >> ->
-                if List.mem op ops then Some (x, " " ^ op, y) else None
+                if List.mem op ops || Mlsyntax.is_infix4_operator op then Some (x, " " ^ op, y) else None
             | _ -> None ]
           in
           right_operator pc 0 unfold next z ]
@@ -1415,7 +1417,10 @@ EXTEND_PRINTER
       [ <:expr< - $x$ >> -> pprintf pc "-%p" (unary curr) x
       | <:expr< -. $x$ >> -> pprintf pc "-.%p" (unary curr) x
       | <:expr< ~- $x$ >> -> pprintf pc "~-%p" (unary curr) x
-      | <:expr< ~-. $x$ >> -> pprintf pc "~-.%p" (unary curr) x ]
+      | <:expr< ~-. $x$ >> -> pprintf pc "~-.%p" (unary curr) x
+      | <:expr< $lid:op$ $x$ >> when Mlsyntax.is_prefix_operator op ->
+            pprintf pc "%s %p" op (unary curr) x
+      ]
     | "apply"
       [ <:expr< assert $e$ >> ->
           pprintf pc "assert@;%p" next e
@@ -1490,6 +1495,8 @@ EXTEND_PRINTER
       | <:expr< $nativeint:s$ >> ->
           if String.length s > 0 && s.[0] = '-' then pprintf pc "(%sn)" s
           else pprintf pc "%sn" s
+      | <:expr:< $lid:s$ >> when Mlsyntax.is_operator s ->
+        pprintf pc "( %s )" s
       | <:expr:< $lid:s$ >> ->
           var_escaped pc (loc, s)
       | <:expr< $uid:s$ >> ->

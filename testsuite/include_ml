@@ -23,7 +23,7 @@ open Testutil ;;
 open Testutil2 ;;
 
 open Plexing ;;
-let l = Plexer.gmake() ;;
+let l = Grammar.glexer Pcaml.gram ;;
 
 let lex_string l s = 
   let strm,_ = l.tok_func (Stream.of_string s) in
