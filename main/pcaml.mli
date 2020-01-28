@@ -64,6 +64,8 @@ value class_sig_item : Grammar.Entry.e MLast.class_sig_item;
 value class_str_item : Grammar.Entry.e MLast.class_str_item;
 value class_expr : Grammar.Entry.e MLast.class_expr;
 value class_type : Grammar.Entry.e MLast.class_type;
+value operator : Grammar.Entry.e string;
+
    (** Some entries of the language, set by [pa_o.cmo] and [pa_r.cmo]. *)
 
 value input_file : ref string;

@@ -69,6 +69,7 @@ let class_sig_item = Grammar.Entry.create gram "class_sig_item";;
 let class_str_item = Grammar.Entry.create gram "class_str_item";;
 let class_type = Grammar.Entry.create gram "class_type";;
 let class_expr = Grammar.Entry.create gram "class_expr";;
+let operator = Grammar.Entry.create gram "operator";;
 
 let parse_interf = ref (Grammar.Entry.parse interf);;
 let parse_implem = ref (Grammar.Entry.parse implem);;

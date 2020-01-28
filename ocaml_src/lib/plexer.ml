@@ -7,7 +7,7 @@
 open Versdep;;
 
 let no_quotations = ref false;;
-let error_on_unknown_keywords = ref false;;
+let error_on_unknown_keywords = ref None;;
 
 let dollar_for_antiquotation = ref true;;
 let specific_space_dot = ref false;;
@@ -33,8 +33,12 @@ let err ctx loc msg =
 let keyword_or_error ctx loc s =
   try "", ctx.find_kwd s with
     Not_found ->
-      if !error_on_unknown_keywords then err ctx loc ("illegal token: " ^ s)
-      else "", s
+      match !error_on_unknown_keywords with
+        None -> "", s
+      | Some f ->
+          match f s with
+            None -> err ctx loc ("illegal token: " ^ s)
+          | Some p -> p
 ;;
 
 let rev_implode l =
@@ -1392,8 +1396,9 @@ let using_token kwd_table (p_con, p_prm) =
         end
   | "TILDEIDENT" | "TILDEIDENTCOLON" | "QUESTIONIDENT" |
     "QUESTIONIDENTCOLON" | "INT" | "INT_l" | "INT_L" | "INT_n" | "FLOAT" |
-    "CHAR" | "STRING" | "QUOTATION" | "GIDENT" | "ANTIQUOT" | "ANTIQUOT_LOC" |
-    "EOI" ->
+    "CHAR" | "STRING" | "QUOTATION" | "GIDENT" | "PREFIXOP" | "INFIXOP0" |
+    "INFIXOP1" | "INFIXOP2" | "INFIXOP3" | "INFIXOP4" | "HASHOP" |
+    "ANTIQUOT" | "ANTIQUOT_LOC" | "EOI" ->
       ()
   | _ ->
       raise
@@ -1498,15 +1503,15 @@ let gmake () =
   let glexr =
     ref
       {Plexing.tok_func =
-        (fun _ -> raise (Match_failure ("plexer.ml", 797, 25)));
+        (fun _ -> raise (Match_failure ("plexer.ml", 809, 25)));
        Plexing.tok_using =
-         (fun _ -> raise (Match_failure ("plexer.ml", 797, 45)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 809, 45)));
        Plexing.tok_removing =
-         (fun _ -> raise (Match_failure ("plexer.ml", 797, 68)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 809, 68)));
        Plexing.tok_match =
-         (fun _ -> raise (Match_failure ("plexer.ml", 798, 18)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 810, 18)));
        Plexing.tok_text =
-         (fun _ -> raise (Match_failure ("plexer.ml", 798, 37)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 810, 37)));
        Plexing.tok_comm = None}
   in
   let glex =

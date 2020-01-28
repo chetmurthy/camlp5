@@ -12,6 +12,23 @@ open Pcaml;;
 Pcaml.syntax_name := "Revised";;
 Pcaml.no_constructors_arity := false;;
 
+let user_defined_operator s =
+  assert (String.length s > 1);
+  let firstc = String.get s 0 in
+  match firstc with
+    '!' | '~' | '?' -> Some ("PREFIXOP", s)
+  | '=' | '<' | '>' | '|' | '&' | '$' -> Some ("INFIXOP0", s)
+  | '@' | '^' -> Some ("INFIXOP1", s)
+  | '+' | '-' -> Some ("INFIXOP2", s)
+  | '*' when String.length s > 2 && '*' = String.get s 1 ->
+      Some ("INFIXOP4", s)
+  | '*' | '/' | '%' -> Some ("INFIXOP3", s)
+  | '#' -> Some ("HASHOP", s)
+  | _ -> None
+;;
+
+Plexer.error_on_unknown_keywords := Some user_defined_operator;;
+
 let odfa = !(Plexer.dollar_for_antiquotation) in
 let odni = !(Plexer.dot_newline_is) in
 Plexer.dollar_for_antiquotation := false;
@@ -43,6 +60,7 @@ Grammar.Unsafe.clear_entry with_constr;
 Grammar.Unsafe.clear_entry poly_variant;
 Grammar.Unsafe.clear_entry class_type;
 Grammar.Unsafe.clear_entry class_expr;
+Grammar.Unsafe.clear_entry operator;
 Grammar.Unsafe.clear_entry class_sig_item;
 Grammar.Unsafe.clear_entry class_str_item;;
 
@@ -158,7 +176,8 @@ Grammar.safe_extend
    and _ = (match_case : 'match_case Grammar.Entry.e)
    and _ = (ipatt : 'ipatt Grammar.Entry.e)
    and _ = (with_constr : 'with_constr Grammar.Entry.e)
-   and _ = (poly_variant : 'poly_variant Grammar.Entry.e) in
+   and _ = (poly_variant : 'poly_variant Grammar.Entry.e)
+   and _ = (operator : 'operator Grammar.Entry.e) in
    let grammar_entry_create s =
      Grammar.create_local_entry (Grammar.of_entry sig_item) s
    in
@@ -261,7 +280,126 @@ Grammar.safe_extend
    and ipatt_tcon_fun_binding : 'ipatt_tcon_fun_binding Grammar.Entry.e =
      grammar_entry_create "ipatt_tcon_fun_binding"
    in
-   [Grammar.extension (functor_parameter : 'functor_parameter Grammar.Entry.e)
+   [Grammar.extension (operator : 'operator Grammar.Entry.e) None
+      [None, None,
+       [Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "+")),
+           (fun _ (loc : Ploc.t) -> ("+" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "%")),
+           (fun _ (loc : Ploc.t) -> ("%" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "#")),
+           (fun _ (loc : Ploc.t) -> ("#" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "&&")),
+           (fun _ (loc : Ploc.t) -> ("&&" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "&")),
+           (fun _ (loc : Ploc.t) -> ("&" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "**")),
+           (fun _ (loc : Ploc.t) -> ("**" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "*")),
+           (fun _ (loc : Ploc.t) -> ("*" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "@")),
+           (fun _ (loc : Ploc.t) -> ("@" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "/")),
+           (fun _ (loc : Ploc.t) -> ("/" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "?")),
+           (fun _ (loc : Ploc.t) -> ("?" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "??")),
+           (fun _ (loc : Ploc.t) -> ("??" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "?!")),
+           (fun _ (loc : Ploc.t) -> ("?!" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "?=")),
+           (fun _ (loc : Ploc.t) -> ("?=" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "!")),
+           (fun _ (loc : Ploc.t) -> ("!" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "!=")),
+           (fun _ (loc : Ploc.t) -> ("!=" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "-")),
+           (fun _ (loc : Ploc.t) -> ("-" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "-.")),
+           (fun _ (loc : Ploc.t) -> ("-." : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "->")),
+           (fun _ (loc : Ploc.t) -> ("->" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "|")),
+           (fun _ (loc : Ploc.t) -> ("|" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "||")),
+           (fun _ (loc : Ploc.t) -> ("||" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", ">")),
+           (fun _ (loc : Ploc.t) -> (">" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", ">=")),
+           (fun _ (loc : Ploc.t) -> (">=" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "=")),
+           (fun _ (loc : Ploc.t) -> ("=" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "==")),
+           (fun _ (loc : Ploc.t) -> ("==" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "<")),
+           (fun _ (loc : Ploc.t) -> ("<" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "<-")),
+           (fun _ (loc : Ploc.t) -> ("<-" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "<>")),
+           (fun _ (loc : Ploc.t) -> ("<>" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "<=")),
+           (fun _ (loc : Ploc.t) -> ("<=" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "~")),
+           (fun _ (loc : Ploc.t) -> ("~" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "~-")),
+           (fun _ (loc : Ploc.t) -> ("~-" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "~-.")),
+           (fun _ (loc : Ploc.t) -> ("~-." : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "^")),
+           (fun _ (loc : Ploc.t) -> ("^" : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("HASHOP", "")),
+           (fun (op : string) (loc : Ploc.t) -> (op : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("INFIXOP4", "")),
+           (fun (op : string) (loc : Ploc.t) -> (op : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("INFIXOP3", "")),
+           (fun (op : string) (loc : Ploc.t) -> (op : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("INFIXOP2", "")),
+           (fun (op : string) (loc : Ploc.t) -> (op : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("INFIXOP1", "")),
+           (fun (op : string) (loc : Ploc.t) -> (op : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("INFIXOP0", "")),
+           (fun (op : string) (loc : Ploc.t) -> (op : 'operator)));
+        Grammar.production
+          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("PREFIXOP", "")),
+           (fun (op : string) (loc : Ploc.t) -> (op : 'operator)))]];
+    Grammar.extension (functor_parameter : 'functor_parameter Grammar.Entry.e)
       None
       [None, None,
        [Grammar.production
@@ -1466,6 +1604,14 @@ Grammar.safe_extend
               (MLast.ExApp (loc, MLast.ExLid (loc, "~-"), e) : 'expr)))];
        Some "simple", None,
        [Grammar.production
+          (Grammar.r_next
+             (Grammar.r_next
+                (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "(")))
+                (Grammar.s_nterm (operator : 'operator Grammar.Entry.e)))
+             (Grammar.s_token ("", ")")),
+           (fun _ (op : 'operator) _ (loc : Ploc.t) ->
+              (MLast.ExLid (loc, op) : 'expr)));
+        Grammar.production
           (Grammar.r_next
              (Grammar.r_next
                 (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "(")))

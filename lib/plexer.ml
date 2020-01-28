@@ -7,7 +7,7 @@
 open Versdep;
 
 value no_quotations = ref False;
-value error_on_unknown_keywords = ref False;
+value error_on_unknown_keywords = ref None;
 
 value dollar_for_antiquotation = ref True;
 value specific_space_dot = ref False;
@@ -33,9 +33,14 @@ value err ctx loc msg =
 value keyword_or_error ctx loc s =
   try ("", ctx.find_kwd s) with
   [ Not_found ->
-      if error_on_unknown_keywords.val then
-        err ctx loc ("illegal token: " ^ s)
-      else ("", s) ]
+      match error_on_unknown_keywords.val with [
+        None -> ("", s)
+      | Some f ->
+        match f s with [
+          None -> err ctx loc ("illegal token: " ^ s)
+        | Some p -> p
+        ]
+      ] ]
 ;
 
 value rev_implode l =
@@ -689,6 +694,13 @@ value using_token kwd_table (p_con, p_prm) =
   | "TILDEIDENT" | "TILDEIDENTCOLON" | "QUESTIONIDENT" |
     "QUESTIONIDENTCOLON" | "INT" | "INT_l" | "INT_L" | "INT_n" | "FLOAT" |
     "CHAR" | "STRING" | "QUOTATION" | "GIDENT" |
+  "PREFIXOP"
+        |"INFIXOP0"
+        |"INFIXOP1"
+        |"INFIXOP2"
+        |"INFIXOP3"
+        |"INFIXOP4"
+        |"HASHOP" |
     "ANTIQUOT" | "ANTIQUOT_LOC" | "EOI" ->
       ()
   | _ ->

@@ -1,5 +1,8 @@
 #use "topfind";;
 #directory "../local-install/lib/ocaml/camlp5";;
+#directory "../etc";;
+#directory "../lib";;
+#directory "../meta";;
 #load "odyl.cma";;
 #load "camlp5.cma";;
 #require "ounit2";;
@@ -19,6 +22,19 @@ open Sch2r_test ;;
 open Testutil ;;
 open Testutil2 ;;
 
+open Plexing ;;
+let l = Plexer.gmake() ;;
+
+let lex_string l s = 
+  let strm,_ = l.tok_func (Stream.of_string s) in
+  strm ;;
+
+let list_of_stream strm =
+let rec aux acc = 
+let (ty, _ as p) = Stream.next strm in
+if ty = "EOI" then List.rev acc
+else aux (p::acc)
+ in aux [] ;;
 
 (*
 ;;; Local Variables: ***

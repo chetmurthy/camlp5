@@ -67,6 +67,7 @@ value class_sig_item = Grammar.Entry.create gram "class_sig_item";
 value class_str_item = Grammar.Entry.create gram "class_str_item";
 value class_type = Grammar.Entry.create gram "class_type";
 value class_expr = Grammar.Entry.create gram "class_expr";
+value operator = Grammar.Entry.create gram "operator";
 
 value parse_interf = ref (Grammar.Entry.parse interf);
 value parse_implem = ref (Grammar.Entry.parse implem);

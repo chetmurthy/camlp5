@@ -5,6 +5,9 @@
 (** This module contains the lexer used for ocaml syntax (revised and
     normal). *)
 
+val error_on_unknown_keywords :
+  (string -> (string * string) option) option ref;;
+
 val gmake : unit -> (string * string) Plexing.lexer;;
    (** [gmake ()] returns a lexer compatible with the extensible
     grammars. The returned tokens follow the normal syntax and the
