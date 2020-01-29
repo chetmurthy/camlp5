@@ -30,6 +30,11 @@ value err ctx loc msg =
   Ploc.raise (ctx.make_lined_loc loc "") (Plexing.Error msg)
 ;
 
+value keyword_or_undeclared_operator ctx loc optype s =
+  try ("", ctx.find_kwd s) with
+  [ Not_found -> (optype, s) ]
+;
+
 value keyword_or_error ctx loc s =
   try ("", ctx.find_kwd s) with
   [ Not_found ->
@@ -113,12 +118,19 @@ value rec ident =
   [ [ 'A'-'Z' | 'a'-'z' | '0'-'9' | '_' | ''' | misc_letter ] ident! | ]
 ;
 
+(* ident2 is the same as the ocaml (v4.10.0) lexer regexp symbolchar *)
 value rec ident2 =
   lexer
   [ [ '!' | '?' | '~' | '=' | '@' | '^' | '&' | '+' | '-' | '*' | '/' |
       '%' | '.' | ':' | '<' | '>' | '|' | '$' | misc_punct ]
       ident2!
   | ]
+;
+value rec symbolchar_minus_star =
+  lexer
+  [ [ '!' | '?' | '~' | '=' | '@' | '^' | '&' | '+' | '-' | '/' |
+      '%' | '.' | ':' | '<' | '>' | '|' | '$' | misc_punct ]
+  ]
 ;
 
 value rec ident3 =
@@ -234,7 +246,7 @@ value less_expected = "character '<' expected";
 value less ctx bp buf strm =
   if no_quotations.val then
     match strm with lexer
-    [ [ -> $add "<" ] ident2! -> keyword_or_error ctx (bp, $pos) $buf ]
+    [ [ -> $add "<" ] ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP0" $buf ]
   else
     match strm with lexer
     [ "<"/ (quotation ctx bp) -> ("QUOTATION", ":" ^ $buf)
@@ -242,7 +254,7 @@ value less ctx bp buf strm =
         ("QUOTATION", $buf)
     | ":"/ ident! ":<"/ ? less_expected [ -> $add "@" ]! (quotation ctx bp) ->
         ("QUOTATION", $buf)
-    | [ -> $add "<" ] ident2! -> keyword_or_error ctx (bp, $pos) $buf ]
+    | [ -> $add "<" ] ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP0" $buf ]
 ;
 
 value rec antiquot_rest ctx bp =
@@ -312,7 +324,7 @@ value question ctx bp buf strm =
         ("ANTIQUOT", "?" ^ s)
     | [: :] ->
         match strm with lexer
-        [ ident2! -> keyword_or_error ctx (bp, $pos) $buf ] ]
+        [ ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "PREFIXOP" $buf ] ]
   else if force_antiquot_loc.val then
     match strm with parser
     [ [: `'$'; s = antiquot_loc ctx bp $empty; `':' :] ->
@@ -321,10 +333,10 @@ value question ctx bp buf strm =
         ("ANTIQUOT_LOC", "?" ^ s)
     | [: :] ->
         match strm with lexer
-        [ ident2! -> keyword_or_error ctx (bp, $pos) $buf ] ]
+        [ ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "PREFIXOP" $buf ] ]
   else
     match strm with lexer
-    [ ident2! -> keyword_or_error ctx (bp, $pos) $buf ]
+    [ ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "PREFIXOP" $buf ]
 ;
 
 value tilde ctx bp buf strm =
@@ -336,7 +348,7 @@ value tilde ctx bp buf strm =
         ("ANTIQUOT", "~" ^ s)
     | [: :] ->
         match strm with lexer
-        [ ident2! -> keyword_or_error ctx (bp, $pos) $buf ] ]
+        [ ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "PREFIXOP" $buf ] ]
   else if force_antiquot_loc.val then
     match strm with parser
     [ [: `'$'; s = antiquot_loc ctx bp $empty; `':' :] ->
@@ -345,10 +357,10 @@ value tilde ctx bp buf strm =
         ("ANTIQUOT_LOC", "~" ^ s)
     | [: :] ->
         match strm with lexer
-        [ ident2! -> keyword_or_error ctx (bp, $pos) $buf ] ]
+        [ ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "PREFIXOP" $buf ] ]
   else
     match strm with lexer
-    [ ident2! -> keyword_or_error ctx (bp, $pos) $buf ]
+    [ ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "PREFIXOP" $buf ]
 ;
 
 value tildeident =
@@ -459,8 +471,22 @@ value next_token_after_spaces ctx bp =
   | "'" -> keyword_or_error ctx (bp, $pos) "'"
   | "\""/ (string ctx bp)! -> ("STRING", $buf)
   | "$"/ (dollar ctx bp)!
-  | [ '!' | '=' | '@' | '^' | '&' | '+' | '-' | '*' | '/' | '%' ] ident2! ->
-      keyword_or_error ctx (bp, $pos) $buf
+  | '!' ident2! ->
+      keyword_or_undeclared_operator ctx (bp, $pos) "PREFIXOP" $buf
+  | [ '=' | '&' ] ident2! ->
+      keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP0" $buf
+  | [ '@' | '^' ] ident2! ->
+      keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP1" $buf
+  | [ '+' | '-' ] ident2! ->
+      keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP2" $buf
+  | "**" ident2! ->
+      keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP4" $buf
+  | "*" symbolchar_minus_star ident2! ->
+      keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP3" $buf
+  | "*" -> 
+      keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP3" $buf
+  | [ '/' | '%' ] ident2! ->
+      keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP3" $buf
   | "~"/ 'a'-'z' ident! tildeident!
   | "~"/ '_' ident! tildeident!
   | "~" (tilde ctx bp)
@@ -474,10 +500,11 @@ value next_token_after_spaces ctx bp =
   | ":" -> keyword_or_error ctx (bp, $pos) $buf
   | ">]" -> keyword_or_error ctx (bp, $pos) $buf
   | ">}" -> keyword_or_error ctx (bp, $pos) $buf
-  | ">" ident2! -> keyword_or_error ctx (bp, $pos) $buf
+  | ">" ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP0" $buf
   | "|]" -> keyword_or_error ctx (bp, $pos) $buf
   | "|}" -> keyword_or_error ctx (bp, $pos) $buf
-  | "|" ident2! -> keyword_or_error ctx (bp, $pos) $buf
+  | "|" ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "INFIXOP0" $buf
+  | "#" ident2! -> keyword_or_undeclared_operator ctx (bp, $pos) "HASHOP" $buf
   | "[" ?= [ "<<" | "<:" ] -> keyword_or_error ctx (bp, $pos) $buf
   | "[|" -> keyword_or_error ctx (bp, $pos) $buf
   | "[<" -> keyword_or_error ctx (bp, $pos) $buf

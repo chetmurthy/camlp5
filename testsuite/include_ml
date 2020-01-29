@@ -1,5 +1,5 @@
 #use "topfind";;
-#directory "../local-install/lib/ocaml/camlp5";;
+#directory "../local-install/lib/camlp5";;
 #directory "+compiler-libs" ;;
 #load "ocamlcommon.cma" ;;
 #load "odyl.cma";;
@@ -20,7 +20,6 @@ open OUnit2 ;;
 open Sch2r_test ;;
 open Testutil ;;
 open Testutil2 ;;
-
 
 (*
 ;;; Local Variables: ***

@@ -30,6 +30,10 @@ let err ctx loc msg =
   Ploc.raise (ctx.make_lined_loc loc "") (Plexing.Error msg)
 ;;
 
+let keyword_or_undeclared_operator ctx loc optype s =
+  try "", ctx.find_kwd s with Not_found -> optype, s
+;;
+
 let keyword_or_error ctx loc s =
   try "", ctx.find_kwd s with
     Not_found ->
@@ -172,6 +176,7 @@ let rec ident buf (strm__ : _ Stream.t) =
   | _ -> buf
 ;;
 
+(* ident2 is the same as the ocaml (v4.10.0) lexer regexp symbolchar *)
 let rec ident2 buf (strm__ : _ Stream.t) =
   match
     try
@@ -186,6 +191,14 @@ let rec ident2 buf (strm__ : _ Stream.t) =
   with
     Some buf -> ident2 buf strm__
   | _ -> buf
+;;
+let rec symbolchar_minus_star buf (strm__ : _ Stream.t) =
+  match Stream.peek strm__ with
+    Some
+      ('!' | '?' | '~' | '=' | '@' | '^' | '&' | '+' | '-' | '/' | '%' | '.' |
+       ':' | '<' | '>' | '|' | '$' as c) ->
+      Stream.junk strm__; Plexing.Lexbuf.add c buf
+  | _ -> misc_punct buf strm__
 ;;
 
 let rec ident3 buf (strm__ : _ Stream.t) =
@@ -479,7 +492,8 @@ let less ctx bp buf strm =
     let (strm__ : _ Stream.t) = strm in
     let buf = Plexing.Lexbuf.add '<' buf in
     let buf = ident2 buf strm__ in
-    keyword_or_error ctx (bp, Stream.count strm__) (Plexing.Lexbuf.get buf)
+    keyword_or_undeclared_operator ctx (bp, Stream.count strm__) "INFIXOP0"
+      (Plexing.Lexbuf.get buf)
   else
     let (strm__ : _ Stream.t) = strm in
     match Stream.peek strm__ with
@@ -524,8 +538,8 @@ let less ctx bp buf strm =
     | _ ->
         let buf = Plexing.Lexbuf.add '<' buf in
         let buf = ident2 buf strm__ in
-        keyword_or_error ctx (bp, Stream.count strm__)
-          (Plexing.Lexbuf.get buf)
+        keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+          "INFIXOP0" (Plexing.Lexbuf.get buf)
 ;;
 
 let rec antiquot_rest ctx bp buf (strm__ : _ Stream.t) =
@@ -642,8 +656,8 @@ let question ctx bp buf strm =
     | _ ->
         let (strm__ : _ Stream.t) = strm in
         let buf = ident2 buf strm__ in
-        keyword_or_error ctx (bp, Stream.count strm__)
-          (Plexing.Lexbuf.get buf)
+        keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+          "PREFIXOP" (Plexing.Lexbuf.get buf)
   else if !force_antiquot_loc then
     let (strm__ : _ Stream.t) = strm in
     match Stream.peek strm__ with
@@ -660,12 +674,13 @@ let question ctx bp buf strm =
     | _ ->
         let (strm__ : _ Stream.t) = strm in
         let buf = ident2 buf strm__ in
-        keyword_or_error ctx (bp, Stream.count strm__)
-          (Plexing.Lexbuf.get buf)
+        keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+          "PREFIXOP" (Plexing.Lexbuf.get buf)
   else
     let (strm__ : _ Stream.t) = strm in
     let buf = ident2 buf strm__ in
-    keyword_or_error ctx (bp, Stream.count strm__) (Plexing.Lexbuf.get buf)
+    keyword_or_undeclared_operator ctx (bp, Stream.count strm__) "PREFIXOP"
+      (Plexing.Lexbuf.get buf)
 ;;
 
 let tilde ctx bp buf strm =
@@ -685,8 +700,8 @@ let tilde ctx bp buf strm =
     | _ ->
         let (strm__ : _ Stream.t) = strm in
         let buf = ident2 buf strm__ in
-        keyword_or_error ctx (bp, Stream.count strm__)
-          (Plexing.Lexbuf.get buf)
+        keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+          "PREFIXOP" (Plexing.Lexbuf.get buf)
   else if !force_antiquot_loc then
     let (strm__ : _ Stream.t) = strm in
     match Stream.peek strm__ with
@@ -703,12 +718,13 @@ let tilde ctx bp buf strm =
     | _ ->
         let (strm__ : _ Stream.t) = strm in
         let buf = ident2 buf strm__ in
-        keyword_or_error ctx (bp, Stream.count strm__)
-          (Plexing.Lexbuf.get buf)
+        keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+          "PREFIXOP" (Plexing.Lexbuf.get buf)
   else
     let (strm__ : _ Stream.t) = strm in
     let buf = ident2 buf strm__ in
-    keyword_or_error ctx (bp, Stream.count strm__) (Plexing.Lexbuf.get buf)
+    keyword_or_undeclared_operator ctx (bp, Stream.count strm__) "PREFIXOP"
+      (Plexing.Lexbuf.get buf)
 ;;
 
 let tildeident buf (strm__ : _ Stream.t) =
@@ -873,13 +889,63 @@ let next_token_after_spaces ctx bp buf (strm__ : _ Stream.t) =
                   let buf = string ctx bp buf strm__ in
                   "STRING", Plexing.Lexbuf.get buf
               | Some '$' -> Stream.junk strm__; dollar ctx bp buf strm__
-              | Some
-                  ('!' | '=' | '@' | '^' | '&' | '+' | '-' | '*' | '/' |
-                   '%' as c) ->
+              | Some '!' ->
+                  Stream.junk strm__;
+                  let buf = ident2 (Plexing.Lexbuf.add '!' buf) strm__ in
+                  keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+                    "PREFIXOP" (Plexing.Lexbuf.get buf)
+              | Some ('=' | '&' as c) ->
                   Stream.junk strm__;
                   let buf = ident2 (Plexing.Lexbuf.add c buf) strm__ in
-                  keyword_or_error ctx (bp, Stream.count strm__)
-                    (Plexing.Lexbuf.get buf)
+                  keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+                    "INFIXOP0" (Plexing.Lexbuf.get buf)
+              | Some ('@' | '^' as c) ->
+                  Stream.junk strm__;
+                  let buf = ident2 (Plexing.Lexbuf.add c buf) strm__ in
+                  keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+                    "INFIXOP1" (Plexing.Lexbuf.get buf)
+              | Some ('+' | '-' as c) ->
+                  Stream.junk strm__;
+                  let buf = ident2 (Plexing.Lexbuf.add c buf) strm__ in
+                  keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+                    "INFIXOP2" (Plexing.Lexbuf.get buf)
+              | Some '*' ->
+                  Stream.junk strm__;
+                  begin match Stream.peek strm__ with
+                    Some '*' ->
+                      Stream.junk strm__;
+                      let buf =
+                        ident2
+                          (Plexing.Lexbuf.add '*'
+                             (Plexing.Lexbuf.add '*' buf))
+                          strm__
+                      in
+                      keyword_or_undeclared_operator ctx
+                        (bp, Stream.count strm__) "INFIXOP4"
+                        (Plexing.Lexbuf.get buf)
+                  | _ ->
+                      match
+                        try
+                          Some
+                            (symbolchar_minus_star
+                               (Plexing.Lexbuf.add '*' buf) strm__)
+                        with Stream.Failure -> None
+                      with
+                        Some buf ->
+                          let buf = ident2 buf strm__ in
+                          keyword_or_undeclared_operator ctx
+                            (bp, Stream.count strm__) "INFIXOP3"
+                            (Plexing.Lexbuf.get buf)
+                      | _ ->
+                          keyword_or_undeclared_operator ctx
+                            (bp, Stream.count strm__) "INFIXOP3"
+                            (Plexing.Lexbuf.get (Plexing.Lexbuf.add '*' buf))
+                  end
+              | Some ('/' | '%' as c) ->
+                  Stream.junk strm__;
+                  let buf = ident2 (Plexing.Lexbuf.add c buf) strm__ in
+                  keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+                    "INFIXOP3" (Plexing.Lexbuf.get buf)
               | Some '~' ->
                   Stream.junk strm__;
                   begin try
@@ -953,7 +1019,8 @@ let next_token_after_spaces ctx bp buf (strm__ : _ Stream.t) =
                               (Plexing.Lexbuf.add '>' buf)))
                   | _ ->
                       let buf = ident2 (Plexing.Lexbuf.add '>' buf) strm__ in
-                      keyword_or_error ctx (bp, Stream.count strm__)
+                      keyword_or_undeclared_operator ctx
+                        (bp, Stream.count strm__) "INFIXOP0"
                         (Plexing.Lexbuf.get buf)
                   end
               | Some '|' ->
@@ -973,9 +1040,15 @@ let next_token_after_spaces ctx bp buf (strm__ : _ Stream.t) =
                               (Plexing.Lexbuf.add '|' buf)))
                   | _ ->
                       let buf = ident2 (Plexing.Lexbuf.add '|' buf) strm__ in
-                      keyword_or_error ctx (bp, Stream.count strm__)
+                      keyword_or_undeclared_operator ctx
+                        (bp, Stream.count strm__) "INFIXOP0"
                         (Plexing.Lexbuf.get buf)
                   end
+              | Some '#' ->
+                  Stream.junk strm__;
+                  let buf = ident2 (Plexing.Lexbuf.add '#' buf) strm__ in
+                  keyword_or_undeclared_operator ctx (bp, Stream.count strm__)
+                    "HASHOP" (Plexing.Lexbuf.get buf)
               | Some '[' ->
                   Stream.junk strm__;
                   begin match Stream.npeek 2 strm__ with
@@ -1498,15 +1571,15 @@ let gmake () =
   let glexr =
     ref
       {Plexing.tok_func =
-        (fun _ -> raise (Match_failure ("plexer.ml", 797, 25)));
+        (fun _ -> raise (Match_failure ("plexer.ml", 824, 25)));
        Plexing.tok_using =
-         (fun _ -> raise (Match_failure ("plexer.ml", 797, 45)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 824, 45)));
        Plexing.tok_removing =
-         (fun _ -> raise (Match_failure ("plexer.ml", 797, 68)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 824, 68)));
        Plexing.tok_match =
-         (fun _ -> raise (Match_failure ("plexer.ml", 798, 18)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 825, 18)));
        Plexing.tok_text =
-         (fun _ -> raise (Match_failure ("plexer.ml", 798, 37)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 825, 37)));
        Plexing.tok_comm = None}
   in
   let glex =
