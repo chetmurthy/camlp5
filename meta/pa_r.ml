@@ -140,18 +140,27 @@ value builtin_operators_hs =
     hs }
 ;
 
-value operator_parser = parser [
-  [: `((
-       "PREFIXOP"|
+value operator_parser strm =
+  match Stream.npeek 2 strm with [
+    [] -> raise Stream.Failure
+  | [_] -> raise Stream.Failure
+  | [(optype, op); ("", ")")] ->
+    match (optype, op) with [
+      ((
        "INFIXOP0"|
        "INFIXOP1"|
        "INFIXOP2"|
        "INFIXOP3"|
        "INFIXOP4"|
-       "HASHOP"),op) :] -> op
-| [: `(_,op) when Hashtbl.mem builtin_operators_hs op :] -> op
-]
+       "HASHOP"),_) -> do { Stream.junk strm ; op }
+     | ("",op) when Hashtbl.mem builtin_operators_hs op -> 
+       do { Stream.junk strm ; op }
+     | _ -> raise Stream.Failure
+    ]
+  | _ -> raise Stream.Failure
+  ]
 ;
+
 value operator = Grammar.Entry.of_parser Pcaml.gram "operator"
   operator_parser
 ;
@@ -425,6 +434,9 @@ EXTEND
           <:expr< (module $me$ : $mt$) >>
       | "("; "module"; me = module_expr; ")" →
           <:expr< (module $me$) >>
+
+      | "(" ; op = operator ; ")" -> <:expr< $lid:op$ >>
+
       | "("; e = SELF; ":"; t = ctyp; ")" → <:expr< ($e$ : $t$) >>
       | "("; e = SELF; ","; el = LIST1 expr SEP ","; ")" → mktupexp loc e el
       | "("; e = SELF; ")" → <:expr< $e$ >>
