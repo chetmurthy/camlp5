@@ -134,6 +134,29 @@ let warning_deprecated_since_6_00 loc =
     end
 ;;
 
+let builtin_operators_list =
+  ["^"; "~-."; "~-"; "~"; "<="; "<>"; "<-"; "<"; "=="; "="; ">="; ">"; "||";
+   "|"; "->"; "-."; "-"; "!="; "!"; "?="; "?!"; "??"; "?"; "/"; "@"; "*";
+   "**"; "&"; "&&"; "#"; "%"; "+"]
+;;
+let builtin_operators_hs =
+  let hs = Hashtbl.create 23 in
+  List.iter (fun op -> Hashtbl.add hs op ()) builtin_operators_list; hs
+;;
+
+let operator_parser (strm__ : _ Stream.t) =
+  match Stream.peek strm__ with
+    Some
+      (("PREFIXOP" | "INFIXOP0" | "INFIXOP1" | "INFIXOP2" | "INFIXOP3" |
+        "INFIXOP4" | "HASHOP"),
+       op) ->
+      Stream.junk strm__; op
+  | Some (_, op) when Hashtbl.mem builtin_operators_hs op ->
+      Stream.junk strm__; op
+  | _ -> raise Stream.Failure
+;;
+let operator = Grammar.Entry.of_parser Pcaml.gram "operator" operator_parser;;
+
 (* -- begin copy from pa_r to q_MLast -- *)
 
 Grammar.safe_extend
@@ -265,11 +288,6 @@ Grammar.safe_extend
       None
       [None, None,
        [Grammar.production
-          (Grammar.r_next
-             (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "(")))
-             (Grammar.s_token ("", ")")),
-           (fun _ _ (loc : Ploc.t) -> (None : 'functor_parameter)));
-        Grammar.production
           (Grammar.r_next
              (Grammar.r_next
                 (Grammar.r_next
@@ -590,14 +608,6 @@ Grammar.safe_extend
            (fun (mt : 'module_type) _ (arg : 'functor_parameter) _
                 (loc : Ploc.t) ->
               (MLast.MtFun (loc, arg, mt) : 'module_type)))];
-       Some "->", Some Gramext.RightA,
-       [Grammar.production
-          (Grammar.r_next
-             (Grammar.r_next (Grammar.r_next Grammar.r_stop Grammar.s_self)
-                (Grammar.s_token ("", "->")))
-             Grammar.s_self,
-           (fun (mt2 : 'module_type) _ (mt1 : 'module_type) (loc : Ploc.t) ->
-              (MLast.MtFun (loc, Some (None, mt1), mt2) : 'module_type)))];
        None, None,
        [Grammar.production
           (Grammar.r_next
@@ -907,9 +917,6 @@ Grammar.safe_extend
     Grammar.extension (uidopt : 'uidopt Grammar.Entry.e) None
       [None, None,
        [Grammar.production
-          (Grammar.r_next Grammar.r_stop (Grammar.s_token ("", "_")),
-           (fun _ (loc : Ploc.t) -> (None : 'uidopt)));
-        Grammar.production
           (Grammar.r_next Grammar.r_stop (Grammar.s_token ("UIDENT", "")),
            (fun (m : string) (loc : Ploc.t) -> (Some m : 'uidopt)))]];
     Grammar.extension (expr : 'expr Grammar.Entry.e) None

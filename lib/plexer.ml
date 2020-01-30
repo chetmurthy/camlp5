@@ -716,7 +716,15 @@ value using_token kwd_table (p_con, p_prm) =
   | "TILDEIDENT" | "TILDEIDENTCOLON" | "QUESTIONIDENT" |
     "QUESTIONIDENTCOLON" | "INT" | "INT_l" | "INT_L" | "INT_n" | "FLOAT" |
     "CHAR" | "STRING" | "QUOTATION" | "GIDENT" |
-    "ANTIQUOT" | "ANTIQUOT_LOC" | "EOI" ->
+    "ANTIQUOT" | "ANTIQUOT_LOC" |
+       "PREFIXOP"|
+       "INFIXOP0"|
+       "INFIXOP1"|
+       "INFIXOP2"|
+       "INFIXOP3"|
+       "INFIXOP4"|
+       "HASHOP" |
+     "EOI" ->
       ()
   | _ ->
       raise

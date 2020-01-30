@@ -1466,7 +1466,8 @@ let using_token kwd_table (p_con, p_prm) =
   | "TILDEIDENT" | "TILDEIDENTCOLON" | "QUESTIONIDENT" |
     "QUESTIONIDENTCOLON" | "INT" | "INT_l" | "INT_L" | "INT_n" | "FLOAT" |
     "CHAR" | "STRING" | "QUOTATION" | "GIDENT" | "ANTIQUOT" | "ANTIQUOT_LOC" |
-    "EOI" ->
+    "PREFIXOP" | "INFIXOP0" | "INFIXOP1" | "INFIXOP2" | "INFIXOP3" |
+    "INFIXOP4" | "HASHOP" | "EOI" ->
       ()
   | _ ->
       raise
@@ -1571,15 +1572,15 @@ let gmake () =
   let glexr =
     ref
       {Plexing.tok_func =
-        (fun _ -> raise (Match_failure ("plexer.ml", 824, 25)));
+        (fun _ -> raise (Match_failure ("plexer.ml", 832, 25)));
        Plexing.tok_using =
-         (fun _ -> raise (Match_failure ("plexer.ml", 824, 45)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 832, 45)));
        Plexing.tok_removing =
-         (fun _ -> raise (Match_failure ("plexer.ml", 824, 68)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 832, 68)));
        Plexing.tok_match =
-         (fun _ -> raise (Match_failure ("plexer.ml", 825, 18)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 833, 18)));
        Plexing.tok_text =
-         (fun _ -> raise (Match_failure ("plexer.ml", 825, 37)));
+         (fun _ -> raise (Match_failure ("plexer.ml", 833, 37)));
        Plexing.tok_comm = None}
   in
   let glex =

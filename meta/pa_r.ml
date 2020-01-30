@@ -129,6 +129,33 @@ value warning_deprecated_since_6_00 loc =
   else ()
 ;
 
+value builtin_operators_list =
+  ["^"; "~-."; "~-"; "~"; "<="; "<>"; "<-"; "<"; "=="; "=";
+   ">="; ">"; "||"; "|"; "->"; "-."; "-"; "!="; "!"; "?="; "?!";
+   "??"; "?"; "/"; "@"; "*"; "**"; "&"; "&&"; "#"; "%"; "+"]
+;
+value builtin_operators_hs =
+  let hs = Hashtbl.create 23 in do {
+    List.iter (fun op -> Hashtbl.add hs op ()) builtin_operators_list ;
+    hs }
+;
+
+value operator_parser = parser [
+  [: `((
+       "PREFIXOP"|
+       "INFIXOP0"|
+       "INFIXOP1"|
+       "INFIXOP2"|
+       "INFIXOP3"|
+       "INFIXOP4"|
+       "HASHOP"),op) :] -> op
+| [: `(_,op) when Hashtbl.mem builtin_operators_hs op :] -> op
+]
+;
+value operator = Grammar.Entry.of_parser Pcaml.gram "operator"
+  operator_parser
+;
+
 (* -- begin copy from pa_r to q_MLast -- *)
 
 EXTEND
