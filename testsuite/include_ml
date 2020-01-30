@@ -8,9 +8,11 @@
 #require "fmt";;
 #require "rresult";;
 #require "pcre";;
+#require "bos";;
 
 (* #load "pa_schemer.cmo";; *)
 #load "pa_r.cmo";;
+#load "q_MLast.cmo";;
 #load "pr_r.cmo";;
 #load "testutil.cmo";;
 #load "testutil2.cmo";;
