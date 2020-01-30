@@ -125,71 +125,83 @@ value symbolchar =
     else False
 ;
 
-value prefixop =
+value is_prefixop =
   let list = ['!'; '?'; '~'] in
   let excl = ["!="; "??"; "?!"] in
+  fun x ->
+    not (List.mem x excl) && String.length x >= 2 &&
+    List.mem x.[0] list && symbolchar x 1
+;
+
+value prefixop =
   Grammar.Entry.of_parser gram "prefixop"
     (parser
-       [: `("", x)
-           when
-             not (List.mem x excl) && String.length x >= 2 &&
-             List.mem x.[0] list && symbolchar x 1 :] ->
-         x)
+       [: `(_, x) when is_prefixop x :] -> x)
+;
+
+value is_infixop0 =
+  let list = ['='; '<'; '>'; '|'; '&'; '$'] in
+  let excl = ["<-"; "||"; "&&"] in
+  fun x ->
+    not (List.mem x excl) && (x = "$" || String.length x >= 2) &&
+    List.mem x.[0] list && symbolchar x 1
 ;
 
 value infixop0 =
-  let list = ['='; '<'; '>'; '|'; '&'; '$'] in
-  let excl = ["<-"; "||"; "&&"] in
   Grammar.Entry.of_parser gram "infixop0"
     (parser
-       [: `("", x)
-           when
-             not (List.mem x excl) && (x = "$" || String.length x >= 2) &&
-             List.mem x.[0] list && symbolchar x 1 :] ->
-         x)
+       [: `(_, x) when is_infixop0 x :] -> x)
+;
+
+
+value is_infixop1 =
+  let list = ['@'; '^'] in
+  fun x ->
+    String.length x >= 2 && List.mem x.[0] list &&
+    symbolchar x 1
 ;
 
 value infixop1 =
-  let list = ['@'; '^'] in
   Grammar.Entry.of_parser gram "infixop1"
     (parser
-       [: `("", x)
-           when
-             String.length x >= 2 && List.mem x.[0] list &&
-             symbolchar x 1 :] ->
-         x)
+       [: `(_, x) when is_infixop1 x :] -> x)
+;
+
+value is_infixop2 =
+  let list = ['+'; '-'] in
+  fun x ->
+    x <> "->" && String.length x >= 2 && List.mem x.[0] list &&
+    symbolchar x 1
 ;
 
 value infixop2 =
-  let list = ['+'; '-'] in
   Grammar.Entry.of_parser gram "infixop2"
     (parser
-       [: `("", x)
-           when
-             x <> "->" && String.length x >= 2 && List.mem x.[0] list &&
-             symbolchar x 1 :] ->
-         x)
+       [: `(_, x) when is_infixop2 x :] -> x)
+;
+
+value is_infixop3 =
+  let list = ['*'; '/'; '%'] in
+  fun x ->
+    String.length x >= 2 && List.mem x.[0] list &&
+    symbolchar x 1
 ;
 
 value infixop3 =
-  let list = ['*'; '/'; '%'] in
   Grammar.Entry.of_parser gram "infixop3"
     (parser
-       [: `("", x)
-           when
-             String.length x >= 2 && List.mem x.[0] list &&
-             symbolchar x 1 :] ->
-         x)
+       [: `(_, x) when is_infixop3 x :] -> x)
+;
+
+value is_infixop4 x =
+  String.length x >= 3 && x.[0] == '*' && x.[1] == '*' &&
+  symbolchar x 2
 ;
 
 value infixop4 =
   Grammar.Entry.of_parser gram "infixop4"
     (parser
-       [: `("", x)
-           when
-             String.length x >= 3 && x.[0] == '*' && x.[1] == '*' &&
-             symbolchar x 2 :] ->
-         x)
+       [: `(_, x) when is_infixop4 x :] -> x)
 ;
 
 value test_constr_decl =
