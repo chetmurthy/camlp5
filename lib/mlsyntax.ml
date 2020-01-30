@@ -51,7 +51,9 @@ value is_INFIXOP2_start s = match String.get s 0 with [
 ;
 value is_INFIXOP2 s = is_operator_gen is_INFIXOP2_start 1 s ;
 
-value is_INFIXOP3_start s = match (String.get s 0,String.get s 1) with [
+value is_INFIXOP3_start s =
+String.length s >= 2 &&
+match (String.get s 0,String.get s 1) with [
   ('*', c) when c <> '*'  -> True
 | (('/' | '%'),_)   -> True
 | _ -> False

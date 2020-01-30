@@ -370,15 +370,21 @@ EXTEND
       | e1 = SELF; "="; e2 = SELF → <:expr< $e1$ = $e2$ >>
       | e1 = SELF; "<>"; e2 = SELF → <:expr< $e1$ <> $e2$ >>
       | e1 = SELF; "=="; e2 = SELF → <:expr< $e1$ == $e2$ >>
-      | e1 = SELF; "!="; e2 = SELF → <:expr< $e1$ != $e2$ >> ]
+      | e1 = SELF; "!="; e2 = SELF → <:expr< $e1$ != $e2$ >>
+      | e1 = SELF; op = INFIXOP0 ; e2 = SELF → <:expr< $lid:op$ $e1$ $e2$ >>
+      ]
     | "^" RIGHTA
       [ e1 = SELF; "^"; e2 = SELF → <:expr< $e1$ ^ $e2$ >>
-      | e1 = SELF; "@"; e2 = SELF → <:expr< $e1$ @ $e2$ >> ]
+      | e1 = SELF; "@"; e2 = SELF → <:expr< $e1$ @ $e2$ >>
+      | e1 = SELF; op = INFIXOP1 ; e2 = SELF → <:expr< $lid:op$ $e1$ $e2$ >>
+      ]
     | "+" LEFTA
       [ e1 = SELF; "+"; e2 = SELF → <:expr< $e1$ + $e2$ >>
       | e1 = SELF; "-"; e2 = SELF → <:expr< $e1$ - $e2$ >>
       | e1 = SELF; "+."; e2 = SELF → <:expr< $e1$ +. $e2$ >>
-      | e1 = SELF; "-."; e2 = SELF → <:expr< $e1$ -. $e2$ >> ]
+      | e1 = SELF; "-."; e2 = SELF → <:expr< $e1$ -. $e2$ >>
+      | e1 = SELF; op = INFIXOP2 ; e2 = SELF → <:expr< $lid:op$ $e1$ $e2$ >>
+      ]
     | "*" LEFTA
       [ e1 = SELF; "*"; e2 = SELF → <:expr< $e1$ * $e2$ >>
       | e1 = SELF; "/"; e2 = SELF → <:expr< $e1$ / $e2$ >>
@@ -387,15 +393,21 @@ EXTEND
       | e1 = SELF; "land"; e2 = SELF → <:expr< $e1$ land $e2$ >>
       | e1 = SELF; "lor"; e2 = SELF → <:expr< $e1$ lor $e2$ >>
       | e1 = SELF; "lxor"; e2 = SELF → <:expr< $e1$ lxor $e2$ >>
-      | e1 = SELF; "mod"; e2 = SELF → <:expr< $e1$ mod $e2$ >> ]
+      | e1 = SELF; "mod"; e2 = SELF → <:expr< $e1$ mod $e2$ >>
+      | e1 = SELF; op = INFIXOP3 ; e2 = SELF → <:expr< $lid:op$ $e1$ $e2$ >>
+      ]
     | "**" RIGHTA
       [ e1 = SELF; "**"; e2 = SELF → <:expr< $e1$ ** $e2$ >>
       | e1 = SELF; "asr"; e2 = SELF → <:expr< $e1$ asr $e2$ >>
       | e1 = SELF; "lsl"; e2 = SELF → <:expr< $e1$ lsl $e2$ >>
-      | e1 = SELF; "lsr"; e2 = SELF → <:expr< $e1$ lsr $e2$ >> ]
+      | e1 = SELF; "lsr"; e2 = SELF → <:expr< $e1$ lsr $e2$ >>
+      | e1 = SELF; op = INFIXOP4 ; e2 = SELF → <:expr< $lid:op$ $e1$ $e2$ >>
+      ]
     | "unary minus" NONA
       [ "-"; e = SELF → <:expr< - $e$ >>
-      | "-."; e = SELF → <:expr< -. $e$ >> ]
+      | "-."; e = SELF → <:expr< -. $e$ >>
+      | op = PREFIXOP ; e = SELF → <:expr< $lid:op$ $e$ >>
+      ]
     | "apply" LEFTA
       [ e1 = SELF; e2 = SELF → <:expr< $e1$ $e2$ >>
       | "assert"; e = SELF → <:expr< assert $e$ >>
