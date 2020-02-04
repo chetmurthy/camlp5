@@ -1,0 +1,2438 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Appendix &mdash; Camlp5 7.10 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Camlp5 7.10 documentation" href="index.html"/>
+        <link rel="prev" title="Language Extensions" href="langext.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Camlp5
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strict.html">Transitional and Strict modes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pptools.html">Parsing and Printing tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patools.html">Parsing tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prtools.html">Printing tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="langext.html">Language Extensions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#commands-and-files">Commands and Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parsing-and-printing-kits">Parsing and Printing Kits</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parsing-kits">Parsing kits</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#language-parsing-kits">language parsing kits</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#extensible-grammars">extensible grammars</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#extensible-functions-and-printers">extensible functions and printers</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#functional-parsers">functional parsers</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#other-languages">other languages</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#other-parsing-kits">other parsing kits</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#printing-kits">Printing kits</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#language-printing-kits">language printing kits</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#extensible-parsers">extensible parsers</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id1">extensible functions and printers</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#other-printing-kits">other printing kits</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#quotations-expanders">Quotations expanders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#environment-variable">Environment variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocaml-toplevel-files">OCaml toplevel files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#library-files">Library files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#library">Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ploc-module">Ploc module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#located-exceptions">located exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#making-locations">making locations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-location-info">getting location info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#combining-locations">combining locations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#miscellaneous">miscellaneous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pervasives">pervasives</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#plexing-module">Plexing module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lexer-type">lexer type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lexers-from-parsers-or-ocamllex">lexers from parsers or ocamllex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-to-build-a-stream-and-a-location-function">function to build a stream and a location function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#useful-functions-and-values">useful functions and values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#backward-compatibilities">backward compatibilities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#plexer-module">Plexer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lexer">lexer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flags">flags</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#gramext-module">Gramext module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grammar-type">grammar type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entry-type">entry type</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#grammar-module">Grammar module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#main-types-and-values">main types and values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#printing-grammar-entries">printing grammar entries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clearing-grammars-and-entries">clearing grammars and entries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scan-entries">scan entries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parsing-algorithm">parsing algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#functorial-interface">functorial interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grammar-flags">grammar flags</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#diff-module">Diff module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extfold-module">Extfold module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extfun-module">Extfun module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eprinter-module">Eprinter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fstream-module">Fstream module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#functional-streams">Functional streams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#backtracking-parsers">Backtracking parsers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pprintf-module">Pprintf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pretty-module">Pretty module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deprecated-modules-stdpp-and-token">Deprecated modules Stdpp and Token</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#camlp5-sources">Camlp5 sources</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kernel">Kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compatibility">Compatibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tree-structure">Tree structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fast-compilation-from-scratch">Fast compilation from scratch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-changes">Testing changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#before-committing-your-changes">Before committing your changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#if-you-change-the-main-parser">If you change the main parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-new-nodes-to-the-syntax-tree">Adding new nodes to the syntax tree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#switching-between-transitional-and-strict-mode">Switching between transitional and strict mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bootstrapping">Bootstrapping</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#camlp5-executable-bootstrapping">Camlp5 executable bootstrapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#source-bootstrapping">Source bootstrapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#source-file-q-mlast-ml-bootstrapping">Source file q_MLast.ml bootstrapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#source-file-q-ast-ml-bootstrapping">Source file q_ast.ml bootstrapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lisp-and-scheme-syntax-bootstrapping">Lisp and Scheme syntax bootstrapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extend-statement-bootstrapping">EXTEND statement bootstrapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#about-camlp5">About Camlp5</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Camlp5</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Appendix</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/appendix.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="appendix">
+<h1>Appendix<a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="commands-and-files">
+<span id="commands"></span><h2>Commands and Files<a class="headerlink" href="#commands-and-files" title="Permalink to this headline">¶</a></h2>
+<p>The main command of Camlp5 is <code class="docutils literal"><span class="pre">camlp5</span></code>. It is an OCaml
+program in bytecode (compiled with ocamlc, not ocamlopt), able to
+dynamically load OCaml object files (ending with “.cmo” and
+“.cma”).</p>
+<p>Most other Camlp5 commands derive from that one: they are the
+command <code class="docutils literal"><span class="pre">camlp5</span></code> with some implicitely applied
+parameters.</p>
+<p>Two other commands are provided: <code class="docutils literal"><span class="pre">mkcamlp5</span></code> and
+<code class="docutils literal"><span class="pre">mkcamlp5.opt</span></code>. They allow to create camlp5 executables
+with already loaded kits.</p>
+<p>All commands have an option <code class="docutils literal"><span class="pre">-help</span></code> which display all
+possible command parameters and options. Notice that some parameters
+(the parsing and pretting kits) may add new options. For example,
+the command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">camlp5</span> <span class="n">pr_r</span><span class="o">.</span><span class="n">cmo</span> <span class="o">-</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>prints more lines than just:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">camlp5</span> <span class="o">-</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>The first parameter (“load options”) allows to specify parsing and
+printing kits (“.cmo” and “.cma” files) which are loaded inside the
+<code class="docutils literal"><span class="pre">camlp5</span></code> core before any action. Other options may
+follow.</p>
+<div class="section" id="parsing-and-printing-kits">
+<h3>Parsing and Printing Kits<a class="headerlink" href="#parsing-and-printing-kits" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="parsing-kits">
+<h4>Parsing kits<a class="headerlink" href="#parsing-kits" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="language-parsing-kits">
+<h5>language parsing kits<a class="headerlink" href="#language-parsing-kits" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_r.cmo</span></code>:</p>
+<p>Revised syntax (without parsers).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_rp.cmo</span></code>:</p>
+<p>Add revised syntax parsers.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_o.cmo</span></code>:</p>
+<p>Normal syntax (without parsers). Option added:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-no_quot</span></code>:</p>
+<p>don’t parse quotations, allowing to use, e.g. <code class="docutils literal"><span class="pre">&lt;:&gt;</span></code> as token.</p>
+</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_op.cmo</span></code>:</p>
+<p>Add normal syntax parsers.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_oop.cmo</span></code>:</p>
+<p>Add normal syntax parsers without code optimization.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_lexer.cmo</span></code>:</p>
+<p>Add stream lexers.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="extensible-grammars">
+<h5>extensible grammars<a class="headerlink" href="#extensible-grammars" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_extend.cmo</span></code>:</p>
+<p>Add the EXTEND statement. Options added:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-split_ext</span></code>:</p>
+<p>split EXTEND by functions to turn around a PowerPC problem.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-quotify</span></code>:</p>
+<p>generate code for quotations (internally used to synchronize
+q_MLast and pa_r)</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-meta_action</span></code>:</p>
+<p>undocumented (internally used for compiled version)</p>
+</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_extfold.cmo</span></code>:</p>
+<p>Add the specific symbols FOLD0 and FOLD1 to the EXTEND statement.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="extensible-functions-and-printers">
+<h5>extensible functions and printers<a class="headerlink" href="#extensible-functions-and-printers" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_extfun.cmo</span></code>:</p>
+<p>Add the extensible function (“extfun” statement).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_extprint.cmo</span></code>:</p>
+<p>Add the EXTEND_PRINTER statement.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="functional-parsers">
+<h5>functional parsers<a class="headerlink" href="#functional-parsers" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_fstream.cmo</span></code>:</p>
+<p>Add the functional parsers (“fparser” statement) and the
+backtracking parsers (“bparser” statement).</p>
+</li>
+</ul>
+</div>
+<div class="section" id="other-languages">
+<h5>other languages<a class="headerlink" href="#other-languages" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">pa_lisp.cmo</span></code>: Lisp syntax.</li>
+<li><code class="docutils literal"><span class="pre">pa_scheme.cmo</span></code>: Scheme syntax.</li>
+<li><code class="docutils literal"><span class="pre">pa_sml.cmo</span></code>: SML syntax.</li>
+</ul>
+</div>
+<div class="section" id="other-parsing-kits">
+<h5>other parsing kits<a class="headerlink" href="#other-parsing-kits" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_lefteval.cmo</span></code>:</p>
+<p>Add guarantee of left evaluation in functions calls.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_macro.cmo</span></code>:</p>
+<p>Add macros. Options added</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-D</span> <span class="pre">&lt;string&gt;</span></code>: define for IFDEF statement</li>
+<li><code class="docutils literal"><span class="pre">-U</span> <span class="pre">&lt;string&gt;</span></code>: undefine for IFDEF statement</li>
+<li><code class="docutils literal"><span class="pre">-defined</span></code>: print the defined macros and exit</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pa_pragma.cmo</span></code>:</p>
+<p>Add pragma directive: evaluations at parse time</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="printing-kits">
+<h4>Printing kits<a class="headerlink" href="#printing-kits" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="language-printing-kits">
+<h5>language printing kits<a class="headerlink" href="#language-printing-kits" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_r.cmo</span></code>:</p>
+<p>Display in revised syntax. Added options:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-flag</span> <span class="pre">&lt;str&gt;</span></code>:</p>
+<div class="line-block">
+<div class="line">Change pretty printing behaviour according to <code class="docutils literal"><span class="pre">&lt;str&gt;</span></code>:</div>
+<div class="line">A/a enable/disable all flags&lt;br/&gt;</div>
+<div class="line">C/c enable/disable comments in phrases&lt;br/&gt;</div>
+<div class="line">D/d enable/disable allowing expanding ‘declare’&lt;br/&gt;</div>
+<div class="line">E/e enable/disable equilibrate cases&lt;br/&gt;</div>
+<div class="line">L/l enable/disable allowing printing ‘let..in’ horizontally&lt;br/&gt;</div>
+<div class="line">S/s enable/disable printing sequences beginners at end of lines&lt;br/&gt;</div>
+<div class="line">default setting is “aS”.</div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-wflag</span> <span class="pre">&lt;str&gt;</span></code>:</p>
+<div class="line-block">
+<div class="line">Change displaying ‘where’ statements instead of ‘let’:</div>
+<div class="line">A/a enable/disable all flags&lt;br/&gt;</div>
+<div class="line">I/i enable/disable ‘where’ after ‘in’&lt;br/&gt;</div>
+<div class="line">L/l enable/disable ‘where’ after ‘let..=’&lt;br/&gt;</div>
+<div class="line">M/m enable/disable ‘where’ after ‘match’ and ‘try’&lt;br/&gt;</div>
+<div class="line">P/p enable/disable ‘where’ after left parenthesis&lt;br/&gt;</div>
+<div class="line">R/r enable/disable ‘where’ after ‘record_field..=’&lt;br/&gt;</div>
+<div class="line">S/s enable/disable ‘where’ in sequences&lt;br/&gt;</div>
+<div class="line">T/t enable/disable ‘where’ after ‘then’ or ‘else’&lt;br/&gt;</div>
+<div class="line">V/v enable/disable ‘where’ after ‘value..=’&lt;br/&gt;</div>
+<div class="line">W/w enable/disable ‘where’ after ‘<code class="docutils literal"><span class="pre">-&gt;</span></code>’&lt;br/&gt;</div>
+<div class="line">default setting is “Ars”.</div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-l</span> <span class="pre">&lt;length&gt;</span></code>:</p>
+<p>Maximum line length for pretty printing (default 78)</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-sep_src</span></code>:</p>
+<p>Read source file for text between phrases (default).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-sep</span> <span class="pre">&lt;string&gt;</span></code>:</p>
+<p>Use this string between phrases instead of reading source.</p>
+</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_ro.cmo</span></code>:</p>
+<p>Add display objects, labels and variants in revised syntax.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_rp.cmo</span></code>:</p>
+<p>Add display parsers with their (revised) syntax.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_o.cmo</span></code>:</p>
+<p>Display in normal syntax. Added options:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-flag</span> <span class="pre">&lt;str&gt;</span></code>:</p>
+<div class="line-block">
+<div class="line">Change pretty printing behaviour according to <code class="docutils literal"><span class="pre">&lt;str&gt;</span></code>:</div>
+<div class="line">A/a enable/disable all flags&lt;br/&gt;</div>
+<div class="line">C/c enable/disable comments in phrases&lt;br/&gt;</div>
+<div class="line">E/e enable/disable equilibrate cases&lt;br/&gt;</div>
+<div class="line">L/l enable/disable allowing printing ‘let..in’ horizontally&lt;br/&gt;</div>
+<div class="line">M/m enable/disable printing double semicolons&lt;br/&gt;</div>
+<div class="line">default setting is “Am”.</div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-l</span> <span class="pre">&lt;length&gt;</span></code>:</p>
+<p>Maximum line length for pretty printing (default 78)</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-sep_src</span></code>:</p>
+<p>Read source file for text between phrases (default).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-sep</span> <span class="pre">&lt;string&gt;</span></code>:</p>
+<p>Use this string between phrases instead of reading source.</p>
+</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_op.cmo</span></code>:</p>
+<p>Add displaying parsers with their (normal) syntax.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="extensible-parsers">
+<h5>extensible parsers<a class="headerlink" href="#extensible-parsers" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_extend.cmo</span></code>:</p>
+<p>Add the displaying of EXTEND statements in their initial
+syntax. Option added:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-no_slist</span></code>:</p>
+<p>Don’t reconstruct SLIST, SOPT, SFLAG</p>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h5>extensible functions and printers<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_extfun.cmo</span></code>:</p>
+<p>Add displaying extensible functions (“extfun” statement) in their
+initial syntax.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_extprint.cmo</span></code>:</p>
+<p>Add displaying extensible printers (“EXTEND_PRINTER” statement) in
+their initial syntax.</p>
+</li>
+</ul>
+<p>other languages
+^^^^^^^^^^^^^^%</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_scheme.cmo</span></code>:</p>
+<p>Display in Scheme syntax. Option added:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-l</span> <span class="pre">&lt;length&gt;</span></code>:</p>
+<p>Maximum line length for pretty printing (default 78)</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-sep</span> <span class="pre">&lt;string&gt;</span></code>:</p>
+<p>Use this string between phrases instead of reading source.</p>
+</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_schemep.cmo</span></code>:</p>
+<p>Add display parsers with their (Scheme) syntax.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="other-printing-kits">
+<h5>other printing kits<a class="headerlink" href="#other-printing-kits" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_depend.cmo</span></code>:</p>
+<p>Display dependencies. Option added:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-I</span> <span class="pre">dir</span></code>:</p>
+<p>Add “dir” to the list of search directories.</p>
+</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_dump.cmo</span></code>:</p>
+<p>Dump the syntax tree in binary (for the OCaml compiler)</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pr_null.cmo</span></code>:</p>
+<p>No output.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="quotations-expanders">
+<h4>Quotations expanders<a class="headerlink" href="#quotations-expanders" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">q_MLast.cmo</span></code>:</p>
+<p>Syntax tree quotations. Define the quotations named: “expr”, “patt”,
+“ctyp”, “str_item”, “sig_item”, “module_type”, “module_expr”,
+“class_type”, “class_expr”, “class_sig_item”, “class_str_item”,
+“with_constr” and “poly_variant”.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">q_phony.cmo</span></code>:</p>
+<p>Transform quotations into phony variables to be able to pretty print
+the quotations in their initial form (not suitable for compilation).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Commands<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>-<code class="docutils literal"><span class="pre">camlp5r</span></code>:</p>
+<blockquote>
+<div>Shortcut for <code class="docutils literal"><span class="pre">camlp5</span> <span class="pre">pa_r.cmo</span> <span class="pre">pa_rp.cmo</span> <span class="pre">pr_dump.cmo</span></code></div></blockquote>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">camlp5r.opt</span></code>:</p>
+<p>Same as previous, but in native code instead of bytecode, therefore
+faster. But not extensible: it is not possible to add other parsing
+or printing kits neither in command arguments nor with the “load”
+directive inside sources. Suitable for compiling sources not using
+other syntax extensions.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">camlp5o</span></code>:</p>
+<p>Shortcut for <code class="docutils literal"><span class="pre">camlp5</span> <span class="pre">pa_o.cmo</span> <span class="pre">pa_op.cmo</span> <span class="pre">pr_dump.cmo</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">camlp5o.opt</span></code>:</p>
+<p>Same as previous, and like <code class="docutils literal"><span class="pre">camlp5r.opt</span></code>, faster and not
+extensible. Moreover, this has been produced by compilation of
+Camlp5 grammars, resulting in a still faster executable.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">camlp5sch</span></code>:</p>
+<p>Shortcut for <code class="docutils literal"><span class="pre">camlp5</span> <span class="pre">pa_scheme.cmo</span> <span class="pre">pr_dump.cmo</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">mkcamlp5</span></code>:</p>
+<p>creates camlp5 executables with almost the same options than
+ocamlmktop. The interfaces to be visible must be explicitly added in
+the command line as “.cmi” files. For example, how to add the the
+OCaml module “str”:</p>
+<p><code class="docutils literal"><span class="pre">mkcamlp5</span> <span class="pre">-custom</span> <span class="pre">str.cmi</span> <span class="pre">str.cma</span> <span class="pre">-cclib</span> <span class="pre">-lstr</span> <span class="pre">-o</span> <span class="pre">camlp5str</span></code></p>
+</li>
+</ul>
+<p>-<code class="docutils literal"><span class="pre">mkcamlp5.opt</span></code>:</p>
+<blockquote>
+<div>creates camlp5 executables like <code class="docutils literal"><span class="pre">mkcamlp5</span></code>, except that it is in
+native code, therefore faster, but not extensible; the added kits
+must be cmx or cmxa files.</div></blockquote>
+</div>
+<div class="section" id="environment-variable">
+<h3>Environment variable<a class="headerlink" href="#environment-variable" title="Permalink to this headline">¶</a></h3>
+<p>When running a program using extensible grammars (in particular,
+the camlp5 commands), the environment variable
+<code class="docutils literal"><span class="pre">CAMLP5PARAM</span></code> is consulted. It sets the grammar parsing
+algoritm parameters.</p>
+<p>This variable must be a sequence of parameter specifications. A
+parameter specification is a letter optionally followed by an = and
+a value, with any separator. There are four possible parameters:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">b</span></code>:</p>
+<p>Set the full backtrack algorithm as default.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">f</span></code>:</p>
+<p>Set the limited backtrack algorithm as default.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">t</span></code>:</p>
+<p>Trace symbols (terminals and non-terminals) while parsing with
+backtracking.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">y</span></code>:</p>
+<p>In backtracking, trace the advance in the input stream (number of
+unfrozen tokens) and the possible stalling (number of tokens tests).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">l=value</span></code>:</p>
+<p>Set the maximum stalling value.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="ocaml-toplevel-files">
+<h3>OCaml toplevel files<a class="headerlink" href="#ocaml-toplevel-files" title="Permalink to this headline">¶</a></h3>
+<p>These object files can be loaded in the OCaml toplevel to make
+Camlp5 parse the input. It is possible to load them either by
+putting them as parameters of the toplevel, or by using the
+directive “load”. The option <code class="docutils literal"><span class="pre">-I</span> <span class="pre">+camlp5</span></code> (or <code class="docutils literal"><span class="pre">-I</span>
+<span class="pre">`camlp5</span> <span class="pre">-where`</span></code>) must be added to the <code class="docutils literal"><span class="pre">ocaml</span></code> command
+(the OCaml toplevel).</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">camlp5r.cma</span></code>:</p>
+<p>Read phrases and display results in revised syntax</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">camlp5o.cma</span></code>:</p>
+<p>Read phrases and display results in normal syntax</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">camlp5sch.cma</span></code>:</p>
+<p>Read phrases in Scheme syntax</p>
+</li>
+</ul>
+</div>
+<div class="section" id="library-files">
+<h3>Library files<a class="headerlink" href="#library-files" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="#library"><span class="std std-ref">Camlp5 Library</span></a> is named
+<code class="docutils literal"><span class="pre">gramlib.cma</span></code> and its native code version is
+<code class="docutils literal"><span class="pre">gramlib.cmxa</span></code>. They contain the modules:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Ploc</span></code> : building and combining <a class="reference internal" href="langext.html#locations"><span class="std std-ref">Locations</span></a></li>
+<li><code class="docutils literal"><span class="pre">Plexing</span></code> : lexing for Camlp5 grammars</li>
+<li><code class="docutils literal"><span class="pre">Plexer</span></code> : lexer used in revised and normal syntax</li>
+<li><code class="docutils literal"><span class="pre">Gramext</span></code> : implementation of extensible grammars</li>
+<li><code class="docutils literal"><span class="pre">Grammar</span></code> : <a class="reference internal" href="patools.html#grammars"><span class="std std-ref">extensible grammars</span></a></li>
+<li><code class="docutils literal"><span class="pre">Extfold</span></code> : functions for grammar extensions FOLD0 and FOLD1</li>
+<li><code class="docutils literal"><span class="pre">Extfun</span></code> : functions for <a class="reference internal" href="langext.html#extfun"><span class="std std-ref">extensible functions</span></a></li>
+<li><code class="docutils literal"><span class="pre">Eprinter</span></code> : <a class="reference internal" href="prtools.html#printers"><span class="std std-ref">extensible printers</span></a></li>
+<li><code class="docutils literal"><span class="pre">Fstream</span></code> : <a class="reference internal" href="patools.html#fparsers"><span class="std std-ref">functional stream parsers</span></a></li>
+<li><code class="docutils literal"><span class="pre">Pretty</span></code> : :ref:pretty printing&lt;pretty&gt;` on strings</li>
+</ul>
+<p>This is a pure library : when linking with it, the Camlp5 program
+is <em>not</em> included.</p>
+</div>
+</div>
+<div class="section" id="library">
+<span id="id3"></span><h2>Library<a class="headerlink" href="#library" title="Permalink to this headline">¶</a></h2>
+<p>All modules defined in “gramlib.cma”, but <em>not</em> including
+all Camlp5 modules used by the Camlp5 commands and kits.</p>
+<div class="section" id="ploc-module">
+<h3>Ploc module<a class="headerlink" href="#ploc-module" title="Permalink to this headline">¶</a></h3>
+<p>Building and combining locations. This module also contains some
+pervasive types and functions.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">type</span> <span class="pre">t</span> <span class="pre">=</span> <span class="pre">'abstract;</span></code></p>
+<p>Location type.</p>
+</li>
+</ul>
+<div class="section" id="located-exceptions">
+<h4>located exceptions<a class="headerlink" href="#located-exceptions" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">exception</span> <span class="pre">Exc</span> <span class="pre">of</span> <span class="pre">location</span> <span class="pre">and</span> <span class="pre">exn;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.Exc</span> <span class="pre">loc</span> <span class="pre">e</span></code> is an encapsulation of the exception
+<code class="docutils literal"><span class="pre">e</span></code> with the input location <code class="docutils literal"><span class="pre">loc</span></code>. To be used to
+specify a location for an error. This exception must not be raised
+by the OCaml function <code class="docutils literal"><span class="pre">raise</span></code>, but rather by
+<code class="docutils literal"><span class="pre">Ploc.raise</span></code> (see below), to prevent the risk of several
+encapsulations of <code class="docutils literal"><span class="pre">Ploc.Exc</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">raise</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">exn</span> <span class="pre">-&gt;</span> <span class="pre">'a;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.raise</span> <span class="pre">loc</span> <span class="pre">e</span></code>, if <code class="docutils literal"><span class="pre">e</span></code> is already the
+exception <code class="docutils literal"><span class="pre">Ploc.Exc</span></code>, re-raise it (ignoring the new
+location <code class="docutils literal"><span class="pre">loc</span></code>), else raise the exception
+<code class="docutils literal"><span class="pre">Ploc.Exc</span> <span class="pre">loc</span> <span class="pre">e</span></code>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="making-locations">
+<h4>making locations<a class="headerlink" href="#making-locations" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">make_loc</span> <span class="pre">:</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">(int</span> <span class="pre">*</span> <span class="pre">int)</span> <span class="pre">-&gt;</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">t;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.make_loc</span> <span class="pre">fname</span> <span class="pre">line_nb</span> <span class="pre">bol_pos</span> <span class="pre">(bp,</span> <span class="pre">ep)</span> <span class="pre">comm</span></code>
+creates a location starting at line number <code class="docutils literal"><span class="pre">line_nb</span></code>,
+where the position of the beginning of the line is
+<code class="docutils literal"><span class="pre">bol_pos</span></code> and between the positions <code class="docutils literal"><span class="pre">bp</span></code>
+(included) and <code class="docutils literal"><span class="pre">ep</span></code> excluded. And <code class="docutils literal"><span class="pre">comm</span></code> is the
+comment before the location. The positions are in number of
+characters since the begin of the stream.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">make_unlined</span> <span class="pre">:</span> <span class="pre">(int</span> <span class="pre">*</span> <span class="pre">int)</span> <span class="pre">-&gt;</span> <span class="pre">t;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.make_unlined</span></code> is like <code class="docutils literal"><span class="pre">Ploc.make</span></code> except
+that the line number is not provided (to be used e.g. when the
+line number is unknown).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">dummy</span> <span class="pre">:</span> <span class="pre">t;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.dummy</span></code> is a dummy location, used in situations
+when location has no meaning.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="getting-location-info">
+<h4>getting location info<a class="headerlink" href="#getting-location-info" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">file_name</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">string;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.file_name</span> <span class="pre">loc</span></code> returns the file name of the
+location.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">first_pos</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">int;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.first_pos</span> <span class="pre">loc</span></code> returns the initial position
+of the location in number of characters since the beginning of the
+stream.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">last_pos</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">int;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.last_pos</span> <span class="pre">loc</span></code> returns the final position plus one
+of the location in number of characters since the
+beginning of the stream.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">line_nb</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">int;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.line_nb</span> <span class="pre">loc</span></code> returns the line number of the
+location or <code class="docutils literal"><span class="pre">-1</span></code> if the location does not contain a line
+number (i.e. built with <code class="docutils literal"><span class="pre">Ploc.make_unlined</span></code> above).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">bol_pos</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">int;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.bol_pos</span> <span class="pre">loc</span></code> returns the position of the
+beginning of the line of the location in number of characters
+since the beginning of the stream, or <code class="docutils literal"><span class="pre">0</span></code> if the location
+does not contain a line number (i.e. built the with
+<code class="docutils literal"><span class="pre">Ploc.make_unlined</span></code> above).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">comment</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">string;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.comment</span> <span class="pre">loc</span></code> returns the comment before the
+location.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="combining-locations">
+<h4>combining locations<a class="headerlink" href="#combining-locations" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">encl</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">t;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.encl</span> <span class="pre">loc1</span> <span class="pre">loc2</span></code> returns the location starting at
+the smallest start and ending at the greatest end of the locations
+<code class="docutils literal"><span class="pre">loc1</span></code> and <code class="docutils literal"><span class="pre">loc2</span></code>. In other words, it is the
+location enclosing <code class="docutils literal"><span class="pre">loc1</span></code> and <code class="docutils literal"><span class="pre">loc2</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">shift</span> <span class="pre">:</span> <span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">t;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.shift</span> <span class="pre">sh</span> <span class="pre">loc</span></code> returns the location <code class="docutils literal"><span class="pre">loc</span></code>
+shifted with <code class="docutils literal"><span class="pre">sh</span></code> characters. The line number is not
+recomputed.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">sub</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">t;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.sub</span> <span class="pre">loc</span> <span class="pre">sh</span> <span class="pre">len</span></code> is the location <code class="docutils literal"><span class="pre">loc</span></code>
+shifted with <code class="docutils literal"><span class="pre">sh</span></code> characters and with length
+<code class="docutils literal"><span class="pre">len</span></code>. The previous ending position of the location is
+lost.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">after</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">t;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.after</span> <span class="pre">loc</span> <span class="pre">sh</span> <span class="pre">len</span></code> is the location just after loc
+(starting at the end position of <code class="docutils literal"><span class="pre">loc</span></code>) shifted with
+<code class="docutils literal"><span class="pre">sh</span></code> characters and of length <code class="docutils literal"><span class="pre">len</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">with_comment</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">t;</span></code></p>
+<p>Change the comment part of the given location</p>
+</li>
+</ul>
+</div>
+<div class="section" id="miscellaneous">
+<h4>miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">name</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">string;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.name.val</span></code> is the name of the location variable
+used in grammars and in the predefined quotations for OCaml syntax
+trees. Default: <code class="docutils literal"><span class="pre">&quot;loc&quot;</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">get</span> <span class="pre">:</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">(int</span> <span class="pre">*</span> <span class="pre">int</span> <span class="pre">*</span> <span class="pre">int</span> <span class="pre">*</span> <span class="pre">int</span> <span class="pre">*</span> <span class="pre">int);</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.get</span> <span class="pre">fname</span> <span class="pre">loc</span></code> returns in order: 1/ the line
+number of the begin of the location, 2/ its column, 3/ the line
+number of the first character not in the location, 4/ its
+column and 5/ the length of the location. The parameter
+<code class="docutils literal"><span class="pre">fname</span></code> is the file where the location occurs.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">from_file</span> <span class="pre">:</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">(string</span> <span class="pre">*</span> <span class="pre">int</span> <span class="pre">*</span> <span class="pre">int</span> <span class="pre">*</span> <span class="pre">int);</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.from_file</span> <span class="pre">fname</span> <span class="pre">loc</span></code> reads the file
+<code class="docutils literal"><span class="pre">fname</span></code> up to the location <code class="docutils literal"><span class="pre">loc</span></code> and returns the
+real input file, the line number and the characters location in
+the line; the real input file can be different from
+<code class="docutils literal"><span class="pre">fname</span></code> because of possibility of line directives
+typically generated by /lib/cpp.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="pervasives">
+<h4>pervasives<a class="headerlink" href="#pervasives" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">type</span> <span class="n">vala</span> <span class="s1">&#39;a =</span>
+  <span class="p">[</span> <span class="n">VaAnt</span> <span class="n">of</span> <span class="n">string</span>
+  <span class="o">|</span> <span class="n">VaVal</span> <span class="n">of</span> <span class="s1">&#39;a ]</span>
+<span class="p">;</span>
+</pre></div>
+</div>
+<p>Encloser of many abstract syntax tree notes types, in “strict”
+mode. This allow the system of antiquotations of abstract syntax tree
+quotations to work when using the quotation kit <code class="docutils literal"><span class="pre">q_ast.cmo</span></code>.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">call_with</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">('b</span> <span class="pre">-&gt;</span> <span class="pre">'c)</span> <span class="pre">-&gt;</span> <span class="pre">'b</span> <span class="pre">-&gt;</span> <span class="pre">'c;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Ploc.call_with</span> <span class="pre">r</span> <span class="pre">v</span> <span class="pre">f</span> <span class="pre">a</span></code> sets the reference
+<code class="docutils literal"><span class="pre">r</span></code> to the value <code class="docutils literal"><span class="pre">v</span></code>, then calls <code class="docutils literal"><span class="pre">f</span> <span class="pre">a</span></code>,
+and resets <code class="docutils literal"><span class="pre">r</span></code> to its initial value. If <code class="docutils literal"><span class="pre">f</span> <span class="pre">a</span></code>
+raises an exception, its initial value is also reset and the
+exception is reraised. The result is the result of <code class="docutils literal"><span class="pre">f</span>
+<span class="pre">a</span></code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="plexing-module">
+<span id="library-plexing-module"></span><h3>Plexing module<a class="headerlink" href="#plexing-module" title="Permalink to this headline">¶</a></h3>
+<p>Lexing for Camlp5 grammars.</p>
+<p>This module defines the Camlp5 lexer type to be used in extensible
+grammars (see module <code class="docutils literal"><span class="pre">Grammar</span></code>). It also provides some
+useful functions to create lexers.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">type</span> <span class="pre">pattern</span> <span class="pre">=</span> <span class="pre">(string</span> <span class="pre">*</span> <span class="pre">string);</span></code></p>
+<p>Type for values used by the generated code of the EXTEND
+statement to represent terminals in entry rules.</p>
+<ul class="simple">
+<li>The first string is the constructor name (must start with an
+uppercase character). When empty, the second string should be a
+keyword.</li>
+<li>The second string is the constructor parameter. Empty if it has no
+parameter (corresponding to the ‘wildcard’ pattern).</li>
+<li>The way tokens patterns are interpreted to parse tokens is done by
+the lexer, function <code class="docutils literal"><span class="pre">tok_match</span></code> below.</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">exception</span> <span class="pre">Error</span> <span class="pre">of</span> <span class="pre">string;</span></code></p>
+<p>A lexing error exception to be used by lexers.</p>
+</li>
+</ul>
+<div class="section" id="lexer-type">
+<h4>lexer type<a class="headerlink" href="#lexer-type" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">type</span> <span class="n">lexer</span> <span class="s1">&#39;te =</span>
+<span class="p">{</span> <span class="n">tok_func</span> <span class="p">:</span> <span class="n">lexer_func</span> <span class="s1">&#39;te;</span>
+  <span class="n">tok_using</span> <span class="p">:</span> <span class="n">pattern</span> <span class="o">-&gt;</span> <span class="n">unit</span><span class="p">;</span>
+  <span class="n">tok_removing</span> <span class="p">:</span> <span class="n">pattern</span> <span class="o">-&gt;</span> <span class="n">unit</span><span class="p">;</span>
+  <span class="n">tok_match</span> <span class="p">:</span> <span class="n">mutable</span> <span class="n">pattern</span> <span class="o">-&gt;</span> <span class="s1">&#39;te -&gt; string;</span>
+  <span class="n">tok_text</span> <span class="p">:</span> <span class="n">pattern</span> <span class="o">-&gt;</span> <span class="n">string</span><span class="p">;</span>
+  <span class="n">tok_comm</span> <span class="p">:</span> <span class="n">mutable</span> <span class="n">option</span> <span class="p">(</span><span class="nb">list</span> <span class="n">Ploc</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>The type for lexers compatible with Camlp5 grammars. The parameter
+type <code class="docutils literal"><span class="pre">'te</span></code> is the type of the tokens.</p>
+<ul>
+<li><p class="first">The field <code class="docutils literal"><span class="pre">tok_func</span></code> is the main lexer function. See
+<code class="docutils literal"><span class="pre">lexer_func</span></code> type below.</p>
+</li>
+<li><p class="first">The field <code class="docutils literal"><span class="pre">tok_using</span></code> is a function called by the <code class="docutils literal"><span class="pre">EXTEND</span></code>
+statement to warn the lexer that a rule uses this pattern (given as
+parameter). This allow the lexer 1/ to check that the pattern
+constructor is really among its possible constructors 2/ to enter
+the keywords in its tables.</p>
+</li>
+<li><p class="first">The field <code class="docutils literal"><span class="pre">tok_removing</span></code> is a function possibly called by the
+<code class="docutils literal"><span class="pre">DELETE_RULE</span></code> statement to warn the lexer that this pattern (given
+as parameter) is no longer used in the grammar (the grammar system
+maintains a number of usages of all patterns and calls this function
+when this number falls to zero). If it is a keyword, this allows the
+lexer to remove it in its tables.</p>
+</li>
+<li><p class="first">The field <code class="docutils literal"><span class="pre">tok_match</span></code> is a function called by the Camlp5 grammar
+system to ask the lexer how the input tokens should be matched
+against the patterns. Warning: for efficiency, this function must be
+written as a function taking patterns as parameters and, for each
+pattern value, returning a function matching a token, <em>not</em> as a
+function with two parameters.</p>
+</li>
+<li><p class="first">The field <code class="docutils literal"><span class="pre">tok_text</span></code> is a function called by the grammar system to
+get the name of the tokens for the error messages, in case of syntax
+error, or for the displaying of the rules of an entry.</p>
+</li>
+<li><p class="first">The field <code class="docutils literal"><span class="pre">tok_comm</span></code> is a mutable place where the lexer can put
+the locations of the comments, if its initial value is not
+<code class="docutils literal"><span class="pre">None</span></code>. If it is <code class="docutils literal"><span class="pre">None</span></code>, nothing has to be done by the lexer.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">and</span> <span class="pre">lexer_func</span> <span class="pre">'te</span> <span class="pre">=</span> <span class="pre">Stream.t</span> <span class="pre">char</span> <span class="pre">-&gt;</span> <span class="pre">(Stream.t</span> <span class="pre">'te</span> <span class="pre">*</span> <span class="pre">location_function)</span></code></p>
+<p>The type of a lexer function (field <code class="docutils literal"><span class="pre">tok_func</span></code> of the
+type <code class="docutils literal"><span class="pre">lexer</span></code>). The character stream is the input stream
+to be lexed. The result is a pair of a token stream and a location
+function (see below) for this tokens stream.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">and</span> <span class="pre">location_function</span> <span class="pre">=</span> <span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">Ploc.t;</span></code></p>
+<p>The type of a function giving the location of a token in the
+source from the token number in the stream (starting from
+zero).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">lexer_text</span> <span class="pre">:</span> <span class="pre">pattern</span> <span class="pre">-&gt;</span> <span class="pre">string;</span></code></p>
+<p>A simple <code class="docutils literal"><span class="pre">tok_text</span></code> function.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">default_match</span> <span class="pre">:</span> <span class="pre">pattern</span> <span class="pre">-&gt;</span> <span class="pre">(string</span> <span class="pre">*</span> <span class="pre">string)</span> <span class="pre">-&gt;</span> <span class="pre">string;</span></code></p>
+<p>A simple <code class="docutils literal"><span class="pre">tok_match</span></code> function, appling to the token
+type <code class="docutils literal"><span class="pre">(string</span> <span class="pre">*</span> <span class="pre">string)</span></code>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="lexers-from-parsers-or-ocamllex">
+<h4>lexers from parsers or ocamllex<a class="headerlink" href="#lexers-from-parsers-or-ocamllex" title="Permalink to this headline">¶</a></h4>
+<p>The functions below create lexer functions either from a <code class="docutils literal"><span class="pre">char</span>
+<span class="pre">stream</span></code> parser or for an <code class="docutils literal"><span class="pre">ocamllex</span></code> function. With
+the returned function <code class="docutils literal"><span class="pre">f</span></code>, it is possible to get a simple
+lexer (of the type <code class="docutils literal"><span class="pre">Plexing.lexer</span></code> above):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">Plexing</span><span class="o">.</span><span class="n">tok_func</span> <span class="o">=</span> <span class="n">f</span><span class="p">;</span>
+ <span class="n">Plexing</span><span class="o">.</span><span class="n">tok_using</span> <span class="o">=</span> <span class="p">(</span><span class="n">fun</span> <span class="n">_</span> <span class="o">-&gt;</span> <span class="p">());</span>
+ <span class="n">Plexing</span><span class="o">.</span><span class="n">tok_removing</span> <span class="o">=</span> <span class="p">(</span><span class="n">fun</span> <span class="n">_</span> <span class="o">-&gt;</span> <span class="p">());</span>
+ <span class="n">Plexing</span><span class="o">.</span><span class="n">tok_match</span> <span class="o">=</span> <span class="n">Plexing</span><span class="o">.</span><span class="n">default_match</span><span class="p">;</span>
+ <span class="n">Plexing</span><span class="o">.</span><span class="n">tok_text</span> <span class="o">=</span> <span class="n">Plexing</span><span class="o">.</span><span class="n">lexer_text</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that a better <code class="docutils literal"><span class="pre">tok_using</span></code> function would check the
+used tokens and raise <code class="docutils literal"><span class="pre">Plexing.Error</span></code> for incorrect
+ones. The other functions <code class="docutils literal"><span class="pre">tok_removing</span></code>,
+<code class="docutils literal"><span class="pre">tok_match</span></code> and <code class="docutils literal"><span class="pre">tok_text</span></code> may have other
+implementations as well.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">value</span> <span class="n">lexer_func_of_parser</span> <span class="p">:</span>
+  <span class="p">((</span><span class="n">Stream</span><span class="o">.</span><span class="n">t</span> <span class="n">char</span> <span class="o">*</span> <span class="n">ref</span> <span class="nb">int</span> <span class="o">*</span> <span class="n">ref</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="s1">&#39;te * Ploc.t)) -&gt; lexer_func &#39;</span><span class="n">te</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>A lexer function from a lexer written as a char stream parser
+returning the next token and its location. The two references with the
+char stream contain the current line number and the position of the
+beginning of the current line.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">value</span> <span class="n">lexer_func_of_ocamllex</span> <span class="p">:</span> <span class="p">(</span><span class="n">Lexing</span><span class="o">.</span><span class="n">lexbuf</span> <span class="o">-&gt;</span> <span class="s1">&#39;te) -&gt; lexer_func &#39;</span><span class="n">te</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>A lexer function from a lexer created by <code class="docutils literal"><span class="pre">ocamllex</span></code>.</p>
+</div>
+<div class="section" id="function-to-build-a-stream-and-a-location-function">
+<h4>function to build a stream and a location function<a class="headerlink" href="#function-to-build-a-stream-and-a-location-function" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">value</span> <span class="n">make_stream_and_location</span> <span class="p">:</span>
+  <span class="p">(</span><span class="n">unit</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="s1">&#39;te * Ploc.t)) -&gt; (Stream.t &#39;</span><span class="n">te</span> <span class="o">*</span> <span class="n">location_function</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="useful-functions-and-values">
+<h4>useful functions and values<a class="headerlink" href="#useful-functions-and-values" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">eval_char</span> <span class="pre">:</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">char;</span></code>
+<code class="docutils literal"><span class="pre">value</span> <span class="pre">eval_string</span> <span class="pre">:</span> <span class="pre">Ploc.t</span> <span class="pre">-&gt;</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">string;</span></code></p>
+<p>Convert a char or a string token, where the backslashes are not
+been interpreted into a real char or string; raise
+<code class="docutils literal"><span class="pre">Failure</span></code> if a bad backslash sequence is found;
+<code class="docutils literal"><span class="pre">Plexing.eval_char</span> <span class="pre">(Char.escaped</span> <span class="pre">c)</span></code> returns <code class="docutils literal"><span class="pre">c</span></code>
+and <code class="docutils literal"><span class="pre">Plexing.eval_string</span> <span class="pre">(String.escaped</span> <span class="pre">s)</span></code>
+returns <code class="docutils literal"><span class="pre">s</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">restore_lexing_info</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">(option</span> <span class="pre">(int</span> <span class="pre">*</span> <span class="pre">int));</span></code>
+<code class="docutils literal"><span class="pre">value</span> <span class="pre">line_nb</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">(ref</span> <span class="pre">int);</span></code>
+<code class="docutils literal"><span class="pre">value</span> <span class="pre">bol_pos</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">(ref</span> <span class="pre">int);</span></code></p>
+<p>Special variables used to reinitialize line numbers and position
+of beginning of line with their correct current values when a parser
+is called several times with the same character stream. Necessary
+for directives (e.g. #load or #use) which interrupt the parsing.
+Without usage of these variables, locations after the directives
+can be wrong.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="backward-compatibilities">
+<h4>backward compatibilities<a class="headerlink" href="#backward-compatibilities" title="Permalink to this headline">¶</a></h4>
+<p>Deprecated since version 4.08.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">type</span> <span class="pre">location</span> <span class="pre">=</span> <span class="pre">Ploc.t;</span></code></li>
+<li><code class="docutils literal"><span class="pre">value</span> <span class="pre">make_loc</span> <span class="pre">:</span> <span class="pre">(int</span> <span class="pre">*</span> <span class="pre">int)</span> <span class="pre">-&gt;</span> <span class="pre">location;</span></code></li>
+<li><code class="docutils literal"><span class="pre">value</span> <span class="pre">dummy_loc</span> <span class="pre">:</span> <span class="pre">location;</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="plexer-module">
+<span id="library-plexer-module"></span><h3>Plexer module<a class="headerlink" href="#plexer-module" title="Permalink to this headline">¶</a></h3>
+<p>This module contains a lexer used for OCaml syntax (revised and
+normal).</p>
+<div class="section" id="lexer">
+<h4>lexer<a class="headerlink" href="#lexer" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">gmake</span> <span class="pre">:</span> <span class="pre">unit</span> <span class="pre">-&gt;</span> <span class="pre">Plexing.lexer</span> <span class="pre">(string</span> <span class="pre">*</span> <span class="pre">string);</span></code></p>
+<p><code class="docutils literal"><span class="pre">gmake</span> <span class="pre">()</span></code> returns a lexer compatible with the
+extensible grammars.  The returned tokens follow the normal syntax
+and the revised syntax lexing rules.</p>
+</li>
+</ul>
+<p>The token type is <code class="docutils literal"><span class="pre">(string</span> <span class="pre">*</span> <span class="pre">string)</span></code> just like the pattern
+type.</p>
+<p>The meaning of the tokens are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">(&quot;&quot;,</span> <span class="pre">s)</span></code> is the keyword <code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;LIDENT&quot;,</span> <span class="pre">s)</span></code> is the ident <code class="docutils literal"><span class="pre">s</span></code> starting with a lowercase
+letter,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;UIDENT&quot;,</span> <span class="pre">s)</span></code> is the ident <code class="docutils literal"><span class="pre">s</span></code> starting with an uppercase
+letter,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;INT&quot;,</span> <span class="pre">s)</span></code> is an integer constant whose string source is <code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;INT_l&quot;,</span> <span class="pre">s)</span></code> is an 32 bits integer constant whose string source
+is <code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;INT_L&quot;,</span> <span class="pre">s)</span></code> is an 64 bits integer constant whose string source
+is <code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;INT_n&quot;,</span> <span class="pre">s)</span></code> is an native integer constant whose string source
+is <code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;FLOAT&quot;,</span> <span class="pre">s)</span></code> is a float constant whose string source is <code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;STRING&quot;,</span> <span class="pre">s)</span></code> is the string constant <code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;CHAR&quot;,</span> <span class="pre">s)</span></code> is the character constant <code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;TILDEIDENT&quot;,</span> <span class="pre">s)</span></code> is the tilde character <code class="docutils literal"><span class="pre">~</span></code> followed by the
+ident <code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;TILDEIDENTCOLON&quot;,</span> <span class="pre">s)</span></code> is the tilde character <code class="docutils literal"><span class="pre">~</span></code> followed by
+the ident <code class="docutils literal"><span class="pre">s</span></code> and a colon <code class="docutils literal"><span class="pre">:</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;QUESTIONIDENT&quot;,</span> <span class="pre">s)</span></code> is the question mark <code class="docutils literal"><span class="pre">?</span></code> followed by the
+ident <code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;QUESTIONIDENTCOLON&quot;,</span> <span class="pre">s)</span></code> is the question mark <code class="docutils literal"><span class="pre">?</span></code> followed by
+the ident <code class="docutils literal"><span class="pre">s</span></code> and a colon <code class="docutils literal"><span class="pre">:</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;QUOTATION&quot;,</span> <span class="pre">&quot;t:s&quot;)</span></code> is a quotation <code class="docutils literal"><span class="pre">t</span></code> holding the string
+<code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;ANTIQUOT&quot;,</span> <span class="pre">&quot;t:s&quot;)</span></code> is an antiquotation <code class="docutils literal"><span class="pre">t</span></code> holding the string
+<code class="docutils literal"><span class="pre">s</span></code>,</li>
+<li><code class="docutils literal"><span class="pre">(&quot;EOI&quot;,</span> <span class="pre">&quot;&quot;)</span></code> is the end of input.</li>
+</ul>
+<p>The associated token patterns in the EXTEND statement hold the same
+names as the first string (constructor name) of the tokens
+expressions above.</p>
+<p>Warning: the string associated with the <code class="docutils literal"><span class="pre">STRING</span></code>
+constructor is the string found in the source without any
+interpretation. In particular, the backslashes are not
+interpreted. For example, if the input is <code class="docutils literal"><span class="pre">&quot;\n&quot;</span></code> the string
+is <em>not</em> a string with one element containing the “newline”
+character, but a string of two elements: the backslash and the
+<code class="docutils literal"><span class="pre">&quot;n&quot;</span></code> letter.</p>
+<p>Same thing for the string associated with the <code class="docutils literal"><span class="pre">CHAR</span></code>
+constructor.</p>
+<p>The functions <code class="docutils literal"><span class="pre">Plexing.eval_string</span></code> and
+<code class="docutils literal"><span class="pre">Plexing.eval_char</span></code> allow to convert them into the real
+corresponding string or char value.</p>
+</div>
+<div class="section" id="flags">
+<h4>flags<a class="headerlink" href="#flags" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">dollar_for_antiquotation</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">bool;</span></code></p>
+<p>When True (default), the next call to <code class="docutils literal"><span class="pre">Plexer.gmake</span> <span class="pre">()</span></code>
+returns a lexer where the dollar sign is used for antiquotations.
+If False, there is no antiquotations and the dollar sign can be
+used as normal token.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">specific_space_dot</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">bool;</span></code></p>
+<p>When <code class="docutils literal"><span class="pre">False</span></code> (default), the next call to
+<code class="docutils literal"><span class="pre">Plexer.gmake</span> <span class="pre">()</span></code> returns a lexer where there is no
+difference between dots which have spaces before and dots which
+don’t have spaces before. If <code class="docutils literal"><span class="pre">True</span></code>, dots which have
+spaces before return the keyword <code class="docutils literal"><span class="pre">&quot;</span> <span class="pre">.&quot;</span></code> (space dot) and the
+ones which don’t have spaces before return the
+keyword <code class="docutils literal"><span class="pre">&quot;.&quot;</span></code>  (dot alone).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">no_quotations</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">bool;</span></code></p>
+<p>When <code class="docutils literal"><span class="pre">True</span></code>, all lexers built by <code class="docutils literal"><span class="pre">Plexer.gmake</span>
+<span class="pre">()</span></code> do not lex the quotation syntax. Default is
+<code class="docutils literal"><span class="pre">False</span></code> (quotations are lexed).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">utf8_lexing</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">bool;</span></code></p>
+<p>When <code class="docutils literal"><span class="pre">True</span></code>, all lexers built by <code class="docutils literal"><span class="pre">Plexer.gmake</span>
+<span class="pre">()]</span></code> use utf-8 encoding to specify letters and punctuation
+marks. Default is False (all characters between ‘128’ and
+‘255’ are considered as letters).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="gramext-module">
+<h3>Gramext module<a class="headerlink" href="#gramext-module" title="Permalink to this headline">¶</a></h3>
+<p>This module is not intended to be used by the casual programmer.</p>
+<p>It shows, in clear, the implementations of grammars and entries
+types, the normal access being through the <code class="docutils literal"><span class="pre">Grammar</span></code> module
+where these types are abstract. It can be useful for programmers
+interested in scanning the contents of grammars and entries, for
+example to make analyses on them.</p>
+<div class="section" id="grammar-type">
+<h4>grammar type<a class="headerlink" href="#grammar-type" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">type</span> <span class="n">grammar</span> <span class="s1">&#39;te =</span>
+  <span class="p">{</span> <span class="n">gtokens</span> <span class="p">:</span> <span class="n">Hashtbl</span><span class="o">.</span><span class="n">t</span> <span class="n">Plexing</span><span class="o">.</span><span class="n">pattern</span> <span class="p">(</span><span class="n">ref</span> <span class="nb">int</span><span class="p">);</span>
+    <span class="n">glexer</span> <span class="p">:</span> <span class="n">mutable</span> <span class="n">Plexing</span><span class="o">.</span><span class="n">lexer</span> <span class="s1">&#39;te }</span>
+<span class="p">;</span>
+</pre></div>
+</div>
+<p>The visible type of grammars, i.e. the implementation of the abstract
+type <code class="docutils literal"><span class="pre">Grammar.g</span></code>. It is also the implementation of an internal
+grammar type used in the Grammar functorial interface.</p>
+<p>The type parameter <code class="docutils literal"><span class="pre">'te</span></code> is the type of the tokens, which is
+<code class="docutils literal"><span class="pre">(string</span> <span class="pre">*</span> <span class="pre">string)</span></code> for grammars built with <code class="docutils literal"><span class="pre">Grammar.gcreate</span></code>, and
+any type for grammars built with the functorial interface. The field
+<code class="docutils literal"><span class="pre">gtokens</span></code> records the count of usages of each token pattern,
+allowing to call the lexer function <code class="docutils literal"><span class="pre">tok_removing</span></code> (see the
+<a class="reference internal" href="#library-plexing-module"><span class="std std-ref">Plexing module</span></a>) when this count reaches
+zero. The field <code class="docutils literal"><span class="pre">lexer</span></code> is the lexer.</p>
+</div>
+<div class="section" id="entry-type">
+<h4>entry type<a class="headerlink" href="#entry-type" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">type</span> <span class="n">g_entry</span> <span class="s1">&#39;te =</span>
+  <span class="p">{</span> <span class="n">egram</span> <span class="p">:</span> <span class="n">grammar</span> <span class="s1">&#39;te;</span>
+    <span class="n">ename</span> <span class="p">:</span> <span class="n">string</span><span class="p">;</span>
+    <span class="n">elocal</span> <span class="p">:</span> <span class="nb">bool</span><span class="p">;</span>
+    <span class="n">estart</span> <span class="p">:</span> <span class="n">mutable</span> <span class="nb">int</span> <span class="o">-&gt;</span> <span class="n">Stream</span><span class="o">.</span><span class="n">t</span> <span class="s1">&#39;te -&gt; Obj.t;</span>
+    <span class="n">econtinue</span> <span class="p">:</span> <span class="n">mutable</span> <span class="nb">int</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">-&gt;</span> <span class="n">Obj</span><span class="o">.</span><span class="n">t</span> <span class="o">-&gt;</span> <span class="n">Stream</span><span class="o">.</span><span class="n">t</span> <span class="s1">&#39;te -&gt; Obj.t;</span>
+    <span class="n">edesc</span> <span class="p">:</span> <span class="n">mutable</span> <span class="n">g_desc</span> <span class="s1">&#39;te }</span>
+</pre></div>
+</div>
+<p>The visible type for grammar entries, i.e. the implementation of the
+abstract type <code class="docutils literal"><span class="pre">Grammar.Entry.e</span></code> and the type of entries in the
+Grammar functorial interface. Notice that these entry types have a
+type parameter which does not appear in the <code class="docutils literal"><span class="pre">g_entry</span></code> type (the
+<code class="docutils literal"><span class="pre">'te</span></code> parameter is, as for grammars above, the type of the
+tokens). This is due to the specific typing system of the EXTEND
+statement which sometimes must hide real types, the OCaml normal type
+system not being able to type Camlp5 grammars.</p>
+<p>Meaning of the fields:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">egram</span></code> : the associated grammar</li>
+<li><code class="docutils literal"><span class="pre">ename</span></code> : the entry name</li>
+<li><code class="docutils literal"><span class="pre">elocal</span></code> : True if the entry is local (local entries are written
+with a star character “*” by Grammar.Entry.print)</li>
+<li><code class="docutils literal"><span class="pre">estart</span></code> and <code class="docutils literal"><span class="pre">econtinue</span></code> are parsers of the entry used in the
+<a class="reference internal" href="patools.html#grammars-machinery"><span class="std std-ref">Grammar machinery</span></a></li>
+<li><code class="docutils literal"><span class="pre">edesc</span></code> : the entry description (see below)</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ow">and</span> <span class="n">g_desc</span> <span class="s1">&#39;te =</span>
+  <span class="p">[</span> <span class="n">Dlevels</span> <span class="n">of</span> <span class="nb">list</span> <span class="p">(</span><span class="n">g_level</span> <span class="s1">&#39;te)</span>
+  <span class="o">|</span> <span class="n">Dparser</span> <span class="n">of</span> <span class="n">Stream</span><span class="o">.</span><span class="n">t</span> <span class="s1">&#39;te -&gt; Obj.t ]</span>
+</pre></div>
+</div>
+<p>The entry description.</p>
+<ul class="simple">
+<li>The constructor <code class="docutils literal"><span class="pre">Dlevels</span></code> is for entries built by
+<code class="docutils literal"><span class="pre">Grammar.Entry.create</span></code> and extendable by the EXTEND statement.</li>
+<li><code class="docutils literal"><span class="pre">lsuffix</span></code> : the tree composed of the rules starting with <code class="docutils literal"><span class="pre">SELF</span></code></li>
+<li><code class="docutils literal"><span class="pre">lprefix</span></code> : the tree composed of the rules not starting with
+<code class="docutils literal"><span class="pre">SELF</span></code></li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ow">and</span> <span class="n">g_symbol</span> <span class="s1">&#39;te =</span>
+  <span class="p">[</span> <span class="n">Smeta</span> <span class="n">of</span> <span class="n">string</span> <span class="ow">and</span> <span class="nb">list</span> <span class="p">(</span><span class="n">g_symbol</span> <span class="s1">&#39;te) and Obj.t</span>
+  <span class="o">|</span> <span class="n">Snterm</span> <span class="n">of</span> <span class="n">g_entry</span> <span class="s1">&#39;te</span>
+  <span class="o">|</span> <span class="n">Snterml</span> <span class="n">of</span> <span class="n">g_entry</span> <span class="s1">&#39;te and string</span>
+  <span class="o">|</span> <span class="n">Slist0</span> <span class="n">of</span> <span class="n">g_symbol</span> <span class="s1">&#39;te</span>
+  <span class="o">|</span> <span class="n">Slist0sep</span> <span class="n">of</span> <span class="n">g_symbol</span> <span class="s1">&#39;te and g_symbol &#39;</span><span class="n">te</span>
+  <span class="o">|</span> <span class="n">Slist1</span> <span class="n">of</span> <span class="n">g_symbol</span> <span class="s1">&#39;te</span>
+  <span class="o">|</span> <span class="n">Slist1sep</span> <span class="n">of</span> <span class="n">g_symbol</span> <span class="s1">&#39;te and g_symbol &#39;</span><span class="n">te</span>
+  <span class="o">|</span> <span class="n">Sopt</span> <span class="n">of</span> <span class="n">g_symbol</span> <span class="s1">&#39;te</span>
+  <span class="o">|</span> <span class="n">Sflag</span> <span class="n">of</span> <span class="n">g_symbol</span> <span class="s1">&#39;te</span>
+  <span class="o">|</span> <span class="n">Sself</span>
+  <span class="o">|</span> <span class="n">Snext</span>
+  <span class="o">|</span> <span class="n">Stoken</span> <span class="n">of</span> <span class="n">Plexing</span><span class="o">.</span><span class="n">pattern</span>
+  <span class="o">|</span> <span class="n">Stree</span> <span class="n">of</span> <span class="n">g_tree</span> <span class="s1">&#39;te ]</span>
+</pre></div>
+</div>
+<p>Description of a rule symbol.</p>
+<ul class="simple">
+<li>The constructor <code class="docutils literal"><span class="pre">Smeta</span></code> is used by the extensions <a class="reference internal" href="patools.html#grammars-extensions-fold0-and-fold1"><span class="std std-ref">FOLD0 and
+FOLD1</span></a></li>
+<li>The constructor <code class="docutils literal"><span class="pre">Snterm</span></code> is the representation of a non-terminal
+(a call to another entry)</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Snterml</span></code> is the representation of a non-terminal
+at some given level</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Slist0</span></code> is the representation of the symbol LIST0</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Slist0sep</span></code> is the representation of the symbol
+LIST0 followed by SEP</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Slist1</span></code> is the representation of the symbol LIST1</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Slist1sep</span></code> is the representation of the symbol
+LIST1 followed by SEP</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Sopt</span></code> is the representation of the symbol OPT</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Sflag</span></code> is the representation of the symbol FLAG</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Sself</span></code> is the representation of the symbol SELF</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Snext</span></code> is the representation of the symbol NEXT</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Stoken</span></code> is the representation of a token pattern</li>
+<li>The constructor <code class="docutils literal"><span class="pre">Stree</span></code> is the representation of a anonymous rule
+list (between brackets).</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ow">and</span> <span class="n">g_action</span> <span class="o">=</span> <span class="n">Obj</span><span class="o">.</span><span class="n">t</span>
+</pre></div>
+</div>
+<p>The semantic action, represented by a type <code class="docutils literal"><span class="pre">Obj.t</span></code> due to the
+specific typing of the EXTEND statement (the semantic action being
+able to be any function type, depending on the rule).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ow">and</span> <span class="n">g_tree</span> <span class="s1">&#39;te =</span>
+  <span class="p">[</span> <span class="n">Node</span> <span class="n">of</span> <span class="n">g_node</span> <span class="s1">&#39;te</span>
+  <span class="o">|</span> <span class="n">LocAct</span> <span class="n">of</span> <span class="n">g_action</span> <span class="ow">and</span> <span class="nb">list</span> <span class="n">g_action</span>
+  <span class="o">|</span> <span class="n">DeadEnd</span> <span class="p">]</span>
+<span class="ow">and</span> <span class="n">g_node</span> <span class="s1">&#39;te =</span>
+  <span class="p">{</span> <span class="n">node</span> <span class="p">:</span> <span class="n">g_symbol</span> <span class="s1">&#39;te; son : g_tree &#39;</span><span class="n">te</span><span class="p">;</span> <span class="n">brother</span> <span class="p">:</span> <span class="n">g_tree</span> <span class="s1">&#39;te }</span>
+<span class="p">;</span>
+</pre></div>
+</div>
+<p>The types of tree and tree nodes, representing a list of factorized
+rules in an entry level.</p>
+<ul class="simple">
+<li>The constructor <code class="docutils literal"><span class="pre">Node</span></code> is a representation of a symbol (field
+<code class="docutils literal"><span class="pre">node</span></code>), the rest of the rule tree (field <code class="docutils literal"><span class="pre">son</span></code>), and the
+following node, if this node fails (field <code class="docutils literal"><span class="pre">brother</span></code>)</li>
+<li>The constructor <code class="docutils literal"><span class="pre">LocAct</span></code> is the representation of an action, which
+is a function having all pattern variables of the rule as parameters
+and returning the rule semantic action.  The list of actions in the
+constructor correspond to possible previous actions when it happens
+that rules are masked by other rules.</li>
+<li>The constructor <code class="docutils literal"><span class="pre">DeadEnd</span></code> is a representation of a nodes where the
+tree fails or is in syntax error.</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">type</span> <span class="n">position</span> <span class="o">=</span>
+  <span class="p">[</span> <span class="n">First</span>
+  <span class="o">|</span> <span class="n">Last</span>
+  <span class="o">|</span> <span class="n">Before</span> <span class="n">of</span> <span class="n">string</span>
+  <span class="o">|</span> <span class="n">After</span> <span class="n">of</span> <span class="n">string</span>
+  <span class="o">|</span> <span class="n">Level</span> <span class="n">of</span> <span class="n">string</span> <span class="p">]</span>
+<span class="p">;</span>
+</pre></div>
+</div>
+<p>The type of position where an entry extension takes place.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">First</span></code> : corresponds to FIRST</li>
+<li><code class="docutils literal"><span class="pre">Last</span></code> : corresponds to LAST</li>
+<li><code class="docutils literal"><span class="pre">Before</span> <span class="pre">s</span></code> : corresponds to BEFORE “s”</li>
+<li><code class="docutils literal"><span class="pre">After</span> <span class="pre">s</span></code> : corresponds to AFTER “s”</li>
+<li><code class="docutils literal"><span class="pre">Level</span> <span class="pre">s</span></code> : corresponds to LEVEL “s”</li>
+</ul>
+<p>The module contains other definitions but for internal use.</p>
+</div>
+</div>
+<div class="section" id="grammar-module">
+<span id="library-grammar-module"></span><h3>Grammar module<a class="headerlink" href="#grammar-module" title="Permalink to this headline">¶</a></h3>
+<p>Extensible grammars.</p>
+<p>This module implements the Camlp5 extensible grammars system.
+Grammars entries can be extended using the <code class="docutils literal"><span class="pre">EXTEND</span></code>
+statement, added by loading the Camlp5 <code class="docutils literal"><span class="pre">pa_extend.cmo</span></code>
+file.</p>
+<div class="section" id="main-types-and-values">
+<h4>main types and values<a class="headerlink" href="#main-types-and-values" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">type</span> <span class="pre">g</span> <span class="pre">=</span> <span class="pre">'abstract;</span></code></p>
+<p>The type of grammars, holding entries.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">gcreate</span> <span class="pre">:</span> <span class="pre">Plexing.lexer</span> <span class="pre">(string</span> <span class="pre">*</span> <span class="pre">string)</span> <span class="pre">-&gt;</span> <span class="pre">g;</span></code></p>
+<p>Create a new grammar, without keywords, using the given lexer.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">tokens</span> <span class="pre">:</span> <span class="pre">g</span> <span class="pre">-&gt;</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">list</span> <span class="pre">(string</span> <span class="pre">*</span> <span class="pre">int);</span></code></p>
+<p>Given a grammar and a token pattern constructor, returns the list of
+the corresponding values currently used in all entries of this grammar.
+The integer is the number of times this pattern value is used.
+Examples:</p>
+<ul class="simple">
+<li>The call: <code class="docutils literal"><span class="pre">Grammar.tokens</span> <span class="pre">g</span> <span class="pre">&quot;&quot;</span></code> returns the keywords list.</li>
+<li>The call: <code class="docutils literal"><span class="pre">Grammar.tokens</span> <span class="pre">g</span> <span class="pre">&quot;IDENT&quot;</span></code> returns the list of all
+usages of the pattern “IDENT” in the <code class="docutils literal"><span class="pre">EXTEND</span></code> statements.</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">glexer</span> <span class="pre">:</span> <span class="pre">g</span> <span class="pre">-&gt;</span> <span class="pre">Plexing.lexer</span> <span class="pre">token;</span></code></p>
+<p>Return the lexer used by the grammar</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">type</span> <span class="pre">parsable</span> <span class="pre">=</span> <span class="pre">'abstract;</span></code>
+<code class="docutils literal"><span class="pre">value</span> <span class="pre">parsable</span> <span class="pre">:</span> <span class="pre">g</span> <span class="pre">-&gt;</span> <span class="pre">Stream.t</span> <span class="pre">char</span> <span class="pre">-&gt;</span> <span class="pre">parsable;</span></code></p>
+<p>Type and value allowing to keep the same token stream between
+several calls of entries of the same grammar, to prevent loss of
+tokens. To be used with <code class="docutils literal"><span class="pre">Entry.parse_parsable</span></code> below</p>
+</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">Entry</span> <span class="o">=</span>
+  <span class="n">sig</span>
+    <span class="nb">type</span> <span class="n">e</span> <span class="s1">&#39;a = &#39;</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">value</span> <span class="n">create</span> <span class="p">:</span> <span class="n">g</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="o">-&gt;</span> <span class="n">e</span> <span class="s1">&#39;a;</span>
+    <span class="n">value</span> <span class="n">parse</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; Stream.t char -&gt; &#39;</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">value</span> <span class="n">parse_all</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; Stream.t char -&gt; list &#39;</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">value</span> <span class="n">parse_token_stream</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; Stream.t token -&gt; &#39;</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">value</span> <span class="n">parse_parsable</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; parsable -&gt; &#39;</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">value</span> <span class="n">name</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; string;</span>
+    <span class="n">value</span> <span class="n">of_parser</span> <span class="p">:</span> <span class="n">g</span> <span class="o">-&gt;</span> <span class="n">string</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">Stream</span><span class="o">.</span><span class="n">t</span> <span class="n">token</span> <span class="o">-&gt;</span> <span class="s1">&#39;a) -&gt; e &#39;</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">value</span> <span class="nb">print</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; unit;</span>
+    <span class="n">value</span> <span class="n">find</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; string -&gt; e Obj.t;</span>
+    <span class="n">external</span> <span class="n">obj</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; Gramext.g_entry token = &quot;</span><span class="si">%i</span><span class="s1">dentity&quot;;</span>
+  <span class="n">end</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Module to handle entries.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.e</span></code> : type for entries returning values of type
+<code class="docutils literal"><span class="pre">'a</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.create</span> <span class="pre">g</span> <span class="pre">n</span></code> : creates a new entry named <code class="docutils literal"><span class="pre">n</span></code> in
+the grammar <code class="docutils literal"><span class="pre">g</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.parse</span> <span class="pre">e</span></code> : returns the stream parser of the entry
+<code class="docutils literal"><span class="pre">e</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.parse_all</span> <span class="pre">e</span></code> : returns the stream parser returning
+all possible values while parsing with the entry <code class="docutils literal"><span class="pre">e</span></code>: may return
+more than one value when the parsing algorithm is
+<code class="docutils literal"><span class="pre">Grammar.Backtracking</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.parse_token_stream</span> <span class="pre">e</span></code> : returns the token stream
+parser of the entry <code class="docutils literal"><span class="pre">e</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.parse_parsable</span> <span class="pre">e</span></code> : returns the parsable parser of
+the entry <code class="docutils literal"><span class="pre">e</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.name</span> <span class="pre">e</span></code> : returns the name of the entry <code class="docutils literal"><span class="pre">e</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.of_parser</span> <span class="pre">g</span> <span class="pre">n</span> <span class="pre">p</span></code> : makes an entry from a token
+stream parser.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.print</span> <span class="pre">e</span></code> : displays the entry <code class="docutils literal"><span class="pre">e</span></code> using
+<code class="docutils literal"><span class="pre">Format</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.find</span> <span class="pre">e</span> <span class="pre">s</span></code> : finds the entry named <code class="docutils literal"><span class="pre">s</span></code> in the
+rules of <code class="docutils literal"><span class="pre">e</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Grammar.Entry.obj</span> <span class="pre">e</span></code> : converts an entry into a
+<code class="docutils literal"><span class="pre">Gramext.g_entry</span></code> allowing to see what it holds.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">of_entry</span> <span class="pre">:</span> <span class="pre">Entry.e</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">g;</span></code></p>
+<p>Return the grammar associated with an entry.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="printing-grammar-entries">
+<h4>printing grammar entries<a class="headerlink" href="#printing-grammar-entries" title="Permalink to this headline">¶</a></h4>
+<p>The function <code class="docutils literal"><span class="pre">Grammar.Entry.print</span></code> displays the current
+contents of an entry. Interesting for debugging, to look at the
+result of a syntax extension, to see the names of the levels.</p>
+<p>Try, for example, in the OCaml toplevel:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Grammar</span><span class="o">.</span><span class="n">Entry</span><span class="o">.</span><span class="n">print</span> <span class="n">Format</span><span class="o">.</span><span class="n">std_formatter</span> <span class="n">Pcaml</span><span class="o">.</span><span class="n">expr</span>
+</pre></div>
+</div>
+<p>The display does not include the patterns nor the semantic actions,
+whose sources are not recorded in the grammar entries data.</p>
+<p>Moreover, the local entries (not specified in the GLOBAL indicator
+of the EXTEND statement) are indicated with a star (<code class="docutils literal"><span class="pre">*</span></code>) to
+inform that they are not directly accessible.</p>
+</div>
+<div class="section" id="clearing-grammars-and-entries">
+<h4>clearing grammars and entries<a class="headerlink" href="#clearing-grammars-and-entries" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">Unsafe</span> <span class="p">:</span>
+  <span class="n">sig</span>
+    <span class="n">value</span> <span class="n">gram_reinit</span> <span class="p">:</span> <span class="n">g</span> <span class="o">-&gt;</span> <span class="n">Plexing</span><span class="o">.</span><span class="n">lexer</span> <span class="n">token</span> <span class="o">-&gt;</span> <span class="n">unit</span><span class="p">;</span>
+    <span class="n">value</span> <span class="n">clear_entry</span> <span class="p">:</span> <span class="n">Entry</span><span class="o">.</span><span class="n">e</span> <span class="s1">&#39;a -&gt; unit;</span>
+  <span class="n">end</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Module for clearing grammars and entries. To be manipulated with care,
+because: 1) reinitializing a grammar destroys all tokens and there may
+be problems with the associated lexer if there are keywords; 2)
+clearing an entry does not destroy the tokens used only by itself.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Grammar.Unsafe.reinit_gram</span> <span class="pre">g</span> <span class="pre">lex</span></code> removes the tokens of the
+grammar and sets <code class="docutils literal"><span class="pre">lex</span></code> as a new lexer for <code class="docutils literal"><span class="pre">g</span></code>. Warning: the
+lexer itself is not reinitialized.</li>
+<li><code class="docutils literal"><span class="pre">Grammar.Unsafe.clear_entry</span> <span class="pre">e</span></code> removes all rules of the entry
+<code class="docutils literal"><span class="pre">e</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="scan-entries">
+<h4>scan entries<a class="headerlink" href="#scan-entries" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">print_entry</span> <span class="pre">:</span> <span class="pre">Format.formatter</span> <span class="pre">-&gt;</span> <span class="pre">Gramext.g_entry</span> <span class="pre">'te</span> <span class="pre">-&gt;</span> <span class="pre">unit;</span></code></p>
+<p>General printer for all kinds of entries (obj entries).</p>
+</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">value</span> <span class="n">iter_entry</span> <span class="p">:</span>
+  <span class="p">(</span><span class="n">Gramext</span><span class="o">.</span><span class="n">g_entry</span> <span class="s1">&#39;te -&gt; unit) -&gt; Gramext.g_entry &#39;</span><span class="n">te</span> <span class="o">-&gt;</span> <span class="n">unit</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Grammar.iter_entry</span> <span class="pre">f</span> <span class="pre">e</span></code> applies <code class="docutils literal"><span class="pre">f</span></code> to the entry <code class="docutils literal"><span class="pre">e</span></code> and
+transitively all entries called by <code class="docutils literal"><span class="pre">e</span></code>. The order in which the
+entries are passed to <code class="docutils literal"><span class="pre">f</span></code> is the order they appear in each
+entry. Each entry is passed only once.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">fold_entry</span> <span class="pre">:</span> <span class="pre">(Gramext.g_entry</span> <span class="pre">'te</span> <span class="pre">-&gt;</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">'a)</span> <span class="pre">-&gt;</span> <span class="pre">Gramext.g_entry</span> <span class="pre">'te</span> <span class="pre">-&gt;</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">'a;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Grammar.fold_entry</span> <span class="pre">f</span> <span class="pre">e</span> <span class="pre">init</span></code> computes <code class="docutils literal"><span class="pre">(f</span> <span class="pre">eN</span> <span class="pre">..</span> <span class="pre">(f</span>
+<span class="pre">e2</span> <span class="pre">(f</span> <span class="pre">e1</span> <span class="pre">init)))</span></code>, where <code class="docutils literal"><span class="pre">e1</span> <span class="pre">..</span> <span class="pre">eN</span></code> are <code class="docutils literal"><span class="pre">e</span></code>
+and transitively all entries called by <code class="docutils literal"><span class="pre">e</span></code>.  The order in
+which the entries are passed to <code class="docutils literal"><span class="pre">f</span></code> is the order they
+appear in each entry. Each entry is passed only once.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="parsing-algorithm">
+<h4>parsing algorithm<a class="headerlink" href="#parsing-algorithm" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">type</span> <span class="n">parse_algorithm</span> <span class="o">=</span> <span class="n">Gramext</span><span class="o">.</span><span class="n">parse_algorithm</span> <span class="o">==</span>
+  <span class="p">[</span> <span class="n">Imperative</span> <span class="o">|</span> <span class="n">Backtracking</span> <span class="o">|</span> <span class="n">DefaultAlgorithm</span> <span class="p">]</span>
+<span class="p">;</span>
+</pre></div>
+</div>
+<p>Type of algorithm used in grammar entries.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">Imperative</span></code>: use imperative streams</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Functional</span></code>: use functional streams with limited backtracking</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">Backtracking</span></code>: use functional streams with full backtracking</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">DefaultAlgorithm</span></code>: use the general default algorithm set by the
+function <code class="docutils literal"><span class="pre">set_default_algorithm</span></code> below, or through the environment
+variable <code class="docutils literal"><span class="pre">CAMLP5PARAM</span></code>.</p>
+<p>The default, when a grammar is created, is <code class="docutils literal"><span class="pre">DefaultAlgorithm</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">set_algorithm</span> <span class="pre">:</span> <span class="pre">g</span> <span class="pre">-&gt;</span> <span class="pre">parse_algorithm</span> <span class="pre">-&gt;</span> <span class="pre">unit;</span></code></p>
+<p>Set the parsing algorithm for all entries of a given grammar.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">set_default_algorithm</span> <span class="pre">:</span> <span class="pre">parse_algorithm</span> <span class="pre">-&gt;</span> <span class="pre">unit;</span></code></p>
+<p>Set the default parsing algorithm for all grammars.  If the
+environment variable CAMLP5PARAM contains “b”, the default is
+<code class="docutils literal"><span class="pre">Backtracking</span></code>; if it contains ‘f’, the default is
+<code class="docutils literal"><span class="pre">Functional</span></code>; if it contains ‘p’, the default is
+<code class="docutils literal"><span class="pre">Predictive</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">default_algorithm</span> <span class="pre">:</span> <span class="pre">unit</span> <span class="pre">-&gt;</span> <span class="pre">parse_algorithm;</span></code></p>
+<p>Return the current default algorithm.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">backtrack_stalling_limit</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">int;</span></code></p>
+<p>Limitation of backtracking to prevent stalling in case of syntax
+error. In backtracking algorithm, when there is a syntax error,
+the parsing continues trying to find another solution. It some
+grammars, it can be very long before checking all possibilities.
+This number limits the number of tokens tests after a backtrack.
+(The number of tokens tests is reset to zero when the token stream
+overtakes the last reached token.) The default is 10000. If set
+to 0, there is no limit. Can be set by the environment variable
+CAMLP5PARAM by “l=value”.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">backtrack_parse</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">bool;</span></code></p>
+<p>Deprecated since 2017-06-06; rather use “set_default_algorithm
+Backtracking”.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="functorial-interface">
+<h4>functorial interface<a class="headerlink" href="#functorial-interface" title="Permalink to this headline">¶</a></h4>
+<p>Alternative for grammar use. Grammars are not Ocaml values:
+there is no type for them. Modules generated preserve the rule “an
+entry cannot call an entry of another grammar” by normal OCaml
+typing.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="nb">type</span> <span class="n">GLexerType</span> <span class="o">=</span>
+  <span class="n">sig</span>
+    <span class="nb">type</span> <span class="n">te</span> <span class="o">=</span> <span class="s1">&#39;x;</span>
+    <span class="n">value</span> <span class="n">lexer</span> <span class="p">:</span> <span class="n">Plexing</span><span class="o">.</span><span class="n">lexer</span> <span class="n">te</span><span class="p">;</span>
+  <span class="n">end</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The input signature for the functor <code class="docutils literal"><span class="pre">Grammar.GMake</span></code>: <code class="docutils literal"><span class="pre">te</span></code> is the
+type of the tokens.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="nb">type</span> <span class="n">S</span> <span class="o">=</span>
+  <span class="n">sig</span>
+    <span class="nb">type</span> <span class="n">te</span> <span class="o">=</span> <span class="s1">&#39;x;</span>
+    <span class="nb">type</span> <span class="n">parsable</span> <span class="o">=</span> <span class="s1">&#39;x;</span>
+    <span class="n">value</span> <span class="n">parsable</span> <span class="p">:</span> <span class="n">Stream</span><span class="o">.</span><span class="n">t</span> <span class="n">char</span> <span class="o">-&gt;</span> <span class="n">parsable</span><span class="p">;</span>
+    <span class="n">value</span> <span class="n">tokens</span> <span class="p">:</span> <span class="n">string</span> <span class="o">-&gt;</span> <span class="nb">list</span> <span class="p">(</span><span class="n">string</span> <span class="o">*</span> <span class="nb">int</span><span class="p">);</span>
+    <span class="n">value</span> <span class="n">glexer</span> <span class="p">:</span> <span class="n">Plexing</span><span class="o">.</span><span class="n">lexer</span> <span class="n">te</span><span class="p">;</span>
+    <span class="n">value</span> <span class="n">set_algorithm</span> <span class="p">:</span> <span class="n">parse_algorithm</span> <span class="o">-&gt;</span> <span class="n">unit</span><span class="p">;</span>
+    <span class="n">module</span> <span class="n">Entry</span> <span class="p">:</span>
+      <span class="n">sig</span>
+        <span class="nb">type</span> <span class="n">e</span> <span class="s1">&#39;a = &#39;</span><span class="n">y</span><span class="p">;</span>
+        <span class="n">value</span> <span class="n">create</span> <span class="p">:</span> <span class="n">string</span> <span class="o">-&gt;</span> <span class="n">e</span> <span class="s1">&#39;a;</span>
+        <span class="n">value</span> <span class="n">parse</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; parsable -&gt; &#39;</span><span class="n">a</span><span class="p">;</span>
+        <span class="n">value</span> <span class="n">parse_token_stream</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; Stream.t te -&gt; &#39;</span><span class="n">a</span><span class="p">;</span>
+        <span class="n">value</span> <span class="n">name</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; string;</span>
+        <span class="n">value</span> <span class="n">of_parser</span> <span class="p">:</span> <span class="n">string</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">Stream</span><span class="o">.</span><span class="n">t</span> <span class="n">te</span> <span class="o">-&gt;</span> <span class="s1">&#39;a) -&gt; e &#39;</span><span class="n">a</span><span class="p">;</span>
+        <span class="n">value</span> <span class="nb">print</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; unit;</span>
+        <span class="n">external</span> <span class="n">obj</span> <span class="p">:</span> <span class="n">e</span> <span class="s1">&#39;a -&gt; Gramext.g_entry te = &quot;</span><span class="si">%i</span><span class="s1">dentity&quot;;</span>
+      <span class="n">end</span><span class="p">;</span>
+    <span class="n">module</span> <span class="n">Unsafe</span> <span class="p">:</span>
+      <span class="n">sig</span>
+        <span class="n">value</span> <span class="n">gram_reinit</span> <span class="p">:</span> <span class="n">Plexing</span><span class="o">.</span><span class="n">lexer</span> <span class="n">te</span> <span class="o">-&gt;</span> <span class="n">unit</span><span class="p">;</span>
+        <span class="n">value</span> <span class="n">clear_entry</span> <span class="p">:</span> <span class="n">Entry</span><span class="o">.</span><span class="n">e</span> <span class="s1">&#39;a -&gt; unit;</span>
+      <span class="n">end</span><span class="p">;</span>
+  <span class="n">end</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Signature type of the functor <code class="docutils literal"><span class="pre">Grammar.GMake</span></code>. The types and
+functions are almost the same than in generic interface, but:</p>
+<ul class="simple">
+<li>Grammars are not values. Functions holding a grammar as parameter do
+not have this parameter yet.</li>
+<li>The type <code class="docutils literal"><span class="pre">parsable</span></code> is used in function <code class="docutils literal"><span class="pre">parse</span></code> instead of the
+char stream, avoiding the possible loss of tokens.</li>
+<li>The type of tokens (expressions and patterns) can be any type
+(instead of (string * string)); the module parameter must specify a
+way to show them as (string * string).</li>
+<li><code class="docutils literal"><span class="pre">module</span> <span class="pre">GMake</span> <span class="pre">(L</span> <span class="pre">:</span> <span class="pre">GLexerType)</span> <span class="pre">:</span> <span class="pre">S</span> <span class="pre">with</span> <span class="pre">type</span> <span class="pre">te</span> <span class="pre">=</span> <span class="pre">L.te;</span></code></li>
+</ul>
+</div>
+<div class="section" id="grammar-flags">
+<h4>grammar flags<a class="headerlink" href="#grammar-flags" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">skip_item</span> <span class="pre">:</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">'a;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Grammar.skip_item</span> <span class="pre">x</span></code> can be called in a semantic action of
+a grammar rule to ask the grammar to skip that item if it is
+called in a list (LIST0 or LIST1). The function returns the item
+itself (for typing reasons) but its value is ignored.  This
+function is used to allow IFDEF and IFNDEF for cases of
+constructor declarations and pattern matchings.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">error_verbose</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">bool;</span></code></p>
+<p>Flag for displaying more information in case of parsing error;
+default = <code class="docutils literal"><span class="pre">False</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">warning_verbose</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">bool;</span></code></p>
+<p>Flag for displaying warnings while extension; default =
+<code class="docutils literal"><span class="pre">True</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">strict_parsing</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">bool;</span></code></p>
+<p>Flag to apply strict parsing, without trying to recover errors;
+default = <code class="docutils literal"><span class="pre">False</span></code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="diff-module">
+<h3>Diff module<a class="headerlink" href="#diff-module" title="Permalink to this headline">¶</a></h3>
+<p>Differences between two arrays. Used in Camlp5 sources, but can
+be used for other applications, independantly from Camlp5 stuff.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>value f : array &#39;a -&gt; array &#39;a -&gt; (array bool * array bool);``&lt;/dt&gt;
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Diff.f</span> <span class="pre">a1</span> <span class="pre">a2</span></code> returns a pair of boolean arrays <code class="docutils literal"><span class="pre">(d1,</span> <span class="pre">d2)</span></code>.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">d1</span></code> has the same size as <code class="docutils literal"><span class="pre">a1</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">d2</span></code> has the same size as <code class="docutils literal"><span class="pre">a2</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">d1.(i)</span></code> is <code class="docutils literal"><span class="pre">True</span></code> if <code class="docutils literal"><span class="pre">a1.(i)</span></code> has no corresponding value in
+<code class="docutils literal"><span class="pre">a2</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">d2.(i)</span></code> is <code class="docutils literal"><span class="pre">True</span></code> if <code class="docutils literal"><span class="pre">a2.(i)</span></code> has no corresponding value in
+<code class="docutils literal"><span class="pre">a1</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">d1</span></code> and <code class="docutils literal"><span class="pre">d2</span></code> have the same number of values equal to <code class="docutils literal"><span class="pre">False</span></code>.</li>
+</ul>
+<p>Can be used, e.g., to write the <code class="docutils literal"><span class="pre">diff</span></code> program (comparison of two
+files), the input arrays being the array of lines of each file.</p>
+<p>Can be used also to compare two strings (they must have been exploded
+into arrays of chars), or two DNA strings, and so on.</p>
+</div>
+<div class="section" id="extfold-module">
+<h3>Extfold module<a class="headerlink" href="#extfold-module" title="Permalink to this headline">¶</a></h3>
+<p>Module internally used to make the symbols <a class="reference internal" href="patools.html#grammars-extensions-fold0-and-fold1"><span class="std std-ref">FOLD0 and
+FOLD1</span></a> work in the EXTEND
+statement + extension <code class="docutils literal"><span class="pre">pa_extfold.cmo</span></code>.</p>
+</div>
+<div class="section" id="extfun-module">
+<h3>Extfun module<a class="headerlink" href="#extfun-module" title="Permalink to this headline">¶</a></h3>
+<p>Extensible functions.</p>
+<p>This module implements pattern matching extensible functions which
+work with the parsing kit <code class="docutils literal"><span class="pre">pa_extfun.cmo</span></code>, the syntax of
+an extensible function being:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">extfun</span> <span class="n">e</span> <span class="k">with</span> <span class="p">[</span> <span class="n">pattern_matching</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>See chapter : <a class="reference internal" href="langext.html#extfun"><span class="std std-ref">Extensible functions</span></a>.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">type</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">'b</span> <span class="pre">=</span> <span class="pre">'x;</span></code></li>
+</ul>
+<p>The type of the extensible functions of type <code class="docutils literal"><span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">'b</span></code>.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">empty</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">'b;</span></code></p>
+<p>Empty extensible function.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">apply</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">'b</span> <span class="pre">-&gt;</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">'b;</span></code></p>
+<p>Apply an extensible function.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">exception</span> <span class="pre">Failure;</span></code></p>
+<p>Match failure while applying an extensible function.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">print</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">'b</span> <span class="pre">-&gt;</span> <span class="pre">unit;</span></code></p>
+<p>Print patterns in the order they are recorded in the data
+structure.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="eprinter-module">
+<span id="library-eprinter-module"></span><h3>Eprinter module<a class="headerlink" href="#eprinter-module" title="Permalink to this headline">¶</a></h3>
+<p>This module allows creation of printers, apply them and clear them. It
+is also internally used by the <code class="docutils literal"><span class="pre">EXTEND_PRINTER</span></code> statement.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">type</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">=</span> <span class="pre">'abstract;</span></code></p>
+<p>Printer type, to print values of type <code class="docutils literal"><span class="pre">'a</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">type</span> <span class="pre">pr_context</span> <span class="pre">=</span> <span class="pre">Pprintf.pr_context;</span></code></p>
+<p>Printing context.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">make</span> <span class="pre">:</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">'a;</span></code></p>
+<p>Builds a printer. The string parameter is used in error
+messages. The printer is created empty and can be extended with
+the <code class="docutils literal"><span class="pre">EXTEND_PRINTER</span></code> statement.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">apply</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">pr_context</span> <span class="pre">-&gt;</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">string;</span></code></p>
+<p>Applies a printer, returning the printed string of the
+parameter.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">apply_level</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">pr_context</span> <span class="pre">-&gt;</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">string;</span></code></p>
+<p>Applies a printer at some specific level. Raises <code class="docutils literal"><span class="pre">Failure</span></code>
+if the given level does not exist.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">clear</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">unit;</span></code></p>
+<p>Clears a printer, removing all its levels and rules.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">print</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">unit;</span></code></p>
+<p>Print printer patterns, in the order they are recorded, for
+debugging purposes.</p>
+</li>
+</ul>
+<p>Some other types and functions exist, for internal use.</p>
+</div>
+<div class="section" id="fstream-module">
+<h3>Fstream module<a class="headerlink" href="#fstream-module" title="Permalink to this headline">¶</a></h3>
+<p>This module implement functional streams and parsers together with
+backtracking parsers.</p>
+<p>To be used with syntax <code class="docutils literal"><span class="pre">pa_fstream.cmo</span></code>. The syntax is:</p>
+<ul class="simple">
+<li>stream: <code class="docutils literal"><span class="pre">fstream</span> <span class="pre">[:</span> <span class="pre">...</span> <span class="pre">:]</span></code></li>
+<li>functional parser: <code class="docutils literal"><span class="pre">fparser</span> <span class="pre">[</span> <span class="pre">[:</span> <span class="pre">...</span> <span class="pre">:]</span> <span class="pre">-&gt;</span> <span class="pre">...</span> <span class="pre">|</span> <span class="pre">...</span> <span class="pre">]</span></code></li>
+<li>backtracking parser: <code class="docutils literal"><span class="pre">bparser</span> <span class="pre">[</span> <span class="pre">[:</span> <span class="pre">...</span> <span class="pre">:]</span> <span class="pre">-&gt;</span> <span class="pre">...</span> <span class="pre">|</span> <span class="pre">...</span> <span class="pre">]</span></code></li>
+</ul>
+<p>Functional parsers are of type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Fstream</span><span class="o">.</span><span class="n">t</span> <span class="s1">&#39;a -&gt; option (&#39;</span><span class="n">b</span> <span class="o">*</span> <span class="n">Fstream</span><span class="o">.</span><span class="n">t</span> <span class="s1">&#39;a)</span>
+</pre></div>
+</div>
+<p>Backtracking parsers are of type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Fstream</span><span class="o">.</span><span class="n">t</span> <span class="s1">&#39;a -&gt; option (&#39;</span><span class="n">b</span> <span class="o">*</span> <span class="n">Fstream</span><span class="o">.</span><span class="n">t</span> <span class="s1">&#39;a * Fstream.kont &#39;</span><span class="n">a</span> <span class="s1">&#39;b)</span>
+</pre></div>
+</div>
+<p>Functional parsers use limited backtrack, i.e if a rule fails, the
+next rule is tested with the initial stream; limited because in the
+case of a rule with two consecutive symbols <code class="docutils literal"><span class="pre">a</span></code> and
+<code class="docutils literal"><span class="pre">b</span></code>, if <code class="docutils literal"><span class="pre">b</span></code> fails, the rule fails: there is no try
+with the next rule of <code class="docutils literal"><span class="pre">a</span></code>.</p>
+<blockquote>
+<div>Backtracking parsers have full backtrack. If a rule fails, the next
+case of the previous rule is tested.</div></blockquote>
+<div class="section" id="functional-streams">
+<h4>Functional streams<a class="headerlink" href="#functional-streams" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">type</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">=</span> <span class="pre">'x;</span></code></p>
+<p>The type of ‘a functional streams.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">from</span> <span class="pre">:</span> <span class="pre">(int</span> <span class="pre">-&gt;</span> <span class="pre">option</span> <span class="pre">'a)</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">'a;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Fstream.from</span> <span class="pre">f</span></code> returns a stream built from the
+function <code class="docutils literal"><span class="pre">f</span></code>.  To create a new stream element, the
+function <code class="docutils literal"><span class="pre">f</span></code> is called with the current stream
+count. The user function <code class="docutils literal"><span class="pre">f</span></code> must return either
+<code class="docutils literal"><span class="pre">Some</span> <span class="pre">&lt;value&gt;</span></code> for a value or <code class="docutils literal"><span class="pre">None</span></code> to
+specify the end of the stream.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">of_list</span> <span class="pre">:</span> <span class="pre">list</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">'a;</span></code></p>
+<p>Return the stream holding the elements of the list in the same
+order.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">of_string</span> <span class="pre">:</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">char;</span></code></p>
+<p>Return the stream of the characters of the string parameter.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">of_channel</span> <span class="pre">:</span> <span class="pre">in_channel</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">char;</span></code></p>
+<p>Return the stream of the characters read from the input channel.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">iter</span> <span class="pre">:</span> <span class="pre">('a</span> <span class="pre">-&gt;</span> <span class="pre">unit)</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">unit;</span></code></p>
+<p><code class="docutils literal"><span class="pre">Fstream.iter</span> <span class="pre">f</span> <span class="pre">s</span></code> scans the whole stream s, applying
+function <code class="docutils literal"><span class="pre">f</span></code> in turn to each stream element
+encountered.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">next</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">option</span> <span class="pre">('a</span> <span class="pre">*</span> <span class="pre">t</span> <span class="pre">'a);</span></code></p>
+<p>Return <code class="docutils literal"><span class="pre">Some</span> <span class="pre">(a,</span> <span class="pre">s)</span></code> where <code class="docutils literal"><span class="pre">a</span></code> is the first
+element of the stream and <code class="docutils literal"><span class="pre">s</span></code> the remaining stream, or
+<code class="docutils literal"><span class="pre">None</span></code> if the stream is empty.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">empty</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">option</span> <span class="pre">(unit</span> <span class="pre">*</span> <span class="pre">t</span> <span class="pre">'a);</span></code></p>
+<p>Return <code class="docutils literal"><span class="pre">Some</span> <span class="pre">((),</span> <span class="pre">s)</span></code> if the stream is empty where
+<code class="docutils literal"><span class="pre">s</span></code> is itself, else <code class="docutils literal"><span class="pre">None</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">count</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">int;</span></code></p>
+<p>Return the current count of the stream elements, i.e. the number
+of the stream elements discarded.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">count_unfrozen</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">int;</span></code></p>
+<p>Return the number of unfrozen elements in the beginning of the
+stream; useful to determine the position of a parsing error (longest
+path).</p>
+</li>
+</ul>
+</div>
+<div class="section" id="backtracking-parsers">
+<h4>Backtracking parsers<a class="headerlink" href="#backtracking-parsers" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">type</span> <span class="pre">kont</span> <span class="pre">'a</span> <span class="pre">'b</span> <span class="pre">=</span> <span class="pre">[</span> <span class="pre">K</span> <span class="pre">of</span> <span class="pre">unit</span> <span class="pre">-&gt;</span> <span class="pre">option</span> <span class="pre">('b</span> <span class="pre">*</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">*</span> <span class="pre">kont</span> <span class="pre">'a</span> <span class="pre">'b)</span> <span class="pre">];</span></code></p>
+<p>The type of continuation of a backtracking parser.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">type</span> <span class="pre">bp</span> <span class="pre">'a</span> <span class="pre">'b</span> <span class="pre">=</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">option</span> <span class="pre">('b</span> <span class="pre">*</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">*</span> <span class="pre">kont</span> <span class="pre">'a</span> <span class="pre">'b);</span></code></p>
+<p>The type of a backtracking parser.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">bcontinue</span> <span class="pre">:</span> <span class="pre">kont</span> <span class="pre">'a</span> <span class="pre">'b</span> <span class="pre">-&gt;</span> <span class="pre">option</span> <span class="pre">('b</span> <span class="pre">*</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">*</span> <span class="pre">kont</span> <span class="pre">'a</span> <span class="pre">'b);</span></code></p>
+<p><code class="docutils literal"><span class="pre">bcontinue</span> <span class="pre">k</span></code> return the next solution of a backtracking
+parser.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">bparse_all</span> <span class="pre">:</span> <span class="pre">bp</span> <span class="pre">'a</span> <span class="pre">'b</span> <span class="pre">-&gt;</span> <span class="pre">t</span> <span class="pre">'a</span> <span class="pre">-&gt;</span> <span class="pre">list</span> <span class="pre">'b;</span></code></p>
+<p><code class="docutils literal"><span class="pre">bparse_all</span> <span class="pre">p</span> <span class="pre">strm</span></code> return the list of all solutions of a
+backtracking parser applied to a functional stream.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="pprintf-module">
+<span id="library-pprintf-module"></span><h3>Pprintf module<a class="headerlink" href="#pprintf-module" title="Permalink to this headline">¶</a></h3>
+<p>Definitions for pprintf statement.</p>
+<p>This module contains types and functions for the “pprintf”
+statement used by the syntax extension “pa_pprintf.cmo”.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">type</span> <span class="pre">pr_context</span> <span class="pre">=</span> <span class="pre">{</span> <span class="pre">ind</span> <span class="pre">:</span> <span class="pre">int;</span> <span class="pre">bef</span> <span class="pre">:</span> <span class="pre">string;</span> <span class="pre">aft</span> <span class="pre">:</span> <span class="pre">string;</span> <span class="pre">dang</span> <span class="pre">:</span>
+<span class="pre">string</span> <span class="pre">};</span></code></p>
+<p>Printing context.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">ind</span></code> : the current indendation</li>
+<li><code class="docutils literal"><span class="pre">bef</span></code> : what should be printed before, in the same line</li>
+<li><code class="docutils literal"><span class="pre">aft</span></code> : what should be printed after, in the same line</li>
+<li><code class="docutils literal"><span class="pre">dang</span></code> : the dangling token to know whether parentheses are
+necessary</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">empty_pc</span> <span class="pre">:</span> <span class="pre">pr_context;</span></code></p>
+<p>Empty printer context, equal to <code class="docutils literal"><span class="pre">{ind</span> <span class="pre">=</span> <span class="pre">0;</span> <span class="pre">bef</span> <span class="pre">=</span> <span class="pre">&quot;&quot;;</span> <span class="pre">aft</span> <span class="pre">=</span> <span class="pre">&quot;&quot;;</span> <span class="pre">dang</span>
+<span class="pre">=</span> <span class="pre">&quot;&quot;}</span></code></p>
+</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">value</span> <span class="n">sprint_break</span> <span class="p">:</span>
+  <span class="nb">int</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">-&gt;</span> <span class="n">pr_context</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">pr_context</span> <span class="o">-&gt;</span> <span class="n">string</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="p">(</span><span class="n">pr_context</span> <span class="o">-&gt;</span> <span class="n">string</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">sprint_break</span> <span class="pre">nspaces</span> <span class="pre">offset</span> <span class="pre">pc</span> <span class="pre">f</span> <span class="pre">g</span></code> concat the two strings returned
+by <code class="docutils literal"><span class="pre">f</span></code> and <code class="docutils literal"><span class="pre">g</span></code>, either in one line, if it holds without
+overflowing (see module <code class="docutils literal"><span class="pre">Pretty</span></code>), with <code class="docutils literal"><span class="pre">nspaces</span></code> spaces betwen
+them, or in two lines with <code class="docutils literal"><span class="pre">offset</span></code> spaces added in the indentation
+for the second line.&lt;br/&gt;This function don’t need to be called
+directly. It is generated by the <code class="docutils literal"><span class="pre">pprintf</span></code> statement according to
+its parameters when the format contains breaks, like <code class="docutils literal"><span class="pre">&#64;;</span></code> and
+<code class="docutils literal"><span class="pre">&#64;|nbsp|</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">value</span> <span class="n">sprint_break_all</span> <span class="p">:</span>
+  <span class="nb">bool</span> <span class="o">-&gt;</span> <span class="n">pr_context</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">pr_context</span> <span class="o">-&gt;</span> <span class="n">string</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nb">list</span> <span class="p">(</span><span class="nb">int</span> <span class="o">*</span> <span class="nb">int</span> <span class="o">*</span> <span class="n">pr_context</span> <span class="o">-&gt;</span> <span class="n">string</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">string</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">sprint_break_all</span> <span class="pre">force_newlines</span> <span class="pre">pc</span> <span class="pre">f</span> <span class="pre">fl</span></code> concat all strings
+returned by the list with separators <code class="docutils literal"><span class="pre">f-fl</span></code>, the separators being
+the number of spaces and the offset like in the function
+<code class="docutils literal"><span class="pre">sprint_break</span></code>. The function works as “all or nothing”, i.e. if the
+resulting string does not hold on the line, all strings are printed in
+different lines (even if sub-parts could hold in single lines). If the
+parameter <code class="docutils literal"><span class="pre">force_newline</span></code> is <code class="docutils literal"><span class="pre">True</span></code>, all strings are printed in
+different lines, no horizontal printing is tested.&lt;br/&gt;This function
+don’t need to be called directly. It is generated by the <code class="docutils literal"><span class="pre">pprintf</span></code>
+statement according to its parameters when the format contains
+parenthesized parts with “break all” like <code class="docutils literal"><span class="pre">&#64;[&lt;a&gt;</span></code> and <code class="docutils literal"><span class="pre">&#64;]</span></code>, or
+<code class="docutils literal"><span class="pre">&#64;[&lt;b&gt;</span></code> and <code class="docutils literal"><span class="pre">&#64;]</span></code>.</p>
+</div>
+<div class="section" id="pretty-module">
+<h3>Pretty module<a class="headerlink" href="#pretty-module" title="Permalink to this headline">¶</a></h3>
+<p>Pretty printing on strings. Basic functions.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">horiz_vertic</span> <span class="pre">:</span> <span class="pre">(unit</span> <span class="pre">-&gt;</span> <span class="pre">'a)</span> <span class="pre">-&gt;</span> <span class="pre">(unit</span> <span class="pre">-&gt;</span> <span class="pre">'a)</span> <span class="pre">-&gt;</span> <span class="pre">'a;</span></code></p>
+<p><code class="docutils literal"><span class="pre">horiz_vertic</span> <span class="pre">h</span> <span class="pre">v</span></code> first calls <code class="docutils literal"><span class="pre">h</span></code> to print
+the data horizontally, i.e. without newlines. If the displaying
+contains newlines or if its size exceeds the maximum line length
+(see variable <code class="docutils literal"><span class="pre">line_length</span></code> below), then the function
+<code class="docutils literal"><span class="pre">h</span></code> stops and the function <code class="docutils literal"><span class="pre">v</span></code> is called which
+can print using several lines.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">sprintf</span> <span class="pre">:</span> <span class="pre">format</span> <span class="pre">'a</span> <span class="pre">unit</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">'a;</span></code></p>
+<p><code class="docutils literal"><span class="pre">sprintf</span> <span class="pre">fmt</span> <span class="pre">...</span></code> formats some string like
+<code class="docutils literal"><span class="pre">Printf.sprintf</span></code> does, except that, if it is called in
+the context of the <em>first</em> function of <code class="docutils literal"><span class="pre">horiz_vertic</span></code>
+above, it checks whether the resulting string has chances to fit
+in the line. If not, i.e. if it contains newlines or if its length
+is greater than <code class="docutils literal"><span class="pre">max_line_length.val</span></code>, the function gives
+up (raising some internal exception). Otherwise the built string
+is returned.  <code class="docutils literal"><span class="pre">sprintf</span></code> behaves like
+<code class="docutils literal"><span class="pre">Printf.sprintf</span></code> if it is called in the context of the
+<em>second</em> function of <code class="docutils literal"><span class="pre">horiz_vertic</span></code> or without context at
+all.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">line_length</span> <span class="pre">:</span> <span class="pre">ref</span> <span class="pre">int;</span></code></p>
+<p><code class="docutils literal"><span class="pre">line_length</span></code> is the maximum length (in characters) of
+the line. Default = 78. Can be set to any other value before
+printing.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">value</span> <span class="pre">horizontally</span> <span class="pre">:</span> <span class="pre">unit</span> <span class="pre">-&gt;</span> <span class="pre">bool;</span></code></p>
+<p><code class="docutils literal"><span class="pre">horizontally</span> <span class="pre">()</span></code> returns the fact that the context is
+an horizontal print.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="deprecated-modules-stdpp-and-token">
+<h3>Deprecated modules Stdpp and Token<a class="headerlink" href="#deprecated-modules-stdpp-and-token" title="Permalink to this headline">¶</a></h3>
+<p>The modules <code class="docutils literal"><span class="pre">Stdpp</span></code> and <code class="docutils literal"><span class="pre">Token</span></code> have been
+deprecated since version 5.00.  The module <code class="docutils literal"><span class="pre">Stdpp</span></code> was
+renamed <code class="docutils literal"><span class="pre">Ploc</span></code> and most of its variables and types were also
+renamed. The module <code class="docutils literal"><span class="pre">Token</span></code> was renamed
+<code class="docutils literal"><span class="pre">Plexing</span></code></p>
+<p>Backward compatibility is assured. See the files
+<code class="docutils literal"><span class="pre">stdpp.mli</span></code> and <code class="docutils literal"><span class="pre">token.mli</span></code> in the Camlp5
+distribution to convert from old to new names, if any. After
+several versions or years, the modules <code class="docutils literal"><span class="pre">Stdpp</span></code> and
+<code class="docutils literal"><span class="pre">Token</span></code> will disappear from Camlp5.</p>
+</div>
+</div>
+<div class="section" id="camlp5-sources">
+<span id="sources"></span><h2>Camlp5 sources<a class="headerlink" href="#camlp5-sources" title="Permalink to this headline">¶</a></h2>
+<p>Information for developers of the Camlp5 program.</p>
+<div class="section" id="kernel">
+<h3>Kernel<a class="headerlink" href="#kernel" title="Permalink to this headline">¶</a></h3>
+<p>The sources are composed of:</p>
+<ul class="simple">
+<li>the OCaml stuff, copied from the OCaml compiler</li>
+<li>the <em>kernel</em> composed of the directories:<ul>
+<li>odyl : the dynamic loading system</li>
+<li>lib : the library</li>
+<li>main : the main program camlp5</li>
+<li>meta : the parsers for revised syntax, ast quotations, EXTEND
+statement, etc/</li>
+</ul>
+</li>
+<li>the rest: directories etc, compile, ocpp</li>
+</ul>
+<p>Some other directories contain configuration files, tools,
+documentation and manual pages.</p>
+<p>The kernel is sufficient to make the core system work: it is possible
+to compile and bootstrap only it. All sources being in revised syntax,
+the first compilation of Camlp5 is done by a version of this kernel
+in pure OCaml syntax, located in the directory ocaml_src.</p>
+<p>These sources in pure OCaml syntax are not modified by hand. When
+changes are made to the kernel, and a check is done that it
+correctly compiles and bootstraps, the kernel in pure OCaml syntax
+is rebuilt using Camlp5 pretty print. This is done by the command
+“make bootstrap_sources”.</p>
+</div>
+<div class="section" id="compatibility">
+<h3>Compatibility<a class="headerlink" href="#compatibility" title="Permalink to this headline">¶</a></h3>
+<p>This distribution of Camlp5 is compatible with several versions of
+OCaml. The definition of OCaml syntax trees may change from OCaml
+version to version, which can be a problem.  Since OCaml does not
+install the sources nor the compiled versions of its syntax tree, a
+copy of the necessary source files, borrowed from the source of the
+OCaml compiler is in the directory ‘ocaml_stuff’, in subdirectories
+with the OCaml version number.</p>
+<p>If the present distribution of Camlp5 is not compatible with the
+version of OCaml you have (the command ‘configure’ tells you), it
+is possible to add it. For that, you need the sources to your specific OCaml
+distribution. If you have them then a ‘configure’ telling you
+that camlp5 is not compatible, do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">steal</span> <span class="n">OCAML_SRC</span><span class="o">=&lt;</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">OCaml</span><span class="o">-</span><span class="n">sources</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This creates a new directory in ‘ocaml_stuff’ with sources of the
+syntax tree of your OCaml compiler.</p>
+<p>If you want to check that the sources of the syntax tree of OCaml
+are up-to-date (e.g. if this is the current OCaml developpement),
+do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">compare_stolen</span> <span class="n">OCAML_SRC</span><span class="o">=&lt;</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">OCaml</span><span class="o">-</span><span class="n">sources</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The compatibility is also done with the file ‘lib/versdep.ml’,
+which is a module containing miscellaneous features depending to
+the version of OCaml.</p>
+<p>In the directory ‘ocaml_src’ which contains the pure OCaml sources
+of the Camlp5 core (see chapter TREE STRUCTURE below), there are as
+many versions of this files as versions of OCaml. They are named
+‘version.ml’ in the directory ‘lib/versdep’. If you are adding
+a new version of OCaml, you need this file. As a first step, make a
+copy from a close version:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">ocaml_src</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">versdep</span>
+<span class="n">cp</span> <span class="o">&lt;</span><span class="n">close_version</span><span class="o">&gt;.</span><span class="n">ml</span> <span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;.</span><span class="n">ml</span>
+</pre></div>
+</div>
+<p>Then, you can rerun “configure” and do “make core”. If the file
+‘ocaml_src/lib/versdep.ml’ has compilation problems, fix them ‘make
+core’ again. When it compiles, copy it into the subdirectory
+‘versdep’ as ‘&lt;version&gt;.ml’, overwriting the version you copied
+from the close version.</p>
+<p>Later, the same file ‘lib/versdep.ml’ in Camlp5 syntax may have
+similar compilation problems. There is only a single version of this file,
+thanks to IFDEF constructs used here or there.</p>
+<p>While compiling with some specific version of OCaml, this file is
+compiled with ‘OCAML_vers’ defined where ‘vers’ is the version number
+form the beginning to the first space or charcter ‘+’ with all dots
+converted into underscores. For example, if your OCaml version is
+7.04.2+dev35, you can see in the compilation process of versdep.ml
+that OCAML_7_04_2 is defined, and you can add statements defined
+by the syntax extension ‘pa_macro.cmo’, for example IFDEF OCAML_7_04_2.
+Add statements like that in ‘lib/versdep.ml’ to make it compile
+successfully.</p>
+</div>
+<div class="section" id="tree-structure">
+<h3>Tree structure<a class="headerlink" href="#tree-structure" title="Permalink to this headline">¶</a></h3>
+<p>The directory ‘ocaml_src’ contains images in pure OCaml syntax of the
+directories odyl lib main and meta. This allows the creation of a core version
+of Camlp5 with only the OCaml compiler installed.</p>
+<p>You can decompose the building of the Camlp5 core into:</p>
+<ul>
+<li><ol class="first arabic simple">
+<li>make library_cold</li>
+</ol>
+<p>just makes the directory ‘ocaml_src/lib’ and copy the cmo and cmi
+files into the directory ‘boot’</p>
+</li>
+<li><ol class="first arabic simple" start="2">
+<li>make compile_cold</li>
+</ol>
+<p>makes the other directories of ocaml_src</p>
+</li>
+<li><ol class="first arabic simple" start="3">
+<li>make promote_cold</li>
+</ol>
+<p>copies the executables “camlp5”, “camlp5r” and the syntax
+extensions (cmo files) into the directory ‘boot’</p>
+</li>
+</ul>
+<p>From this point, the core Camlp5 is in directory ‘boot’. The real
+sources in the top directories odyl, lib, main and meta, which are
+written in revised syntax with some syntax extensions (grammars,
+quotations) can be compiled. To achieve their compilation, you can
+do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">core</span>
+</pre></div>
+</div>
+<p>Or to compile everything do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="nb">all</span>
+</pre></div>
+</div>
+<p>or just:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span>
+</pre></div>
+</div>
+<p>Notice that doing “make core” or “make all” from scratch (after a
+make clean), automatically starts by making the core files from
+their pure OCaml versions.</p>
+</div>
+<div class="section" id="fast-compilation-from-scratch">
+<h3>Fast compilation from scratch<a class="headerlink" href="#fast-compilation-from-scratch" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">configure</span>
+<span class="n">make</span> <span class="n">clean</span> <span class="n">core</span> <span class="n">compare</span>
+<span class="n">make</span> <span class="n">coreboot</span>
+<span class="n">make</span> <span class="nb">all</span> <span class="n">opt</span> <span class="n">opt</span><span class="o">.</span><span class="n">opt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-changes">
+<h3>Testing changes<a class="headerlink" href="#testing-changes" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>do your changes</li>
+<li>do:</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">core</span> <span class="n">compare</span>
+</pre></div>
+</div>
+<p>if it says that the bootstrap is ok, you can do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="nb">all</span>
+<span class="n">make</span> <span class="n">opt</span>
+<span class="n">make</span> <span class="n">opt</span><span class="o">.</span><span class="n">opt</span>
+</pre></div>
+</div>
+<p>otherwise, to make sure everything is ok, first do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">coreboot</span>
+</pre></div>
+</div>
+<p>sometimes two bootstraps (‘make coreboot’ twice) are necessary,
+in particular if you change things in the directory ‘lib’. It is
+even possible that three bootstraps are necessary.</p>
+<p>If things go wrong, it is possible to return to the previous
+version by typing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">restore</span> <span class="n">clean_hot</span>
+</pre></div>
+</div>
+<p>then you can change what is necessary and continue by typing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">core</span>
+</pre></div>
+</div>
+<p>and test the bootstrap again:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">coreboot</span>
+</pre></div>
+</div>
+<p>After several bootstraps (by ‘make coreboot’ or ‘make bootstrap’),
+many versions are pushed in the directory ‘boot’ (you can type ‘find
+boot -type d -print’ to see that). If your system correctly
+bootstraps, you can clean that by typing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">cleanboot</span>
+</pre></div>
+</div>
+<p>which keeps only two versions. (The command ‘make clean’ also
+removes these stack of versions.)</p>
+</div>
+<div class="section" id="before-committing-your-changes">
+<h3>Before committing your changes<a class="headerlink" href="#before-committing-your-changes" title="Permalink to this headline">¶</a></h3>
+<p>Make sure that the cold start with pure OCaml sources work. For
+that, do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">compare_sources</span> <span class="o">|</span> <span class="n">less</span>
+</pre></div>
+</div>
+<p>This shows you the changes that would be done in the OCaml pure sources
+of the directory ocaml_src.</p>
+<p>To make the new versions, do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">new_sources</span>
+<span class="n">make</span> <span class="n">promote_sources</span>
+</pre></div>
+</div>
+<p>Notice that these pure OCaml sources are not supposed to be modified
+by hand, but only created by the above commands. Although their source
+is pretty printed they are usually not easy to read, particularly for
+expanded grammars (of the statement ‘EXTEND’).</p>
+<p>If these sources do not compile, due to changes in the OCaml
+compiler, it is possible however to edit them. In this case, similar changes
+may need to be performed in the normal sources in revised syntax.</p>
+<p>After doing ‘make new_sources’ above, and before doing ‘make
+promote_sources’ below, it is possible to do ‘make untouch_sources’
+which changes the dates of the newly created files with the dates of the
+old files if they are not modified. This way, the “svn commit” will not
+need to compare these files, which may be important if your
+network is not fast.</p>
+<p>The ‘make new_sources’ builds a directory named ‘ocaml_src.new’.
+If this directory still exists, due to a previous ‘make new_sources’,
+the command fails. In this case, just delete it (rm -rf ocaml_src.new)
+without problem: this directory is not part of the distribution, it is
+just temporary.</p>
+<p>The ‘make clean_sources’ deletes old versions of ocaml_src, keeping
+only the last and the before last ones.</p>
+<p>The command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">bootstrap_sources</span>
+</pre></div>
+</div>
+<p>is a shortcut for:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">new_sources</span>
+<span class="n">make</span> <span class="n">untouch_sources</span>
+<span class="n">make</span> <span class="n">promote_sources</span>
+<span class="n">make</span> <span class="n">clean_sources</span>
+</pre></div>
+</div>
+<p>If there are changes in the specific file ‘lib/versdep.ml’, do
+also:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">compare_all_versdep</span>
+</pre></div>
+</div>
+<p>and possibly:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">bootstrap_all_versdep</span>
+</pre></div>
+</div>
+<p>because this file, in ‘ocaml_src/lib/versdep’ directory has different
+versions according to the OCaml version.</p>
+<p>After having rebuilt the pure OCaml sources, check that they work by
+rebuilding everything from scratch, starting with “configure”.</p>
+</div>
+<div class="section" id="if-you-change-the-main-parser">
+<h3>If you change the main parser<a class="headerlink" href="#if-you-change-the-main-parser" title="Permalink to this headline">¶</a></h3>
+<p>If you change the main parser ‘meta/pa_r.ml’, you should check that the
+quotations expanders of syntax tree ‘meta/q_MLast.ml’ match the new
+version. For that, do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">meta</span>
+<span class="n">make</span> <span class="n">compare_q_MLast</span>
+</pre></div>
+</div>
+<p>If no differences are displayed, it means that ‘q_MLast.ml’ is ok,
+relatively to ‘pa_r.ml’.</p>
+<p>Otherwise, if the displayed differences seem reasonable, update the
+version by typing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">bootstrap_q_MLast</span>
+</pre></div>
+</div>
+<p>Then returning to the top directory, do ‘make core compare’ and
+possibly ‘make coreboot’ (one of several times) to check the
+correctness of the file.</p>
+<p>And don’t forget, if you want to commit, to re-create the pure OCaml
+sources like indicated above.</p>
+</div>
+<div class="section" id="adding-new-nodes-to-the-syntax-tree">
+<h3>Adding new nodes to the syntax tree<a class="headerlink" href="#adding-new-nodes-to-the-syntax-tree" title="Permalink to this headline">¶</a></h3>
+<p>If new nodes are necessary in the syntax tree, for example because
+the OCaml language added itself new nodes, the steps are the
+following (with the example of adding the “lazy” pattern node).</p>
+<ul>
+<li><p class="first">Add the node in the file ‘main/mLast.mli’. Please respect the design
+of the nodes by looking at the other nodes. Example:</p>
+<blockquote>
+<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">PaLaz</span> <span class="n">of</span> <span class="n">loc</span> <span class="ow">and</span> <span class="n">patt</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Try to compile (do ‘make’ in the main directory). You are going to
+have some errors in files telling you that nodes are missing in some
+pattern matchings. Add them, according to the new nodes of OCaml or
+looking at other nodes.</p>
+</li>
+<li><p class="first">Once the compilation is done, try a ‘make bootstrap’ to be sure
+everything is OK.</p>
+</li>
+<li><p class="first">When it is, add the possible concrete syntax in the revised syntax,
+i.e. in ‘meta/pa_r.ml’. Since the quotation is not yet implemented,
+put it in syntax without quotation. Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;lazy&quot;</span><span class="p">;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">SELF</span> <span class="o">-&gt;</span> <span class="n">MLast</span><span class="o">.</span><span class="n">PaLaz</span> <span class="n">loc</span> <span class="n">p</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Do ‘make bootstrap’ again.</p>
+<p>Go to the directory ‘meta’ and type:</p>
+</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">compare_q_MLast</span>
+</pre></div>
+</div>
+<p>This command try to compare what should be the AST quotation if it
+perfectly matched the syntax. If this comparison seems reasonable,
+change the file ‘q_MLast.ml’ by typing:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">bootstrap_q_MLast</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Do a ‘make bootstrap’ again to check everything is OK. If it is
+change the line of ‘meta/pa_r.ml’. In the example, from:</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;lazy&quot;</span><span class="p">;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">SELF</span> <span class="o">-&gt;</span> <span class="n">MLast</span><span class="o">.</span><span class="n">PaLaz</span> <span class="n">loc</span> <span class="n">p</span>
+</pre></div>
+</div>
+<p>to:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>&quot;lazy&quot;; p = SELF -&gt; &lt;:patt&lt; lazy $p$ &gt;&gt;
+</pre></div>
+</div>
+<ul class="simple">
+<li>The new syntax should work now in revised syntax. You can complete
+the compilation, do a ‘make install’ and check with the toplevel
+that it works. Complete with the rest like said above.</li>
+<li>You can then complete the other syntaxes (the ‘normal’ syntax, for
+example in ‘etc/pa_o.ml’) and the pretty printers.</li>
+</ul>
+</div>
+<div class="section" id="switching-between-transitional-and-strict-mode">
+<h3>Switching between transitional and strict mode<a class="headerlink" href="#switching-between-transitional-and-strict-mode" title="Permalink to this headline">¶</a></h3>
+<p>If Camlp5 is compiled in some mode, it is possible to change its
+mode in two boostrapping steps. Type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">MODE</span><span class="o">=</span><span class="n">T</span> <span class="n">coreboot</span>
+</pre></div>
+</div>
+<p>to switch to transitional mode, or:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">MODE</span><span class="o">=</span><span class="n">S</span> <span class="n">coreboot</span>
+</pre></div>
+</div>
+<p>to switch to strict mode.</p>
+<p>After two (necessary) bootstraps, the kernel is compiled in the new
+mode. Complete the compilation by:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">MODE</span><span class="o">=</span><span class="n">T</span> <span class="nb">all</span> <span class="n">opt</span> <span class="n">opt</span><span class="o">.</span><span class="n">opt</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">MODE</span><span class="o">=</span><span class="n">S</span> <span class="nb">all</span> <span class="n">opt</span> <span class="n">opt</span><span class="o">.</span><span class="n">opt</span>
+</pre></div>
+</div>
+<p>according to the new mode you want to use.</p>
+<p>Another solution is, of course, recompile everything from scratch:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">clean</span>
+<span class="o">./</span><span class="n">configure</span> <span class="o">-</span><span class="n">transitional</span>
+<span class="n">make</span> <span class="n">world</span><span class="o">.</span><span class="n">opt</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">clean</span>
+<span class="o">./</span><span class="n">configure</span> <span class="o">-</span><span class="n">strict</span>
+<span class="n">make</span> <span class="n">world</span><span class="o">.</span><span class="n">opt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="bootstrapping">
+<h3>Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">¶</a></h3>
+<p>Camlp5 is bootstrapped in numerous ways.</p>
+<div class="section" id="camlp5-executable-bootstrapping">
+<h4>Camlp5 executable bootstrapping<a class="headerlink" href="#camlp5-executable-bootstrapping" title="Permalink to this headline">¶</a></h4>
+<p>The file ‘main/camlp5r’ is rebuilt each time a bootstrapping command
+is used (like ‘make coreboot’ or ‘make bootstrap’). This bootstrapping
+command starts with copying it in the directory ‘boot’. The file
+‘boot/camlp5r’ is used to recompile the sources, creating another
+file ‘main/camlp5r’. When both files are the same (byte by byte),
+the Camlp5 executable is bootstrapped.</p>
+<p>Sometimes, in particular when changes are done in the library
+(directory ‘lib’), it is necessary to bootstrap twice before having
+the message ‘Fixpoint reached, bootstrap succeeded’.</p>
+<p>The command ‘make compare’ tells you whether the Camlp5 executable
+is currently bootstrapped or not.</p>
+</div>
+<div class="section" id="source-bootstrapping">
+<h4>Source bootstrapping<a class="headerlink" href="#source-bootstrapping" title="Permalink to this headline">¶</a></h4>
+<p>The compilation of Camlp5 starts with the compilation of files of
+the directory ocaml_src written in pure OCaml. This creates the
+files ‘camlp5’ and ‘camlp5r’ in the directory boot. This is called
+the ‘cold start’.</p>
+<p>Once done, the sources of Camlp5 can be compiled using revised
+syntax and several syntax extensions, like the statement ‘EXTEND’,
+for example, and the quotations of syntax trees.</p>
+<p>The core files of Camlp5 are in the directories lib, main, meta,
+odyl.  There are the same directories in the directory ocaml_src
+where all files are equivalent.</p>
+<p>When changes are done in the core files, and when the printer kit
+in normal syntax ‘etc/pr_o.cmo’ has been created, the files of the
+directory ocaml_src can be rebuilt using the command ‘make
+bootstrap_sources’. This updates the files in ocaml_src to exactly
+reflect the ones in the core, but in pure OCaml syntax.</p>
+<p>Bootstrap: the1 files in ocaml_src creates the first Camlp5
+executable. The Camlp5 executable can rebuild the files in
+ocaml_src.</p>
+</div>
+<div class="section" id="source-file-q-mlast-ml-bootstrapping">
+<h4>Source file q_MLast.ml bootstrapping<a class="headerlink" href="#source-file-q-mlast-ml-bootstrapping" title="Permalink to this headline">¶</a></h4>
+<p>The source file meta/q_MLast.ml (quotation of syntax trees) can be
+recreated using the file meta/pa_r.ml (revised syntax). When changes
+are done in the file meta/pa_r.ml, a good usage is to go to the
+directory ‘meta’ and type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">compare_q_MLast</span>
+</pre></div>
+</div>
+<p>This shows the possible changes that will be applied to
+meta/q_MLast.ml. If they seem to be reasonable, do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">bootstrap_q_MLast</span>
+</pre></div>
+</div>
+<p>This changes the source file meta/q_MLast.ml. After this command,
+a new ‘make compare_q_MLast’ indicates no differences.</p>
+<p>After that, a new ‘make bootstrap’ in the top directory ensures that
+everythings works.</p>
+<p>Bootstrap: the file meta/pa_r.ml uses the quotation expander
+meta/q_MLast.cmo. The source file meta/q_MLast.ml is recreated by
+meta/pa_r.ml.</p>
+</div>
+<div class="section" id="source-file-q-ast-ml-bootstrapping">
+<h4>Source file q_ast.ml bootstrapping<a class="headerlink" href="#source-file-q-ast-ml-bootstrapping" title="Permalink to this headline">¶</a></h4>
+<p>The source file meta/q_ast.ml contains another version of the
+quotation expander of syntax trees which follows the current
+syntax used (in normal syntax if the current syntax is used).
+This works only in strict mode.</p>
+<p>This file depends on the definition of the syntax tree
+main/mLast.mli. When changes are done in this file, it is
+possible to see what changes are impacted in meta/q_ast.ml. For
+this, go to the directory ‘meta’ and type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">compare_q_ast</span>
+</pre></div>
+</div>
+<p>This shows the possible changes that will be applied to
+meta/q_ast.ml. If they seem to be reasonable, do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">bootstrap_q_ast</span>
+</pre></div>
+</div>
+<p>This changes the source file meta/q_ast.ml. After this command, a
+new ‘make compare_q_ast’ indicates no differences.</p>
+<p>After that, a new ‘make bootstrap’ in the top directory ensures that
+everythings works.</p>
+</div>
+<div class="section" id="lisp-and-scheme-syntax-bootstrapping">
+<h4>Lisp and Scheme syntax bootstrapping<a class="headerlink" href="#lisp-and-scheme-syntax-bootstrapping" title="Permalink to this headline">¶</a></h4>
+<p>The Lisp syntax is written in Lisp syntax in the directory etc. It
+is the file ‘etc/pa_lisp.ml’. To compile this file, there is another
+file, named ‘etc/pa_lispr.ml’ written in revised syntax.</p>
+<p>When changes are done in etc/pa_lisp.ml, the file etc/pa_lispr.ml
+must be rebuilt. First, go to the directory ‘etc’ and type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">compare_lisp</span>
+</pre></div>
+</div>
+<p>If changes seem to be reasonable, do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">boostrap_lisp</span>
+</pre></div>
+</div>
+<p>This rebuilds ‘etc/pa_lispr.ml’. A new ‘make’ in the directory ‘etc’
+will recompile it and recompile the Lisp version ‘etc/pa_lisp.ml’.</p>
+<p>Bootstrap: etc/pa_lispr.ml allows to compile etc/pa_lisp.ml, and
+changes is etc/pa_lisp.ml are reported in the source file etc/pa_lispr.ml
+through ‘make bootstrap_lisp’.</p>
+<p>Same for the Scheme syntax: the files are etc/pa_scheme.ml and
+‘etc/pa_scheme.ml’.</p>
+</div>
+<div class="section" id="extend-statement-bootstrapping">
+<h4>EXTEND statement bootstrapping<a class="headerlink" href="#extend-statement-bootstrapping" title="Permalink to this headline">¶</a></h4>
+<p>The EXTEND statement of Camlp5 is a syntax extension. The file
+‘meta/pa_extend.ml’ contains the statement for the adding of this
+syntax extension, therefore something like:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">EXTEND</span>
+  <span class="n">expr</span><span class="p">:</span>
+    <span class="p">[</span> <span class="p">[</span> <span class="s2">&quot;EXTEND&quot;</span> <span class="o">.....</span>
+</pre></div>
+</div>
+<p>To be compiled, the file ‘meta/pa_extend.ml’ needs ‘pa_extend.cmo’.
+This is actually its previous version in the directory ‘boot’. When
+checking for a correct bootstrapping of Camlp5 (with the command
+‘make compare’, for example), a test is done to verify that the
+binary files ‘meta/pa_extend.cmo’ and ‘boot/pa_extend.cmo’ are the
+same.</p>
+<p>Notice that there is also a file ‘ocaml_src/meta/pa_extend.ml’ in
+pure OCaml syntax, but, although this file is pretty printed, is is
+hardly editable, because the expansion of the ‘EXTEND’ statement is
+a very long expression rather difficult to understand. But this file
+need not to be changes, since the command ‘make
+bootstrap_sources’ (see above) rebuilts it.</p>
+</div>
+</div>
+</div>
+<div class="section" id="about-camlp5">
+<span id="about"></span><h2>About Camlp5<a class="headerlink" href="#about-camlp5" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Version</p>
+<p>7.10</p>
+</li>
+<li><p class="first">Home page</p>
+<p><a class="reference external" href="https://camlp5.github.io/">https://camlp5.github.io/</a></p>
+</li>
+<li><p class="first">Author</p>
+<p>Daniel de Rauglaudre, INRIA</p>
+</li>
+<li><p class="first">History</p>
+<p>The ideas behind Camlp5 were expressed in the 1990s by Michel
+Mauny. In 1996, Daniel de Rauglaudre implemented the first version
+named Camlp4 (the four “p” standing for
+“Pre-Processor-Pretty-Printer”). In 2002, Camlp4 was maintained by
+Michel Mauny, and later extended by Nicolas Pouillard, with
+different basic ideas, introducing some incompatibilities.  In
+2006, Daniel de Rauglaudre restarted this work, renaming it
+Camlp5.</p>
+</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span>* Copyright (c) 2007-2017, INRIA (Institut National de Recherches en
+* Informatique et Automatique). All rights reserved.
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*
+*     * Redistributions of source code must retain the above copyright
+*       notice, this list of conditions and the following disclaimer.
+*     * Redistributions in binary form must reproduce the above copyright
+*       notice, this list of conditions and the following disclaimer in the
+*       documentation and/or other materials provided with the distribution.
+*     * Neither the name of INRIA, nor the names of its contributors may be
+*       used to endorse or promote products derived from this software without
+*       specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY INRIA AND CONTRIBUTORS ``AS IS&#39;&#39; AND
+* ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+* THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+* PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL INRIA AND
+* CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+* USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+* OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+* SUCH DAMAGE.
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="langext.html" class="btn btn-neutral" title="Language Extensions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Daniel de Rauglaudre.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'7.10',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

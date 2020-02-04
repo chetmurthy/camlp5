@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Parsing and Printing tools &mdash; Camlp5 7.10 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Camlp5 7.10 documentation" href="index.html"/>
+        <link rel="next" title="Parsing tools" href="patools.html"/>
+        <link rel="prev" title="Transitional and Strict modes" href="strict.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Camlp5
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strict.html">Transitional and Strict modes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Parsing and Printing tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#stream-parsers">Stream parsers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extensible-grammars">Extensible grammars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pretty-module">Pretty module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extensible-printers">Extensible printers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="patools.html">Parsing tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prtools.html">Printing tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="langext.html">Language Extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Camlp5</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Parsing and Printing tools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pptools.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="parsing-and-printing-tools">
+<h1>Parsing and Printing tools<a class="headerlink" href="#parsing-and-printing-tools" title="Permalink to this headline">¶</a></h1>
+<p>Camlp5 provides two parsing tools:</p>
+<ul class="simple">
+<li>stream parsers</li>
+<li>extensible grammars</li>
+</ul>
+<p>The first parsing tool, the stream parsers, is the elementary
+system. It is pure syntactic sugar, i.e. the code is directly
+converted into basic OCaml statements: essentially functions,
+pattern matchings, try. A stream parser is just a function. But the
+system does not manage associativity, nor parsing level. Left
+recursion results on infinite loops, just like functions whose first
+action would be a call to itself.</p>
+<p>The second parsing tool, the extensible grammars, are more
+sophisticated. A grammar written with them is more readable, and
+look like grammars written with tools like <code class="docutils literal"><span class="pre">yacc</span></code>. They take care of
+associativity, left recursion, and level of parsing. They are
+dynamically extensible, what allows the syntax extensions what
+Camlp5 provides for OCaml syntax.&lt;/p&gt;</p>
+<p>In both cases, the input data are streams.</p>
+<p>Camlp5 also provides:</p>
+<ul class="simple">
+<li>a pretty printing module</li>
+<li>extensible printers</li>
+</ul>
+<p>The next sections give an overview of the parsing and printing tools.</p>
+<div class="section" id="stream-parsers">
+<h2>Stream parsers<a class="headerlink" href="#stream-parsers" title="Permalink to this headline">¶</a></h2>
+<p>The stream parsers is a system of recursive descendant
+parsing. Streams are actually lazy lists. At each step, the head of
+the list is compared against a stream pattern. There are three kinds
+of streams parsers:</p>
+<ul class="simple">
+<li>The imperative <a class="reference internal" href="patools.html#parsers"><span class="std std-ref">Stream parsers</span></a> , where the elements are removed from
+the stream as long as they are parsed. Parsers return either:<ul>
+<li>A value, in case of success,</li>
+<li>The exception <code class="docutils literal"><span class="pre">Stream.Failure</span></code> when the parser does not apply and
+no elements have been removed from the stream, indicating that,
+possibly, other parsers may apply,</li>
+<li>The exception <code class="docutils literal"><span class="pre">Stream.Error</span></code> when the parser does not apply, but
+one or several elements have been removed from the stream,
+indicating that nothing can to be done to make up the error.</li>
+</ul>
+</li>
+<li>The <a class="reference internal" href="patools.html#fparsers"><span class="std std-ref">Functional parsers</span></a> where the elements are not removed
+from the stream during the parsing. These parsers return a value of
+type <code class="docutils literal"><span class="pre">option</span></code>, i.e either:<ul>
+<li><code class="docutils literal"><span class="pre">Some</span></code> a value and the remaining stream, in case of success,</li>
+<li><code class="docutils literal"><span class="pre">None</span></code>, in case of failure.</li>
+</ul>
+</li>
+<li>The <a class="reference internal" href="patools.html#bparsers"><span class="std std-ref">Backtracking parsers</span></a> which are like the functional stream
+parsers but with a backtracking algorithm, testing all
+possibilities. These parsers also return a value of type <code class="docutils literal"><span class="pre">option</span></code>
+different from the functional stream parsers, i.e either:<ul>
+<li><code class="docutils literal"><span class="pre">Some</span></code> a value, the remaining stream and a continuation, in case of success,</li>
+<li><code class="docutils literal"><span class="pre">None</span></code>, in case of failure.</li>
+</ul>
+</li>
+</ul>
+<p>The differences are about:</p>
+<ul class="simple">
+<li><em>Syntax errors</em>: in the imperative version, the location of the error
+is clear, it is at the current position of the stream, and the
+system provides a specific error message (typically, that some
+“element” was “expected”). On the other hand, in the functional and
+backtracking version, the position is not clear since it returns
+nothing and the initial stream is unaffected. The only solution to
+know where the error happened is to analyze that stream to see how
+many elements have be unfrozen. No clear error message is available,
+just “syntax error” (but this could be improved in a future
+version).</li>
+<li><em>Power</em>: in the imperative version, when a rule raises the exception
+<code class="docutils literal"><span class="pre">Stream.Error</span></code>, the parsing cannot continue. In the functional
+version, the parsing can continue by analyzing the next rule with
+the initial unaffected stream: this is limited backtrack. In the
+backtracking version, more powerful, the parsing continues by
+analyzing the next case of the previous symbol of the rule; moreover
+it is possible to get the list of all possible solutions.</li>
+<li><em>Neatness</em>: functional streams are neater, just like functional
+programming is neater than imperative programming.  The imperative
+parsers implement what is called “predictive parsing”,
+i.e. recursive descendant parsing without backtrack.</li>
+</ul>
+<p>In the imperative version, there also exist <a class="reference internal" href="patools.html#lexers"><span class="std std-ref">Stream lexers</span></a>, a shorter syntax
+when the stream elements are of the specific type <code class="docutils literal"><span class="pre">char</span></code>.</p>
+</div>
+<div class="section" id="extensible-grammars">
+<h2>Extensible grammars<a class="headerlink" href="#extensible-grammars" title="Permalink to this headline">¶</a></h2>
+<p>Extensible grammars manipulate <em>grammar entries</em>. Grammar entries are
+abstract values internally containing mutable stream parsers. When a
+grammar entry is created, its internal parser is empty, i.e. it always
+fails when used. A specific syntactic construction, with the keyword
+<code class="docutils literal"><span class="pre">EXTEND</span></code> allows one to extend grammar entries with new
+grammar rules.</p>
+<p>In opposition to stream parsers, grammar entries manage associativity,
+left factorization, and levels. Moreover, these grammars allow
+optional calls, lists and lists with separators. They are not however
+functions and hence cannot have parameters.</p>
+<p>Since the internal system is stream parsers, extensible grammars use
+recursive descendant parsing.</p>
+<p>The parsers of the OCaml language in Camlp5 are written with
+extensible grammars.</p>
+</div>
+<div class="section" id="pretty-module">
+<h2>Pretty module<a class="headerlink" href="#pretty-module" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">Pretty</span></code> module is an original tool allowing control over the
+displaying of lines. The user must specify two functions where:</p>
+<ul class="simple">
+<li>the data is printed on a single line</li>
+<li>the data is printed on several lines</li>
+</ul>
+<p>The system first tries to print on a single line. At any time, if
+the line overflows, i.e. if its size is greater than some “line
+length” specified in the module interface, or if it contains
+newlines, the function is aborted and control is given to the second
+function, to print on several lines.</p>
+<p>This is a basic, but powerful, system. It supposes that the programmer
+takes care of the current indentation, and the beginning and the end of
+its lines.</p>
+<p>The module will be extended in the future to hide the management of
+indentations and line continuations, and by the supply of functions
+combinating the two cases above, in which the programmer can specify
+the possible places where newlines can be inserted.</p>
+</div>
+<div class="section" id="extensible-printers">
+<h2>Extensible printers<a class="headerlink" href="#extensible-printers" title="Permalink to this headline">¶</a></h2>
+<p>The extensible printers are symmetric to the extensible grammars.
+The extensible grammars take syntax rules and return syntax trees.
+The extensible printers are actually extensible functions taking
+syntax trees as parameters and returning the pretty printed
+statements in strings.</p>
+<p>The extensible printers can have printing levels, just like
+grammars have parsing levels, and it is possible to take the
+associativity into account by provided functions to call either the
+current level or the next level.</p>
+<p>The printers of the OCaml language are written with extensible
+printers.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="patools.html" class="btn btn-neutral float-right" title="Parsing tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="strict.html" class="btn btn-neutral" title="Transitional and Strict modes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Daniel de Rauglaudre.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'7.10',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
