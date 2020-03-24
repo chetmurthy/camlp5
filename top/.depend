@@ -1,2 +1,2 @@
-camlp5_top.cmo: ../main/ast2pt.cmi ../main/mLast.cmi ../main/pcaml.cmi
+camlp5_top.cmo: ../main/ast2pt.cmo ../main/mLast.cmi ../main/pcaml.cmi
 camlp5_top.cmx: ../main/ast2pt.cmx ../main/mLast.cmi ../main/pcaml.cmx

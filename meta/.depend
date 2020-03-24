@@ -27,14 +27,16 @@ pa_macro_gram.cmo: ../lib/grammar.cmi ../lib/ploc.cmi pa_extend.cmo \
 pa_macro_gram.cmx: ../lib/grammar.cmx ../lib/ploc.cmx pa_extend.cmx \
     pa_macro.cmx
 pa_r.cmo: ../lib/gramext.cmi ../lib/grammar.cmi ../lib/plexer.cmi \
-    ../lib/ploc.cmi ../main/mLast.cmi ../main/mlsyntax.cmo ../main/pcaml.cmi
+    ../lib/ploc.cmi ../main/asttools.cmo ../main/mLast.cmi \
+    ../main/mlsyntax.cmo ../main/pcaml.cmi
 pa_r.cmx: ../lib/gramext.cmx ../lib/grammar.cmx ../lib/plexer.cmx \
-    ../lib/ploc.cmx ../main/mLast.cmi ../main/mlsyntax.cmx ../main/pcaml.cmx
+    ../lib/ploc.cmx ../main/asttools.cmx ../main/mLast.cmi \
+    ../main/mlsyntax.cmx ../main/pcaml.cmx
 pa_rp.cmo: ../lib/gramext.cmi ../lib/grammar.cmi ../lib/ploc.cmi \
     ../main/exparser.cmi ../main/pcaml.cmi pa_r.cmo
 pa_rp.cmx: ../lib/gramext.cmx ../lib/grammar.cmx ../lib/ploc.cmx \
     ../main/exparser.cmx ../main/pcaml.cmx pa_r.cmx
-pr_dump.cmo: ../lib/ploc.cmi ../lib/versdep.cmo ../main/ast2pt.cmi \
+pr_dump.cmo: ../lib/ploc.cmi ../lib/versdep.cmo ../main/ast2pt.cmo \
     ../main/pcaml.cmi
 pr_dump.cmx: ../lib/ploc.cmx ../lib/versdep.cmx ../main/ast2pt.cmx \
     ../main/pcaml.cmx
