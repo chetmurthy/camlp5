@@ -6,7 +6,6 @@
 #require "pcre";;
 #require "bos";;
 
-
 #require "camlp5.pa_op";;
 Pcaml.inter_phrases := Some ";;\n";;
 (*
@@ -84,6 +83,17 @@ let pp_lexbuf lb =
   Format.print_string ">>"
 ;;
 #install_printer pp_lexbuf ;;
+
+#directory "../etc";;
+
+print_string "GOOD\n";;
+{foo| A |foo} |> Stream.of_string |> Grammar.Entry.parse Pa_o.argle2 ;;
+{foo| A |foo} |> Stream.of_string |> Grammar.Entry.parse Pa_o.argle1 ;;
+
+{foo| B |foo} |> Stream.of_string |> Grammar.Entry.parse Pa_o.argle2 ;;
+print_string "BAD\n";;
+{foo| B |foo} |> Stream.of_string |> Grammar.Entry.parse Pa_o.argle1 ;;
+
 
 
 (*

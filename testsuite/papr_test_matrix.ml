@@ -1684,6 +1684,17 @@ and t2 = bool[@@foo];
     };
     {name="sig-open1"; implem = False ;
      exclude=[];
+     o_input = OK {foo|open A.B|foo} ;
+     official_input = OK {foo|open A.B|foo} ;
+     r_input = OK {foo|open A.B;|foo} ;
+     o_output = OK {foo|open A.B;;
+|foo};
+     official_output = OK {foo|open A.B|foo} ;
+     r_output = OK {foo|open A.B;
+|foo}
+    };
+    {name="sig-open2"; implem = False ;
+     exclude=[];
      o_input = OK {foo|open A.B(C)|foo} ;
      official_input = OK {foo|open A.B(C)|foo} ;
      r_input = OK {foo|open A.B(C);|foo} ;
