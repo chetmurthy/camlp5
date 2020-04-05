@@ -31,8 +31,8 @@ do {
 
 value check_dot_uid_f strm =
   match Stream.npeek 5 strm with [
-    [("",".") ; ("UIDENT",_) :: _] -> ()
-  | [("",".") ; ("","$") ; ("LIDENT",("uid"|"_uid")) ; ("", ":") ; ("LIDENT", _) :: _] -> ()
+    [("",".") ; ("UIDENT",_) :: _] -> "OK"
+  | [("",".") ; ("","$") ; ("LIDENT",("uid"|"_uid")) ; ("", ":") ; ("LIDENT", _) :: _] -> "OK"
   | _ -> raise Stream.Failure
   ]
 ;
@@ -122,3 +122,6 @@ EXTEND
 END
 else ()
 ;
+value sig_item s = s |> Stream.of_string |> Grammar.Entry.parse sig_item ;
+value argle1 s = s |> Stream.of_string |> Grammar.Entry.parse argle1 ;
+value argle2 s = s |> Stream.of_string |> Grammar.Entry.parse argle2 ;

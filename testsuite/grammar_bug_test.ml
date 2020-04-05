@@ -55,12 +55,9 @@ value assert_raises_exn_pred ?{msg} ?{exnmsg} exnpred (f: unit -> 'a) =
           assert_bool ~{printer=(pexn,e)} msg (exnpred e) ]
 ;
 
+open Alt_pa_o ;
 
 value has_argle = ref False ;
-
-value sig_item s = s |> Stream.of_string |> Grammar.Entry.parse Alt_pa_o.sig_item ;
-value argle1 s = s |> Stream.of_string |> Grammar.Entry.parse Alt_pa_o.argle1 ;
-value argle2 s = s |> Stream.of_string |> Grammar.Entry.parse Alt_pa_o.argle2 ;
 
 value tests () = "grammar_bug" >::: [
     "sig_item-open1" >:: (fun  [ _ ->
