@@ -150,7 +150,7 @@ grammar_bug_test:: grammar_bug_test.byte
 	HAS_ARGLE=false ./grammar_bug_test.byte
 
 grammar_bug_test.byte: grammar_bug_test.ml alt_pa_o.ml
-	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5),camlp5.syntax,ounit2,camlp5.gramlib -syntax camlp5r -I ../main -linkall -linkpkg asttools.cmo reloc.cmo alt_pa_o.ml grammar_bug_test.ml -o grammar_bug_test.byte
+	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5),camlp5.syntax,ounit2 -syntax camlp5r -I ../main -linkall -linkpkg ../lib2/gramlib2.cma asttools.cmo reloc.cmo alt_pa_o.ml grammar_bug_test.ml -o grammar_bug_test.byte
 
 o_top_test:: o_top_test.byte
 	./o_top_test.byte
