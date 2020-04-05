@@ -1,10 +1,13 @@
 (* camlp5r *)
 (* grammar_bug_test.ml *)
 #load "pa_macro.cmo";
+#load "q_MLast.cmo";
 
 open OUnit2 ;
 open OUnitTest ;
 open Testutil ;
+open MLast ;
+value loc = Ploc.dummy ;
 
 value smart_exn_eq e1 e2 =
   let rec eqrec e1 e2 =
@@ -32,7 +35,7 @@ value argle2 s = s |> Stream.of_string |> Grammar.Entry.parse Alt_pa_o.argle2 ;
 
 value tests () = "grammar_bug" >::: [
     "simple" >:: (fun  [ _ ->
-      ignore(expr "1")
+      assert_equal ~{cmp=Reloc.eq_expr} <:expr< 1 >> (expr "1")
     ])
     ; "sig_item-open1" >:: (fun  [ _ ->
       if has_argle.val then
@@ -48,7 +51,7 @@ value tests () = "grammar_bug" >::: [
                                                 (Stdlib.Stream.Error "[ext_attributes] expected after 'open' (in [sig_item])")))
           (fun () -> ignore(sig_item "open A.B"))
       else
-        ignore(sig_item "open A.B")
+        assert_equal ~{cmp=Reloc.eq_sig_item} <:sig_item< open A.B >> (sig_item "open A.B")
     ])
     ; "match-case-1" >:: (fun  [ _ ->
       ignore(match_case "1 -> 2")
