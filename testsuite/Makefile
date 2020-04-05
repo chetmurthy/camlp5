@@ -153,8 +153,9 @@ grammar_bug_test.byte: grammar_bug_test.ml alt_pa_o.ml
 	$(CAMLP5R) -mode S alt_pa_o.ml > alt_pa_o.ppo
 	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5) \
         -I ../main -I ../lib2 -c -impl alt_pa_o.ppo
-	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5),camlp5.syntax,ounit2 -syntax camlp5r \
-        -I ../main -c grammar_bug_test.ml
+	$(CAMLP5R) -mode S grammar_bug_test.ml > grammar_bug_test.ppo
+	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5),ounit2 \
+        -I ../main -I ../lib2 -c -impl grammar_bug_test.ppo
 	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5),ounit2 -I ../main -linkall -linkpkg ../lib2/gramlib2.cma alt_pa_o.cmo grammar_bug_test.cmo -o grammar_bug_test.byte
 
 o_top_test:: o_top_test.byte
