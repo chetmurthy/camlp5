@@ -146,10 +146,11 @@ q_MLast_test.byte: q_MLast_test.ml testutil.cmo
 	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES),ounit2,camlp5.pa_r,camlp5.pr_r,camlp5.quotations -syntax camlp5r -linkall -linkpkg testutil.cmo -impl q_MLast_test.ml -o q_MLast_test.byte
 
 grammar_bug_test:: grammar_bug_test.byte
-	./grammar_bug_test.byte
+	HAS_ARGLE=true ./grammar_bug_test.byte
+	HAS_ARGLE=false ./grammar_bug_test.byte
 
-grammar_bug_test.byte: grammar_bug_test.ml alt_pa_o.ml
-	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES),ounit2,camlp5 -syntax camlp5r -I ../main -linkall -linkpkg -impl alt_pa_o.ml grammar_bug_test.ml -o grammar_bug_test.byte
+grammar_bug_test.byte: grammar_bug_test.ml alt_pa_o.ml testutil.cmo
+	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES),ounit2,camlp5 -syntax camlp5r -I ../main -linkall -linkpkg -impl alt_pa_o.ml testutil.cmo grammar_bug_test.ml -o grammar_bug_test.byte
 
 o_top_test:: o_top_test.byte
 	./o_top_test.byte

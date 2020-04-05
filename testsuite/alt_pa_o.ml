@@ -8,11 +8,15 @@
 #load "pa_macro_gram.cmo";
 
 open Asttools;
-open Pcaml;
 open Mlsyntax.Original;
 
-Pcaml.syntax_name.val := "OCaml";
-Pcaml.no_constructors_arity.val := True;
+value gram =
+  Grammar.gcreate
+    {Plexing.tok_func _ = failwith "no loaded parsing module";
+     Plexing.tok_using _ = (); Plexing.tok_removing _ = ();
+     Plexing.tok_match = fun []; Plexing.tok_text _ = "";
+     Plexing.tok_comm = None}
+;
 
 do {
   let odfa = Plexer.dollar_for_antiquotation.val in
@@ -22,44 +26,8 @@ do {
   Plexer.utf8_lexing.val := True;
   Grammar.Unsafe.gram_reinit gram (Plexer.gmake ());
   Plexer.dollar_for_antiquotation.val := odfa;
-  Plexer.simplest_raw_strings.val := osrs ;
-  Grammar.Unsafe.clear_entry attribute_body;
-  Grammar.Unsafe.clear_entry interf;
-  Grammar.Unsafe.clear_entry implem;
-  Grammar.Unsafe.clear_entry top_phrase;
-  Grammar.Unsafe.clear_entry use_file;
-  Grammar.Unsafe.clear_entry module_type;
-  Grammar.Unsafe.clear_entry module_expr;
-  Grammar.Unsafe.clear_entry longident;
-  Grammar.Unsafe.clear_entry extended_longident;
-  Grammar.Unsafe.clear_entry sig_item;
-  Grammar.Unsafe.clear_entry str_item;
-  Grammar.Unsafe.clear_entry signature;
-  Grammar.Unsafe.clear_entry structure;
-  Grammar.Unsafe.clear_entry expr;
-  Grammar.Unsafe.clear_entry patt;
-  Grammar.Unsafe.clear_entry ctyp;
-  Grammar.Unsafe.clear_entry let_binding;
-  Grammar.Unsafe.clear_entry type_decl;
-  Grammar.Unsafe.clear_entry type_extension;
-  Grammar.Unsafe.clear_entry extension_constructor;
-  Grammar.Unsafe.clear_entry constructor_declaration;
-  Grammar.Unsafe.clear_entry label_declaration;
-  Grammar.Unsafe.clear_entry match_case;
-  Grammar.Unsafe.clear_entry with_constr;
-  Grammar.Unsafe.clear_entry poly_variant;
-  Grammar.Unsafe.clear_entry class_type;
-  Grammar.Unsafe.clear_entry class_expr;
-  Grammar.Unsafe.clear_entry class_expr_simple;
-  Grammar.Unsafe.clear_entry alg_attribute;
-  Grammar.Unsafe.clear_entry alg_attributes;
-  Grammar.Unsafe.clear_entry ext_attributes;
-  Grammar.Unsafe.clear_entry class_sig_item;
-  Grammar.Unsafe.clear_entry class_str_item
+  Plexer.simplest_raw_strings.val := osrs
 };
-
-Pcaml.parse_interf.val := Grammar.Entry.parse interf;
-Pcaml.parse_implem.val := Grammar.Entry.parse implem;
 
 value error loc msg = Ploc.raise loc (Failure msg);
 
@@ -661,14 +629,7 @@ value expr : Grammar.Entry.e MLast.expr = Grammar.Entry.create gram "expr";
 value match_case : Grammar.Entry.e (MLast.patt * MLast.v (option MLast.expr) * MLast.expr) = Grammar.Entry.create gram "match_case";
 
 EXTEND
-  GLOBAL: sig_item str_item ctyp patt expr module_type
-    module_expr longident extended_longident
-    signature structure class_type class_expr class_expr_simple class_sig_item class_str_item
-    let_binding type_decl type_extension extension_constructor
-    constructor_declaration label_declaration
-    match_case with_constr poly_variant
-    attribute_body alg_attribute alg_attributes
-    ext_attributes
+  GLOBAL: sig_item expr match_case
     argle1    argle2
     ;
   attribute_id:
@@ -1370,7 +1331,7 @@ MLast.SgMtyAlias loc <:vala< i >> <:vala< li >> attrs
   ;
 (* NOTE WELL: if I expand expr_or_dot into match_case and make it two rules,
  * I get errors; more evidence there's a bug in the grammar-interpreter *)
-
+(*
   int_or_dot: [[ "A" -> 1 | "B" -> 2 ]] ;
   argle1:
     [ [ OPT [ "when" ]; "A" ->
@@ -1384,7 +1345,7 @@ MLast.SgMtyAlias loc <:vala< i >> <:vala< li >> attrs
           e
       ] ]
   ;
-
+  *)
   expr_or_dot: [[ e = expr -> e | "." -> <:expr< . >> ]] ;
   match_case:
     [ [ x1 = patt; w = V (OPT [ "when"; e = expr -> e ]); "->"; e = expr_or_dot ->
@@ -2251,45 +2212,28 @@ MLast.SgMtyAlias loc <:vala< i >> <:vala< li >> attrs
 END
 ;
 
-(* Main entry points *)
-
+if match Sys.getenv "HAS_ARGLE" with [
+    exception Not_found -> failwith "must set HAS_ARGLE to use this test"
+  | "true" -> True
+  | "false" -> False
+  | _ -> failwith "must set HAS_ARGLE to either true or false"
+  ] then
 EXTEND
-  GLOBAL: interf implem use_file top_phrase expr patt;
-  interf:
-    [ [ si = sig_item_semi; (sil, stopped) = SELF -> ([si :: sil], stopped)
-      | "#"; n = LIDENT; dp = OPT expr; ";;" ->
-          ([(<:sig_item< # $lid:n$ $opt:dp$ >>, loc)], None)
-      | EOI -> ([], Some loc) ] ]
+  GLOBAL: argle1    argle2
+    ;
+  int_or_dot: [[ "A" -> 1 | "B" -> 2 ]] ;
+  argle1:
+    [ [ OPT [ "when" ]; "A" ->
+          1
+      | OPT [ "when" ]; "B"  ->
+          2
+      ] ]
   ;
-  sig_item_semi:
-    [ [ si = sig_item; OPT ";;" -> (si, loc) ] ]
+  argle2:
+    [ [ OPT [ "when" ]; e = int_or_dot ->
+          e
+      ] ]
   ;
-  implem:
-    [ [ si = str_item_semi; (sil, stopped) = SELF -> ([si :: sil], stopped)
-      | "#"; n = LIDENT; dp = OPT expr; ";;" ->
-          ([(<:str_item< # $lid:n$ $opt:dp$ >>, loc)], None)
-      | EOI -> ([], Some loc) ] ]
-  ;
-  str_item_semi:
-    [ [ /; si = str_item; OPT ";;" -> (si, loc) ] ]
-  ;
-  top_phrase:
-    [ [ ph = phrase; ";;" -> Some ph
-      | EOI -> None ] ]
-  ;
-  use_file:
-    [ [ si = str_item; OPT ";;"; (sil, stopped) = SELF ->
-          ([si :: sil], stopped)
-      | "#"; n = LIDENT; dp = OPT expr; ";;" ->
-          ([<:str_item< # $lid:n$ $opt:dp$ >>], True)
-      | EOI -> ([], False) ] ]
-  ;
-  phrase:
-    [ [ sti = str_item -> sti
-      | "#"; n = LIDENT; dp = OPT expr ->
-          <:str_item< # $lid:n$ $opt:dp$ >> ] ]
-  ;
-END;
-
-Pcaml.add_option "-no_quot" (Arg.Set Plexer.no_quotations)
-  "Don't parse quotations, allowing to use, e.g. \"<:>\" as token";
+END
+else ()
+;
