@@ -149,8 +149,8 @@ grammar_bug_test:: grammar_bug_test.byte
 	HAS_ARGLE=true ./grammar_bug_test.byte
 	HAS_ARGLE=false ./grammar_bug_test.byte
 
-grammar_bug_test.byte: grammar_bug_test.ml alt_pa_o.ml testutil.cmo
-	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES),ounit2,camlp5 -syntax camlp5r -I ../main -linkall -linkpkg -impl alt_pa_o.ml testutil.cmo grammar_bug_test.ml -o grammar_bug_test.byte
+grammar_bug_test.byte: grammar_bug_test.ml alt_pa_o.ml
+	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5),camlp5.syntax,ounit2,camlp5.gramlib -syntax camlp5r -I ../main -linkall -linkpkg asttools.cmo reloc.cmo alt_pa_o.ml grammar_bug_test.ml -o grammar_bug_test.byte
 
 o_top_test:: o_top_test.byte
 	./o_top_test.byte

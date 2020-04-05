@@ -5,8 +5,8 @@ description = "Base for camlp5 syntax extensions"
 directory = "@CAMLP5DIR@"
 
 # For linking
-archive(byte) = "odyl.cma camlp5.cma"
-archive(native) = "odyl.cmxa camlp5.cmxa"
+archive(byte,-preprocessor,-toploop) = "odyl.cma camlp5.cma"
+archive(native,-preprocessor,-toploop) = "odyl.cmxa camlp5.cmxa"
 
 # For the toploop:
 archive(byte,toploop) = "odyl.cma camlp5.cma"
@@ -25,6 +25,7 @@ archive(byte,toploop,camlp5sml) = "gramlib.cma camlp5_top.cma pa_sml.cmo"
 # Do #predicates "syntax,camlp5lisp", followed by #require "camlp5"
 archive(byte,toploop,camlp5lisp) = "gramlib.cma camlp5_top.cma pa_lisp.cmo"
 
+package "syntax" (
 # For the preprocessor itself:
 archive(syntax,preprocessor,camlp5o) = "pa_o.cmo pa_op.cmo pr_dump.cmo"
 archive(syntax,preprocessor,camlp5r) = "pa_r.cmo pa_rp.cmo pr_dump.cmo"
@@ -32,6 +33,7 @@ archive(syntax,preprocessor,camlp5sml) = "pa_sml.cmo pr_dump.cmo"
 archive(syntax,preprocessor,camlp5scheme) = "pa_scheme.cmo pr_dump.cmo"
 archive(syntax,preprocessor,camlp5lisp) = "pa_lisp.cmo pr_dump.cmo"
 preprocessor = "camlp5 -nolib"
+)
 
 package "pa_r" (
   error(camlp5o) = "camlp5.pa_r cannot be used with syntax camlp5o"

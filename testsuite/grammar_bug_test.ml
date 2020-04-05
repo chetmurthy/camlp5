@@ -5,8 +5,9 @@
 
 open OUnit2 ;
 open OUnitTest ;
-open Testutil ;
+open OUnitAssert ;
 open MLast ;
+
 value loc = Ploc.dummy ;
 
 value smart_exn_eq e1 e2 =
@@ -21,9 +22,39 @@ value smart_exn_eq e1 e2 =
   in eqrec e1 e2
 ;
 
+value assert_bool ?{printer} msg b =
+  if not b then
+    let msg0 = match printer with [ None -> "" | Some (f, arg) -> f arg ] in
+    assert_failure (msg0^msg)
+  else ()
+;
 
+value assert_raises_exn_pred ?{msg} ?{exnmsg} exnpred (f: unit -> 'a) =
+  let pexn =
+    Printexc.to_string
+  in
+  let get_error_string () =
+    let str =
+      Format.sprintf
+        "expected exception %s, but no exception was raised."
+        (match exnmsg with [ None -> "<no message provided>" | Some msg -> msg ])
+    in
+      match msg with [
+          None ->
+            assert_failure str
 
-Pcaml.inter_phrases.val := Some (";;\n") ;
+        | Some s ->
+            assert_failure (s^"\n"^str) ]
+  in
+    match raises f with [
+       None ->
+          assert_failure (get_error_string ())
+
+      | Some e ->
+          let msg = match msg with [ None -> "" | Some s -> s ] in
+          assert_bool ~{printer=(pexn,e)} msg (exnpred e) ]
+;
+
 
 value has_argle = ref False ;
 
