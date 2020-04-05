@@ -77,7 +77,7 @@ value tests () = "grammar_bug" >::: [
                                                 (Stdlib.Stream.Error "[ext_attributes] expected after 'open' (in [sig_item])")))
           (fun () -> ignore(sig_item "open A.B"))
       else
-        assert_equal ~{cmp=Reloc.eq_sig_item} <:sig_item< open A.B >> (sig_item "open A.B")
+        assert_equal "open A.B" (sig_item "open A.B")
     ])
     ; "argle1-2" >:: (fun [ _ ->
       if has_argle.val then
@@ -89,14 +89,14 @@ value tests () = "grammar_bug" >::: [
                           ])
     ; "argle2-1" >:: (fun [ _ ->
       if has_argle.val then
-        ignore(argle2 "A")
+        assert_equal "A" (argle2 "A")
       else
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "entry [argle2] is empty")))
           (fun () -> ignore(argle2 "A"))
                           ])
     ; "argle2-2" >:: (fun [ _ ->
       if has_argle.val then
-        ignore(argle2 "B")
+        assert_equal "B" (argle2 "B")
       else
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "entry [argle2] is empty")))
           (fun () -> ignore(argle2 "B"))
