@@ -463,7 +463,7 @@ and sig_item floc sh =
         SgModSubst loc x1 (longid floc sh x2) (attributes floc sh x3)
     | SgOpn loc x1 x2 →
         let loc = floc loc in
-        SgOpn loc x1 (attributes floc sh x2)
+        SgOpn loc (longid floc sh x1) (attributes floc sh x2)
     | SgTyp loc x1 x2 →
         let loc = floc loc in
         SgTyp loc x1 (vala_map (List.map (type_decl floc sh)) x2)
@@ -487,16 +487,16 @@ and with_constr floc sh =
   fun
   [ WcMod loc x1 x2 →
       let loc = floc loc in
-      WcMod loc x1 (module_expr floc sh x2)
+      WcMod loc (vala_map (longid floc sh) x1) (module_expr floc sh x2)
   | WcMos loc x1 x2 →
       let loc = floc loc in
-      WcMos loc x1 (module_expr floc sh x2)
+      WcMos loc (vala_map (longid floc sh) x1) (module_expr floc sh x2)
   | WcTyp loc x1 x2 x3 x4 →
       let loc = floc loc in
-      WcTyp loc x1 x2 x3 (ctyp floc sh x4)
+      WcTyp loc (vala_map (longid_lident floc sh) x1) x2 x3 (ctyp floc sh x4)
   | WcTys loc x1 x2 x3 →
       let loc = floc loc in
-      WcTys loc x1 x2 (ctyp floc sh x3) ]
+      WcTys loc (vala_map (longid_lident floc sh) x1) x2 (ctyp floc sh x3) ]
 and longid floc sh =
   self where rec self =
     fun
