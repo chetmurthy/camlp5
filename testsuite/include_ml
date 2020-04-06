@@ -86,15 +86,6 @@ let pp_lexbuf lb =
 
 #directory "../etc";;
 
-print_string "GOOD\n";;
-{foo| A |foo} |> Stream.of_string |> Grammar.Entry.parse Pa_o.argle2 ;;
-{foo| A |foo} |> Stream.of_string |> Grammar.Entry.parse Pa_o.argle1 ;;
-
-{foo| B |foo} |> Stream.of_string |> Grammar.Entry.parse Pa_o.argle2 ;;
-print_string "BAD\n";;
-{foo| B |foo} |> Stream.of_string |> Grammar.Entry.parse Pa_o.argle1 ;;
-
-
 
 (*
 ;;; Local Variables: ***
