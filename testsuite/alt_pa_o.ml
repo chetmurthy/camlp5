@@ -37,9 +37,9 @@ EXTEND
   GLOBAL: sig_item argle1 argle2
   ;
   sig_item:
-    [ "top"
-      [ [ "%" | ]; i = UIDENT -> ()
-      ] ]
+    [ 
+      [ [ "%" | ]; UIDENT -> ()
+    ] ]
   ;
 
 END
