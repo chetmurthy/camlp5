@@ -46,49 +46,22 @@ value argle1 : Grammar.Entry.e string = Grammar.Entry.create gram "argle1";
 value argle2 : Grammar.Entry.e string = Grammar.Entry.create gram "argle2";
 value sig_item : Grammar.Entry.e string = Grammar.Entry.create gram "sig_item";
 value ext_opt = Grammar.Entry.create gram "ext_opt";
-value alg_attributes_no_anti = Grammar.Entry.create gram "alg_attributes_no_anti";
 
 EXTEND
   GLOBAL: sig_item argle1 argle2
   ext_opt
-  alg_attributes_no_anti
   ;
   attribute_id:
   [ [ l = LIST1 [ i = LIDENT -> i | i = UIDENT -> i ] SEP "." -> String.concat "." l
     ] ]
   ;
-  attribute_body:
-  [ [
-      id = attribute_id ->
-      <:attribute_body< $_attrid:id$ $structure:[]$ >>
-    ] ]
-  ;
-  alg_attribute:
-  [ [ "[@" ; attr = attribute_body; "]" -> attr
-    ] ]
-  ;
-  alg_attributes_no_anti:
-  [ [ l = LIST0 alg_attribute -> l ]
-  ]
-  ;
   sig_item:
     [ "top"
-      [ "open"; ext_opt; i = extended_longident ->
+      [ "open"; ext_opt; i = UIDENT ->
           Printf.sprintf "open %s" i
       ] ]
   ;
   ext_opt: [ [ OPT [ "%" ; attribute_id ] ] ] ;
-
-  (* Core types *)
-  extended_longident:
-    [ LEFTA
-      [ me1 = SELF; "(" ; me2 = SELF ; ")" → Printf.sprintf "%s(%s)" me1 me2
-      | me1 = SELF; check_dot_uid ; "."; i = UIDENT → Printf.sprintf "%s.%s" me1 i
-      ]
-    | "simple"
-      [ i = UIDENT → i
-      ] ]
-  ;
 
 END
 ;

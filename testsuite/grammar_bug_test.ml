@@ -87,14 +87,6 @@ value tests () = "grammar_bug" >::: [
       else
         ignore(pa_sig_item "open A")
     ])
-    ; "sig_item-open2" >:: (fun  [ _ ->
-      if has_argle.val then
-        assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy 
-                                                (Stdlib.Stream.Error "[ext_opt] expected after 'open' (in [sig_item])")))
-          (fun () -> ignore(pa_sig_item "open A.B"))
-      else
-        assert_equal "open A.B" (pa_sig_item "open A.B")
-    ])
     ; "argle1-2" >:: (fun [ _ ->
       if has_argle.val then
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "illegal begin of argle1")))
