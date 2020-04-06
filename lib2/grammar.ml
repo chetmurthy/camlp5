@@ -855,7 +855,9 @@ and parse_top_symb entry symb =
 
 value symb_failed_txt e s1 s2 = symb_failed e 0 s1 s2;
 
-value rec start_parser_of_levels entry clevn =
+value rec start_parser_of_levels entry clevn levs levn (strm : Stream.t token) =
+  start_parser_of_levels0 entry clevn levs levn strm
+and start_parser_of_levels0 entry clevn levs levn strm =
   fun
   [ [] -> fun levn -> parser []
   | [lev :: levs] ->
@@ -891,10 +893,10 @@ value rec start_parser_of_levels entry clevn =
                   [ [: act = p2 :] ep ->
                       let a = app act (loc_of_token_interval bp ep) in
                       entry.econtinue levn bp a strm
-                  | [: a = p1 levn :] -> a ] ] ] ]
+                  | [: a = p1 levn :] -> a ] ] ] ] levs levn strm
 ;
 
-value rec continue_parser_of_levels entry clevn =
+value rec continue_parser_of_levels entry clevn levs levn bp a strm =
   fun
   [ [] -> fun levn bp a -> parser []
   | [lev :: levs] ->
@@ -915,7 +917,7 @@ value rec continue_parser_of_levels entry clevn =
               [ [: a = p1 levn bp a :] -> a
               | [: act = p2 :] ep ->
                   let a = app act a (loc_of_token_interval bp ep) in
-                  entry.econtinue levn bp a strm ] ] ]
+                  entry.econtinue levn bp a strm ] ] ]  levs levn bp a strm
 ;
 
 value continue_parser_of_entry entry =
