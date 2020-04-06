@@ -31,6 +31,7 @@ do {
 
 value argle1 : Grammar.Entry.e unit = Grammar.Entry.create gram "argle1";
 value argle2 : Grammar.Entry.e unit = Grammar.Entry.create gram "argle2";
+value int_or_dot : Grammar.Entry.e unit = Grammar.Entry.create gram "int_or_dot";
 value sig_item : Grammar.Entry.e unit = Grammar.Entry.create gram "sig_item";
 
 EXTEND
@@ -52,7 +53,7 @@ if match Sys.getenv "HAS_ARGLE" with [
   | _ -> failwith "must set HAS_ARGLE to either true or false"
   ] then
 EXTEND
-  GLOBAL: argle1    argle2
+  GLOBAL: argle1    argle2 int_or_dot
     ;
   int_or_dot: [[ "A" -> () | "B" -> () ]] ;
   argle1:
