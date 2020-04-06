@@ -45,13 +45,11 @@ value check_dot_uid =
 value argle1 : Grammar.Entry.e string = Grammar.Entry.create gram "argle1";
 value argle2 : Grammar.Entry.e string = Grammar.Entry.create gram "argle2";
 value sig_item : Grammar.Entry.e string = Grammar.Entry.create gram "sig_item";
-value ext_attributes = Grammar.Entry.create gram "ext_attributes";
 value ext_opt = Grammar.Entry.create gram "ext_opt";
 value alg_attributes_no_anti = Grammar.Entry.create gram "alg_attributes_no_anti";
 
 EXTEND
   GLOBAL: sig_item argle1 argle2
-  ext_attributes
   ext_opt
   alg_attributes_no_anti
   ;
@@ -61,34 +59,33 @@ EXTEND
   ;
   attribute_body:
   [ [
-      id = V attribute_id "attrid" ->
+      id = attribute_id ->
       <:attribute_body< $_attrid:id$ $structure:[]$ >>
     ] ]
   ;
   item_attribute:
-  [ [ "[@@" ; attr = V attribute_body "attribute"; "]" -> attr
+  [ [ "[@@" ; attr = attribute_body; "]" -> attr
     ] ]
   ;
   alg_attribute:
-  [ [ "[@" ; attr = V attribute_body "attribute"; "]" -> attr
+  [ [ "[@" ; attr = attribute_body; "]" -> attr
     ] ]
   ;
   item_attributes:
-  [ [ l = V (LIST0 item_attribute) "itemattrs" -> l ]
+  [ [ l = LIST0 item_attribute -> l ]
   ]
   ;
   alg_attributes_no_anti:
-  [ [ l = (LIST0 alg_attribute) -> l ]
+  [ [ l = LIST0 alg_attribute -> l ]
   ]
   ;
   sig_item:
     [ "top"
-      [ "open"; ext_attributes; i = extended_longident ; item_attrs = item_attributes ->
+      [ "open"; ext_opt; i = extended_longident ; item_attrs = item_attributes ->
           Printf.sprintf "open %s" i
       ] ]
   ;
   ext_opt: [ [ OPT [ "%" ; attribute_id ] ] ] ;
-  ext_attributes: [ [ ext_opt ; alg_attributes_no_anti ] ] ;
 
   (* Core types *)
   extended_longident:
@@ -130,6 +127,5 @@ END
 else ()
 ;
 value pa_sig_item s = s |> Stream.of_string |> Grammar.Entry.parse sig_item ;
-value pa_ext_attributes s = s |> Stream.of_string |> Grammar.Entry.parse ext_attributes ;
 value pa_argle1 s = s |> Stream.of_string |> Grammar.Entry.parse argle1 ;
 value pa_argle2 s = s |> Stream.of_string |> Grammar.Entry.parse argle2 ;
