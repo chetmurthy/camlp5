@@ -6,10 +6,16 @@
 #require "pcre";;
 #require "bos";;
 
-#directory "../lib2";;
 #directory "../main";;
-#load "../lib2/gramlib2.cma";;
+
+#directory "../lib";;
+#load "../lib/gramlib.cma";;
+
 #load "alt_pa_o.cmo";;
 #load "grammar_bug_test.cmo";;
 
 open Alt_pa_o;;
+Grammar.Entry.print Fmt.stdout Alt_pa_o.sig_item;;
+Grammar.Entry.print Fmt.stdout Alt_pa_o.ext_attributes;;
+Grammar.Entry.print Fmt.stdout Alt_pa_o.ext_opt;;
+Grammar.Entry.print Fmt.stdout Alt_pa_o.alg_attributes_no_anti;;

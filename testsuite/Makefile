@@ -145,18 +145,24 @@ q_MLast_test:: q_MLast_test.byte
 q_MLast_test.byte: q_MLast_test.ml testutil.cmo
 	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES),ounit2,camlp5.pa_r,camlp5.pr_r,camlp5.quotations -syntax camlp5r -linkall -linkpkg testutil.cmo -impl q_MLast_test.ml -o q_MLast_test.byte
 
-grammar_bug_test:: grammar_bug_test.byte
+grammar_bug_test:: grammar_bug_test_argle grammar_bug_test_no_argle
+
+grammar_bug_test_argle:: grammar_bug_test.byte
 	HAS_ARGLE=true ./grammar_bug_test.byte
+
+grammar_bug_test_no_argle:: grammar_bug_test.byte
 	HAS_ARGLE=false ./grammar_bug_test.byte
 
+LIBDIR=../lib
+GRAMLIB=$(LIBDIR)/gramlib.cma
 grammar_bug_test.byte: grammar_bug_test.ml alt_pa_o.ml
 	$(CAMLP5R) -mode S alt_pa_o.ml > alt_pa_o.ppo
 	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5) \
-        -I ../main -I ../lib2 -c -impl alt_pa_o.ppo
+        -I ../main -I $(LIBDIR) -c -impl alt_pa_o.ppo
 	$(CAMLP5R) -mode S grammar_bug_test.ml > grammar_bug_test.ppo
 	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5),ounit2 \
-        -I ../main -I ../lib2 -c -impl grammar_bug_test.ppo
-	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5),ounit2 -I ../main -linkall -linkpkg ../lib2/gramlib2.cma alt_pa_o.cmo grammar_bug_test.cmo -o grammar_bug_test.byte
+        -I ../main -I $(LIBDIR) -c -impl grammar_bug_test.ppo
+	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5),ounit2 -I ../main -linkall -linkpkg $(GRAMLIB) alt_pa_o.cmo grammar_bug_test.cmo -o grammar_bug_test.byte
 
 o_top_test:: o_top_test.byte
 	./o_top_test.byte
