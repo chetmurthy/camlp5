@@ -63,17 +63,9 @@ EXTEND
       <:attribute_body< $_attrid:id$ $structure:[]$ >>
     ] ]
   ;
-  item_attribute:
-  [ [ "[@@" ; attr = attribute_body; "]" -> attr
-    ] ]
-  ;
   alg_attribute:
   [ [ "[@" ; attr = attribute_body; "]" -> attr
     ] ]
-  ;
-  item_attributes:
-  [ [ l = LIST0 item_attribute -> l ]
-  ]
   ;
   alg_attributes_no_anti:
   [ [ l = LIST0 alg_attribute -> l ]
@@ -81,7 +73,7 @@ EXTEND
   ;
   sig_item:
     [ "top"
-      [ "open"; ext_opt; i = extended_longident ; item_attrs = item_attributes ->
+      [ "open"; ext_opt; i = extended_longident ->
           Printf.sprintf "open %s" i
       ] ]
   ;
