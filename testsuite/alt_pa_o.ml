@@ -29,35 +29,18 @@ do {
   Plexer.simplest_raw_strings.val := osrs
 };
 
-value check_dot_uid_f strm =
-  match Stream.npeek 5 strm with [
-    [("",".") ; ("UIDENT",_) :: _] -> "OK"
-  | [("",".") ; ("","$") ; ("LIDENT",("uid"|"_uid")) ; ("", ":") ; ("LIDENT", _) :: _] -> "OK"
-  | _ -> raise Stream.Failure
-  ]
-;
-
-value check_dot_uid =
-  Grammar.Entry.of_parser gram "check_dot_uid"
-    check_dot_uid_f
-;
-
-value argle1 : Grammar.Entry.e string = Grammar.Entry.create gram "argle1";
-value argle2 : Grammar.Entry.e string = Grammar.Entry.create gram "argle2";
-value sig_item : Grammar.Entry.e string = Grammar.Entry.create gram "sig_item";
-value ext_opt = Grammar.Entry.create gram "ext_opt";
+value argle1 : Grammar.Entry.e unit = Grammar.Entry.create gram "argle1";
+value argle2 : Grammar.Entry.e unit = Grammar.Entry.create gram "argle2";
+value sig_item : Grammar.Entry.e unit = Grammar.Entry.create gram "sig_item";
 
 EXTEND
   GLOBAL: sig_item argle1 argle2
-  ext_opt
   ;
   sig_item:
     [ "top"
-      [ ext_opt; i = UIDENT ->
-          Printf.sprintf "open %s" i
+      [ [ "%" | ]; i = UIDENT -> ()
       ] ]
   ;
-  ext_opt: [ [ OPT [ "%" ] ] ] ;
 
 END
 ;
@@ -71,17 +54,17 @@ if match Sys.getenv "HAS_ARGLE" with [
 EXTEND
   GLOBAL: argle1    argle2
     ;
-  int_or_dot: [[ "A" -> "A" | "B" -> "B" ]] ;
+  int_or_dot: [[ "A" -> () | "B" -> () ]] ;
   argle1:
-    [ [ OPT [ "when" ]; "A" ->
-          "A"
-      | OPT [ "when" ]; "B"  ->
-          "B"
+    [ [ [ "when" |  ]; "A" ->
+          ()
+      | [ "when" | ]; "B"  ->
+          ()
       ] ]
   ;
   argle2:
-    [ [ OPT [ "when" ]; e = int_or_dot ->
-          e
+    [ [ [ "when" | ]; int_or_dot ->
+          ()
       ] ]
   ;
 END

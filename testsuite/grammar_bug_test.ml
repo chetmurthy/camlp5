@@ -97,14 +97,14 @@ value tests () = "grammar_bug" >::: [
                           ])
     ; "argle2-1" >:: (fun [ _ ->
       if has_argle.val then
-        assert_equal "A" (pa_argle2 "A")
+        pa_argle2 "A"
       else
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "entry [argle2] is empty")))
           (fun () -> ignore(pa_argle2 "A"))
                           ])
     ; "argle2-2" >:: (fun [ _ ->
       if has_argle.val then
-        assert_equal "B" (pa_argle2 "B")
+        pa_argle2 "B"
       else
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "entry [argle2] is empty")))
           (fun () -> ignore(pa_argle2 "B"))
