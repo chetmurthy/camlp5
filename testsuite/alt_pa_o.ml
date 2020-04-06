@@ -51,17 +51,13 @@ EXTEND
   GLOBAL: sig_item argle1 argle2
   ext_opt
   ;
-  attribute_id:
-  [ [ l = LIST1 [ i = LIDENT -> i | i = UIDENT -> i ] SEP "." -> String.concat "." l
-    ] ]
-  ;
   sig_item:
     [ "top"
       [ "open"; ext_opt; i = UIDENT ->
           Printf.sprintf "open %s" i
       ] ]
   ;
-  ext_opt: [ [ OPT [ "%" ; attribute_id ] ] ] ;
+  ext_opt: [ [ OPT [ "%" ] ] ] ;
 
 END
 ;
