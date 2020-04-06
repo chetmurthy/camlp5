@@ -174,7 +174,7 @@ value backtrack_stalling_limit : ref int;
 
 module type GLexerType =
   sig
-    type te = 'x;
+    type te = token;
     value lexer : Plexing.lexer te;
   end
 ;
@@ -183,7 +183,7 @@ module type GLexerType =
 
 module type S =
   sig
-    type te = 'x;
+    type te = token;
     type parsable = 'x;
     value parsable : Stream.t char -> parsable;
     value tokens : string -> list (string * int);

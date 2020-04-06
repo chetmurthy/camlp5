@@ -1001,7 +1001,7 @@ value bfparser_of_token entry tok return_value =
           if backtrack_trace.val then
             Printf.eprintf " (token count max %d)%!" (Fstream.count strm)
           else ();
-          let e : g_entry Obj.t = Obj.magic (entry : g_entry _) in
+          let e : g_entry token = Obj.magic (entry : g_entry _) in
           let cnt = Fstream.count strm in
           max_fcount.val := Some (cnt, e, err);
           nb_ftry.val := 0
@@ -2455,14 +2455,14 @@ module Unsafe =
 
 module type GLexerType =
   sig
-    type te = 'x;
+    type te = token;
     value lexer : Plexing.lexer te;
   end
 ;
 
 module type S =
   sig
-    type te = 'x;
+    type te = token;
     type parsable = 'x;
     value parsable : Stream.t char -> parsable;
     value tokens : string -> list (string * int);

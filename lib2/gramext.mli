@@ -2,9 +2,10 @@
 (* gramext.mli,v *)
 (* Copyright (c) INRIA 2007-2017 *)
 
-type parser_t 'a = Stream.t 'a -> Obj.t;
-type fparser_t 'a = Fstream.t 'a -> option (Obj.t * Fstream.t 'a);
-type bparser_t 'a = Fstream.bp 'a Obj.t;
+type token = (string * string);
+type parser_t 'a = Stream.t 'a -> Obj.t constraint 'a = token;
+type fparser_t 'a = Fstream.t 'a -> option (Obj.t * Fstream.t 'a) constraint 'a = token;
+type bparser_t 'a = Fstream.bp 'a Obj.t constraint 'a = token;
 
 type parse_algorithm =
   [ Predictive | Functional | Backtracking | DefaultAlgorithm ];
@@ -25,15 +26,15 @@ type g_entry 'te =
     fcontinue : mutable int -> int -> Obj.t -> err_fun -> fparser_t 'te;
     bstart : mutable int -> err_fun -> bparser_t 'te;
     bcontinue : mutable int -> int -> Obj.t -> err_fun -> bparser_t 'te;
-    edesc : mutable g_desc 'te }
+    edesc : mutable g_desc 'te } constraint 'te = token
 and g_desc 'te =
   [ Dlevels of list (g_level 'te)
-  | Dparser of parser_t 'te ]
+  | Dparser of parser_t 'te ] constraint 'te = token
 and g_level 'te =
   { assoc : g_assoc;
     lname : option string;
     lsuffix : g_tree 'te;
-    lprefix : g_tree 'te }
+    lprefix : g_tree 'te } constraint 'te = token
 and g_assoc = [ NonA | RightA | LeftA ]
 and g_symbol 'te =
   [ Sfacto of g_symbol 'te
@@ -50,14 +51,14 @@ and g_symbol 'te =
   | Scut
   | Stoken of Plexing.pattern
   | Stree of g_tree 'te
-  | Svala of list string and g_symbol 'te ]
+  | Svala of list string and g_symbol 'te ] constraint 'te = token
 and g_action = Obj.t
 and g_tree 'te =
   [ Node of g_node 'te
   | LocAct of g_action and list g_action
-  | DeadEnd ]
+  | DeadEnd ] constraint 'te = token
 and g_node 'te =
-  { node : g_symbol 'te; son : g_tree 'te; brother : g_tree 'te }
+  { node : g_symbol 'te; son : g_tree 'te; brother : g_tree 'te } constraint 'te = token
 and err_fun = unit -> string;
 
 type position =

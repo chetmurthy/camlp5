@@ -8,6 +8,25 @@ open OUnitTest ;
 open OUnitAssert ;
 open MLast ;
 
+value car = List.hd;
+value cdr = List.tl;
+value rec sep_last = fun [
+    [] -> failwith "sep_last"
+  | [hd] -> (hd,[])
+  | [hd::tl] ->
+      let (l,tl) = sep_last tl in (l,[hd::tl])
+]
+;
+value invoked_with cmdna =
+  let variant_names = [cmdna; cmdna^".byte"; cmdna^".native"; cmdna^".opt"] in
+
+  let argv = Array.to_list Sys.argv in
+  let path = Pcre.split ~{rex=(Pcre.regexp "/")} (car argv) in
+  let (fname, _) = sep_last path in
+
+  List.exists ((=) fname) variant_names
+;
+
 value loc = Ploc.dummy ;
 
 value smart_exn_eq e1 e2 =
@@ -64,52 +83,56 @@ value tests () = "grammar_bug" >::: [
       if has_argle.val then
       assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy 
                                               (Stdlib.Stream.Error "[ext_attributes] expected after 'open' (in [sig_item])")))
-        (fun () -> ignore(sig_item "open A"))
+        (fun () -> ignore(pa_sig_item "open A"))
       else
-        ignore(sig_item "open A")
+        ignore(pa_sig_item "open A")
     ])
     ; "sig_item-open2" >:: (fun  [ _ ->
       if has_argle.val then
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy 
                                                 (Stdlib.Stream.Error "[ext_attributes] expected after 'open' (in [sig_item])")))
-          (fun () -> ignore(sig_item "open A.B"))
+          (fun () -> ignore(pa_sig_item "open A.B"))
       else
-        assert_equal "open A.B" (sig_item "open A.B")
+        assert_equal "open A.B" (pa_sig_item "open A.B")
     ])
     ; "argle1-2" >:: (fun [ _ ->
       if has_argle.val then
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "illegal begin of argle1")))
-          (fun () -> ignore(argle1 "B"))
+          (fun () -> ignore(pa_argle1 "B"))
       else
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "entry [argle1] is empty")))
-          (fun () -> ignore(argle1 "B"))
+          (fun () -> ignore(pa_argle1 "B"))
                           ])
     ; "argle2-1" >:: (fun [ _ ->
       if has_argle.val then
-        assert_equal "A" (argle2 "A")
+        assert_equal "A" (pa_argle2 "A")
       else
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "entry [argle2] is empty")))
-          (fun () -> ignore(argle2 "A"))
+          (fun () -> ignore(pa_argle2 "A"))
                           ])
     ; "argle2-2" >:: (fun [ _ ->
       if has_argle.val then
-        assert_equal "B" (argle2 "B")
+        assert_equal "B" (pa_argle2 "B")
       else
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "entry [argle2] is empty")))
-          (fun () -> ignore(argle2 "B"))
+          (fun () -> ignore(pa_argle2 "B"))
                           ])
     ]
  ;
 
-value _ = do {
+value _ = 
+if invoked_with "grammar_bug_test" then
+do {
   match Sys.getenv "HAS_ARGLE" with [
     exception Not_found -> failwith "must set HAS_ARGLE to use this test"
   | "true" -> has_argle.val := True
   | "false" -> has_argle.val := False
   | _ -> failwith "must set HAS_ARGLE to either true or false"
   ] ;
-  run_test_tt_main (tests ()) ;
-};
+  run_test_tt_main (tests ())
+}
+else ()
+;
   
 (*
 ;;; Local Variables: ***

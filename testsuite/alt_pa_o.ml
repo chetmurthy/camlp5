@@ -122,6 +122,6 @@ EXTEND
 END
 else ()
 ;
-value sig_item s = s |> Stream.of_string |> Grammar.Entry.parse sig_item ;
-value argle1 s = s |> Stream.of_string |> Grammar.Entry.parse argle1 ;
-value argle2 s = s |> Stream.of_string |> Grammar.Entry.parse argle2 ;
+value pa_sig_item s = s |> Stream.of_string |> Grammar.Entry.parse sig_item ;
+value pa_argle1 s = s |> Stream.of_string |> Grammar.Entry.parse argle1 ;
+value pa_argle2 s = s |> Stream.of_string |> Grammar.Entry.parse argle2 ;
