@@ -53,7 +53,7 @@ EXTEND
   ;
   sig_item:
     [ "top"
-      [ "open"; ext_opt; i = UIDENT ->
+      [ ext_opt; i = UIDENT ->
           Printf.sprintf "open %s" i
       ] ]
   ;
