@@ -8,8 +8,8 @@
 
 #directory "../main";;
 
-#directory "../lib";;
-#load "../lib/gramlib.cma";;
+#directory "../lib2";;
+#load "../lib2/gramlib2.cma";;
 
 #load "alt_pa_o.cmo";;
 #load "grammar_bug_test.cmo";;

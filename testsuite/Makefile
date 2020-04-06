@@ -153,8 +153,8 @@ grammar_bug_test_argle:: grammar_bug_test.byte
 grammar_bug_test_no_argle:: grammar_bug_test.byte
 	HAS_ARGLE=false ./grammar_bug_test.byte
 
-LIBDIR=../lib
-GRAMLIB=$(LIBDIR)/gramlib.cma
+LIBDIR=../lib2
+GRAMLIB=$(LIBDIR)/gramlib2.cma
 grammar_bug_test.byte: grammar_bug_test.ml alt_pa_o.ml
 	$(CAMLP5R) -mode S alt_pa_o.ml > alt_pa_o.ppo
 	$(OCAMLFIND) ocamlc $(DEBUG) -package $(PACKAGES_NOCAMLP5) \

@@ -46,13 +46,8 @@ EXTEND
 END
 ;
 
-if match Sys.getenv "HAS_ARGLE" with [
-    exception Not_found -> failwith "must set HAS_ARGLE to use this test"
-  | "true" -> True
-  | "false" -> False
-  | _ -> failwith "must set HAS_ARGLE to either true or false"
-  ] then
-EXTEND
+value add_argles () = do {
+  EXTEND
   GLOBAL: argle1    argle2 int_or_dot
     ;
   int_or_dot: [[ "A" -> () | "B" -> () ]] ;
@@ -69,6 +64,15 @@ EXTEND
       ] ]
   ;
 END
+}
+;
+
+if match Sys.getenv "HAS_ARGLE" with [
+    exception Not_found -> failwith "must set HAS_ARGLE to use this test"
+  | "true" -> True
+  | "false" -> False
+  | _ -> failwith "must set HAS_ARGLE to either true or false"
+  ] then add_argles()
 else ()
 ;
 value pa_sig_item s = s |> Stream.of_string |> Grammar.Entry.parse sig_item ;
