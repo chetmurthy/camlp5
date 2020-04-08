@@ -32,30 +32,16 @@ do {
 value argle1 : Grammar.Entry.e unit = Grammar.Entry.create gram "argle1";
 value argle2 : Grammar.Entry.e unit = Grammar.Entry.create gram "argle2";
 value int_or_dot : Grammar.Entry.e unit = Grammar.Entry.create gram "int_or_dot";
-value sig_item : Grammar.Entry.e unit = Grammar.Entry.create gram "sig_item";
 
+value add_argle () = 
 EXTEND
-  GLOBAL: sig_item argle1 argle2
+  GLOBAL: argle1 argle2
   ;
-  sig_item:
-    [ 
-      [ [ "%" | ]; UIDENT -> ()
-    ] ]
-  ;
-
-END
-;
-
-value add_argles () = do {
-  EXTEND
-  GLOBAL: argle1    argle2 int_or_dot
-    ;
   int_or_dot: [[ "A" -> () | "B" -> () ]] ;
   argle1:
-    [ [ [ "when" |  ]; "A" ->
-          ()
-      | [ "when" | ]; "B"  ->
-          ()
+    [ NONA
+      [ [ "when" | ]; "A" -> ()
+      | [ "when" | ]; "B" ->()
       ] ]
   ;
   argle2:
@@ -63,18 +49,16 @@ value add_argles () = do {
           ()
       ] ]
   ;
+
 END
-}
 ;
 
-if match Sys.getenv "HAS_ARGLE" with [
-    exception Not_found -> failwith "must set HAS_ARGLE to use this test"
-  | "true" -> True
-  | "false" -> False
-  | _ -> failwith "must set HAS_ARGLE to either true or false"
-  ] then add_argles()
-else ()
+match Sys.getenv "HAS_ARGLE" with [
+  exception Not_found -> ()
+| "true" -> add_argle ()
+| _ -> () ]
+
 ;
-value pa_sig_item s = s |> Stream.of_string |> Grammar.Entry.parse sig_item ;
+
 value pa_argle1 s = s |> Stream.of_string |> Grammar.Entry.parse argle1 ;
 value pa_argle2 s = s |> Stream.of_string |> Grammar.Entry.parse argle2 ;

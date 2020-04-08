@@ -135,7 +135,9 @@ value is_before s1 s2 =
   | _ -> False ]
 ;
 
-value insert_tree entry_name gsymbols action tree =
+value rec insert_tree entry_name gsymbols action tree =
+  insert_tree0 (entry_name, gsymbols, action, tree)
+and insert_tree0 (entry_name, gsymbols, action, tree) =
   let rec insert symbols tree =
     match symbols with
     [ [s :: sl] -> insert_in_tree s sl tree

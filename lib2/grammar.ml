@@ -9,6 +9,17 @@ value pervasives_stderr = stderr;
 open Gramext;
 open Format;
 
+module RealStream = Stream ;
+module Stream = struct
+  type t 'a = Stream.t 'a constraint 'a = token ;
+  value junk (strm : t 'a) = Stream.junk strm ;
+  value count (strm : t 'a) = Stream.count strm ;
+  value peek (strm : t 'a) = Stream.peek strm ;
+  value npeek n (strm : t 'a) = Stream.npeek n strm ;
+  exception Failure = Stream.Failure ;
+  exception Error = Stream.Error ;
+end ;
+
 value stderr = pervasives_stderr;
 
 value rec flatten_tree =
@@ -580,7 +591,9 @@ value token_ematch gram (tok, vala) =
   end
 ;
 
-value rec parser_of_tree entry nlevn alevn =
+value rec parser_of_tree entry nlevn alevn t (strm : Stream.t token) =
+  parser_of_tree0 (entry, nlevn, alevn, t, strm)
+and parser_of_tree0 (entry, nlevn, alevn, t, strm) =
   fun
   [ DeadEnd -> parser []
   | LocAct act _ -> parser [: :] -> act
@@ -660,7 +673,8 @@ value rec parser_of_tree entry nlevn alevn =
           in
           parser
           [ [: a = p1 :] -> a
-          | [: a = p2 :] -> a ] ] ]
+          | [: a = p2 :] -> a ] ] ] t strm
+
 and parser_cont p1 entry nlevn alevn s son bp a =
   parser
   [ [: a = p1 :] -> a
@@ -856,8 +870,8 @@ and parse_top_symb entry symb =
 value symb_failed_txt e s1 s2 = symb_failed e 0 s1 s2;
 
 value rec start_parser_of_levels entry clevn levs levn (strm : Stream.t token) =
-  start_parser_of_levels0 entry clevn levs levn strm
-and start_parser_of_levels0 entry clevn levs levn strm =
+  start_parser_of_levels0 (entry, clevn, levs, levn, strm)
+and start_parser_of_levels0 (entry, clevn, levs, levn, strm) =
   fun
   [ [] -> fun levn -> parser []
   | [lev :: levs] ->
@@ -896,7 +910,9 @@ and start_parser_of_levels0 entry clevn levs levn strm =
                   | [: a = p1 levn :] -> a ] ] ] ] levs levn strm
 ;
 
-value rec continue_parser_of_levels entry clevn levs levn bp a strm =
+value rec continue_parser_of_levels entry clevn levs levn bp a (strm : Stream.t token) =
+  continue_parser_of_levels0 (entry, clevn, levs, levn, bp, a, strm)
+and continue_parser_of_levels0 (entry, clevn, levs, levn, bp, a, strm) =
   fun
   [ [] -> fun levn bp a -> parser []
   | [lev :: levs] ->
@@ -1818,7 +1834,9 @@ value reinit_entry_functions entry =
   | _ -> () ]
 ;
 
-value extend_entry entry position rules =
+value rec extend_entry entry position rules =
+  extend_entry0 (entry, position, rules)
+and extend_entry0 (entry, position, rules) =
   try do {
     let elev = Gramext.levels_of_rules entry position rules in
     entry.edesc := Dlevels elev;
@@ -1959,7 +1977,7 @@ value tokens g con = do {
 value glexer g = g.glexer;
 
 type gen_parsable 'te =
-  { pa_chr_strm : Stream.t char;
+  { pa_chr_strm : RealStream.t char;
     pa_tok_strm : Stream.t 'te;
     pa_tok_fstrm : mutable Fstream.t 'te;
     pa_loc_func : Plexing.location_function }
@@ -2002,7 +2020,7 @@ value parse_parsable entry p = do {
       if token_count.val - 1 <= cnt then loc
       else Ploc.encl loc (fun_loc (token_count.val - 1))
     with
-    [ Failure _ -> Ploc.make_unlined (Stream.count cs, Stream.count cs + 1) ]
+    [ Failure _ -> Ploc.make_unlined (RealStream.count cs, RealStream.count cs + 1) ]
   in
   floc.val := fun_loc;
   token_count.val := 0;
@@ -2023,7 +2041,7 @@ value parse_parsable entry p = do {
       Ploc.raise loc exc
     }
   | exc -> do {
-      let loc = (Stream.count cs, Stream.count cs + 1) in
+      let loc = (RealStream.count cs, RealStream.count cs + 1) in
       restore ();
       Ploc.raise (Ploc.make_unlined loc) exc
     } ]
@@ -2032,7 +2050,7 @@ value parse_parsable entry p = do {
 value bfparse entry efun restore2 p = do {
   let default_loc () =
     let cs = p.pa_chr_strm in
-    Ploc.make_unlined (Stream.count cs, Stream.count cs + 1)
+    Ploc.make_unlined (RealStream.count cs, RealStream.count cs + 1)
   in
   let restore =
     let old_tc = token_count.val in
@@ -2103,7 +2121,7 @@ value bfparse_token_stream entry efun ts = do {
     Printf.eprintf "%sbfparse_token_stream [%s]\n%!" tind.val entry.ename
   else ();
   let p =
-    {pa_chr_strm = [: :];
+    {pa_chr_strm = let module Stream = RealStream in [: :];
      pa_tok_strm = ts;
      pa_tok_fstrm = fstream_of_stream ts;
      pa_loc_func = floc.val}
@@ -2215,7 +2233,7 @@ value bparse_parsable_all entry p = do {
     rl
   }
   with exc -> do {
-    let loc = (Stream.count cs, Stream.count cs + 1) in
+    let loc = (RealStream.count cs, RealStream.count cs + 1) in
     restore ();
     Ploc.raise (Ploc.make_unlined loc) exc
   }
@@ -2272,7 +2290,7 @@ value bfparser_of_parser p fstrm return_value = do {
   floc.val := fun i -> old_floc (shift_token_number + i);
   let ts =
     let fts = ref fstrm in
-    Stream.from
+    RealStream.from
       (fun _ ->
          match Fstream.next fts.val with
          [ Some (v, fstrm) -> do { fts.val := fstrm; Some v }
@@ -2466,7 +2484,7 @@ module type S =
   sig
     type te = token;
     type parsable = 'x;
-    value parsable : Stream.t char -> parsable;
+    value parsable : RealStream.t char -> parsable;
     value tokens : string -> list (string * int);
     value glexer : Plexing.lexer te;
     value set_algorithm : parse_algorithm -> unit;

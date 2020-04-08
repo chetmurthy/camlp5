@@ -79,50 +79,22 @@ open Alt_pa_o ;
 value has_argle = ref False ;
 
 value tests () = "grammar_bug" >::: [
-    "sig_item-open1" >:: (fun  [ _ ->
-      if has_argle.val then
-      assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy 
-                                              (Stdlib.Stream.Error "illegal begin of sig_item")))
-        (fun () -> ignore(pa_sig_item "A"))
-      else
-        ignore(pa_sig_item "A")
-    ])
-    ; "argle1-2" >:: (fun [ _ ->
-      if has_argle.val then
+    "argle1-2" >:: (fun [ _ ->
         assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "illegal begin of argle1")))
-          (fun () -> ignore(pa_argle1 "B"))
-      else
-        assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "entry [argle1] is empty")))
           (fun () -> ignore(pa_argle1 "B"))
                           ])
     ; "argle2-1" >:: (fun [ _ ->
-      if has_argle.val then
         pa_argle2 "A"
-      else
-        assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "entry [argle2] is empty")))
-          (fun () -> ignore(pa_argle2 "A"))
                           ])
     ; "argle2-2" >:: (fun [ _ ->
-      if has_argle.val then
         pa_argle2 "B"
-      else
-        assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "entry [argle2] is empty")))
-          (fun () -> ignore(pa_argle2 "B"))
                           ])
     ]
  ;
 
 value _ = 
 if invoked_with "grammar_bug_test" then
-do {
-  match Sys.getenv "HAS_ARGLE" with [
-    exception Not_found -> failwith "must set HAS_ARGLE to use this test"
-  | "true" -> has_argle.val := True
-  | "false" -> has_argle.val := False
-  | _ -> failwith "must set HAS_ARGLE to either true or false"
-  ] ;
   run_test_tt_main (tests ())
-}
 else ()
 ;
   
