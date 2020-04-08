@@ -37,11 +37,11 @@ value add_argle () =
 EXTEND
   GLOBAL: argle1 argle2
   ;
-  int_or_dot: [[ "A" -> () | "B" -> () ]] ;
+  int_or_dot: [[ LIDENT -> () | "." -> () ]] ;
   argle1:
     [ NONA
-      [ [ "when" | ]; "A" -> ()
-      | [ "when" | ]; "B" -> ()
+      [ [ "when" | ]; LIDENT -> ()
+      | [ "when" | ]; "." -> ()
       ] ]
   ;
   argle2:
