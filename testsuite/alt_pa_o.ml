@@ -41,7 +41,7 @@ EXTEND
   argle1:
     [ NONA
       [ [ "when" | ]; "A" -> ()
-      | [ "when" | ]; "B" ->()
+      | [ "when" | ]; "B" -> ()
       ] ]
   ;
   argle2:
