@@ -80,8 +80,10 @@ value has_argle = ref False ;
 
 value tests () = "grammar_bug" >::: [
     "argle1-2" >:: (fun [ _ ->
-        assert_raises_exn_pred (smart_exn_eq (Ploc.Exc Ploc.dummy (Stdlib.Stream.Error "illegal begin of argle1")))
-          (fun () -> ignore(pa_argle1 "."))
+                          ignore(pa_argle1 ".")
+                          ])
+    ; "argle1b-2" >:: (fun [ _ ->
+                             ignore(pa_argle1b ".")
                           ])
     ; "argle2-1" >:: (fun [ _ ->
         pa_argle2 "a"

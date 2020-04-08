@@ -30,18 +30,25 @@ do {
 };
 
 value argle1 : Grammar.Entry.e unit = Grammar.Entry.create gram "argle1";
+value argle1b : Grammar.Entry.e unit = Grammar.Entry.create gram "argle1b";
 value argle2 : Grammar.Entry.e unit = Grammar.Entry.create gram "argle2";
 value int_or_dot : Grammar.Entry.e unit = Grammar.Entry.create gram "int_or_dot";
 
 value add_argle () = 
 EXTEND
-  GLOBAL: argle1 argle2
+  GLOBAL: argle1 argle1b argle2
   ;
   int_or_dot: [[ LIDENT -> () | "." -> () ]] ;
   argle1:
     [ NONA
       [ [ "when" | ]; LIDENT -> ()
       | [ "when" | ]; "." -> ()
+      ] ]
+  ;
+  argle1b:
+    [ NONA
+      [ OPT [ "when" ]; LIDENT -> ()
+      | OPT [ "when" ]; "." -> ()
       ] ]
   ;
   argle2:
@@ -61,4 +68,5 @@ match Sys.getenv "HAS_ARGLE" with [
 ;
 
 value pa_argle1 s = s |> Stream.of_string |> Grammar.Entry.parse argle1 ;
+value pa_argle1b s = s |> Stream.of_string |> Grammar.Entry.parse argle1b ;
 value pa_argle2 s = s |> Stream.of_string |> Grammar.Entry.parse argle2 ;
