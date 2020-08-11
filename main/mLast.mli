@@ -36,6 +36,7 @@ and longid =
   [ LiAcc of loc and longid and V string
   | LiApp of loc and longid and longid
   | LiUid of loc and V string
+  | LiXtr of loc and string and option (V longid)
   ]
 and ctyp =
   [ TyAcc of loc and longid and V string

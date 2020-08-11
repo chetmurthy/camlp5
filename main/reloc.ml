@@ -533,6 +533,9 @@ and longid floc sh =
     | LiUid loc x1 →
         let loc = floc loc in
         LiUid loc x1
+    | LiXtr loc x1 x2 →
+        let loc = floc loc in
+        LiXtr loc x1 (option_map (vala_map self) x2)
     ]
 and module_expr floc sh =
   self where rec self =

@@ -28,7 +28,7 @@ i.name >:: (fun  [ _ ->
                          ])
 ;
 
-value tests = "test pa_r+q_MLast -> pr_r" >::: (List.map mktest
+value tests = "test pa_r+quotations -> pr_r" >::: (List.map mktest
     [
       {
         name = "prototype";
@@ -213,7 +213,7 @@ value tests = "test pa_r+q_MLast -> pr_r" >::: (List.map mktest
  ;
 
 value _ = 
-if invoked_with "q_MLast_test" then
+if not Sys.interactive.val then
   run_test_tt_main tests
 else ()
 ;

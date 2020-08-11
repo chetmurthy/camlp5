@@ -447,6 +447,8 @@ and longid floc sh =
     | LiApp (loc, x1, x2) ->
         let loc = floc loc in LiApp (loc, self x1, self x2)
     | LiUid (loc, x1) -> let loc = floc loc in LiUid (loc, x1)
+    | LiXtr (loc, x1, x2) ->
+        let loc = floc loc in LiXtr (loc, x1, option_map (vala_map self) x2)
   in
   self
 and module_expr floc sh =
