@@ -278,7 +278,7 @@ and class_str_item =
   | CrVir of loc and V bool and V string and ctyp and attributes
   | CrFlAtt of loc and attribute
   | CrExten of loc and attribute ]
-and longid_lident = (option longid * V string)
+and longid_lident = (option (V longid) * V string)
 and payload = [
   StAttr of loc and V (list str_item)
 | SiAttr of loc and V (list sig_item)

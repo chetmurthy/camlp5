@@ -792,7 +792,7 @@ and class_str_item floc sh =
         CrExten loc (attribute_body floc sh exten)
     ]
 and longid_lident floc sh (x1, x2) =
-    (option_map (longid floc sh) x1, x2)
+    (option_map (vala_map (longid floc sh)) x1, x2)
 and attribute_body floc sh x1 =
     vala_map (fun (s, p) ->
         let p = match p with [

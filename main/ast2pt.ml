@@ -210,7 +210,7 @@ value rec expr_long_id = fun
 ;
 
 value longid_lident_long_id (lio,s) = match (lio, s) with [
-    (Some li, s) → Ldot (longid_long_id li) (uv s)
+    (Some li, s) → Ldot (longid_long_id (uv li)) (uv s)
   | (None, s) → Lident (uv s)
 ]
 ;

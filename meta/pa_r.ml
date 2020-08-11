@@ -1565,7 +1565,7 @@ EXTEND
       ] ]
   ;
   longident_lident:
-    [ [ li = longident; "."; i = V LIDENT → (Some li, i)
+    [ [ li = V longident "longid" ; "."; i = V LIDENT → (Some li, i)
       | i = V LIDENT → (None, i)
       ] ]
   ;

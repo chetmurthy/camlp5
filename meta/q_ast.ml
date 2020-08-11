@@ -151,7 +151,7 @@ module Meta_make (C : MetaSig) =
           let exten = conv_extension exten in
           C.node "TyExten" [exten]
       ]
-    and longid_lident (lio, s) = C.tuple [C.option longid lio; C.vala C.string s]
+    and longid_lident (lio, s) = C.tuple [C.option (C.vala longid) lio; C.vala C.string s]
     and conv_attributes attrs =
       C.vala (C.list attribute) attrs
     and conv_extension e = attribute e
